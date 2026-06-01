@@ -1,0 +1,51 @@
+Te adjunto el código de una aplicación Android para registrar y mostrar puntuaciones de un juego de cartas llamado "Continental" con las siguientes características y funcionalidades:
+---
+**Interfaz principal:**
+
+- Una tabla que muestre la información de los jugadores, incluyendo:
+    - Posición
+    - Nombre del jugador
+    - Puntuación total
+    - Número de rondas ganadas
+    - Puntuaciones individuales para 7 rondas
+
+**Funcionalidades clave:**
+
+1. **Agregar jugadores:** Permitir al usuario añadir nuevos jugadores al juego.
+2. **Registrar puntuaciones:** Capacidad para ingresar y actualizar las puntuaciones de cada jugador en cada ronda.
+3. **Cálculo automático:** La app debe calcular automáticamente la puntuación total y el número de rondas ganadas para cada jugador.
+4. **Ordenamiento:** La tabla debe ordenarse automáticamente según la puntuación total, mostrando la posición de cada jugador.
+5. **Persistencia de datos:** Guardar la información del juego para que pueda ser recuperada en futuras sesiones.
+
+**Diseño y experiencia de usuario:**
+
+- Utiliza Material Design para una interfaz moderna y fácil de usar.
+- Implementa un esquema de colores que sea agradable a la vista y apropiado para un juego de cartas.
+- Asegúrate de que la aplicación sea responsive y se adapte a diferentes tamaños de pantalla.
+
+**Características adicionales:**
+
+- Opción para reiniciar el juego o comenzar una nueva partida.
+- Función para compartir los resultados del juego.
+- Estadísticas básicas, como el jugador con la puntuación más alta o la ronda con más puntos.
+
+**Consideraciones técnicas:**
+
+- Implementa una arquitectura MVVM (Model-View-ViewModel) para una mejor separación de responsabilidades.
+- Usa Room Database para el almacenamiento local de datos.
+- Implementa RecyclerView para mostrar la tabla de puntuaciones de manera eficiente.
+
+Asegúrate de implementar todas las funcionalidades mencionadas y de seguir las mejores prácticas de desarrollo para Android. La aplicación debe ser intuitiva, eficiente y fácil de usar para los jugadores de Continental.
+---
+
+Revísala y corrige los siguientes fallos:
+- No funciona el historial de rondas.
+- Cambia el gráfico a uno de barras en la que se vea el progreso de cada jugardor ordenando de forma ascendente.
+
+También quiero que añadas a las Reglas del Juego:
+Variaciones
+- Permitir mover un comodín de una escalera a otra posición reglamentaria de la misma si se tiene la carta que lo sustituya y el jugador ya se ha bajado.
+- En partida de más de cuatro jugadores se puede acordar robar solamente una carta en lugar de dos.
+- Posibilidad de leerlas en voz alta.
+
+Además, incorpora cualquier otra característica o funcionalidad que mejore la app.
