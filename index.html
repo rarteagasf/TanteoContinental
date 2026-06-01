@@ -623,18 +623,14 @@
     // Componente principal
     function App() {
       const [players, setPlayers] = useState(() => 
-        loadFromLocalStorage('continental-players', [
-          { name: 'Ana', scores: Array(7).fill(0), total: 0 },
-          { name: 'Luis', scores: Array(7).fill(0), total: 0 },
-          { name: 'Marta', scores: Array(7).fill(0), total: 0 }
-        ])
+        loadFromLocalStorage('continental-players', [])
       );
       
       const [currentRound, setCurrentRound] = useState(() => 
         loadFromLocalStorage('continental-round', 1)
       );
       const [dealer, setDealer] = useState(() => 
-        loadFromLocalStorage('continental-dealer', 'Ana')
+        loadFromLocalStorage('continental-dealer', '')
       );
       const [newPlayerName, setNewPlayerName] = useState('');
       const [showRules, setShowRules] = useState(false);
@@ -658,6 +654,10 @@
         loadFromLocalStorage('continental-round-scores', {})
       );
       const [showAbandonConfirmation, setShowAbandonConfirmation] = useState(false);
+      const [showResumePrompt, setShowResumePrompt] = useState(() => {
+        const saved = loadFromLocalStorage('continental-players', []);
+        return saved.length > 0;
+      });
 
       // Guardar datos automáticamente
       useEffect(() => {
@@ -878,21 +878,24 @@
       };
 
       // Reiniciar juego
+      const confirmReset = () => {
+        setPlayers(players.map(p => ({
+          ...p,
+          scores: Array(7).fill(0),
+          total: 0
+        })));
+        setCurrentRound(1);
+        setDealer(players.length > 0 ? players[0].name : '');
+        setGameHistory([]);
+        setGameStarted(false);
+        setCurrentRoundScores({});
+        setRoundCloser('');
+        showToast('Juego reiniciado');
+        setShowAbandonConfirmation(false);
+      };
+
       const resetGame = () => {
-        if (confirm('¿Reiniciar todas las puntuaciones?')) {
-          setPlayers(players.map(p => ({
-            ...p,
-            scores: Array(7).fill(0),
-            total: 0
-          })));
-          setCurrentRound(1);
-          setDealer(players[0].name);
-          setGameHistory([]);
-          setGameStarted(false);
-          setCurrentRoundScores({});
-          setRoundCloser('');
-          showToast('Juego reiniciado');
-        }
+        setShowAbandonConfirmation(true);
       };
 
       // Finalizar ronda
@@ -1011,8 +1014,31 @@
           </header>
 
           {!gameStarted ? (
-            /* Configuración inicial */
-            <div className="glass-panel card">
+            showResumePrompt ? (
+              <div className="glass-panel card" style={{ textAlign: 'center' }}>
+                <h2>🔄 Partida Anterior Detectada</h2>
+                <p style={{ margin: '1rem 0', color: 'var(--text-muted)' }}>
+                  Hemos encontrado jugadores de una sesión anterior ({players.map(p => p.name).join(', ')}). ¿Qué deseas hacer?
+                </p>
+                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '1.5rem', flexWrap: 'wrap' }}>
+                  <button className="btn btn-secondary" onClick={() => {
+                    setPlayers([]);
+                    setDealer('');
+                    setGameHistory([]);
+                    setCurrentRoundScores({});
+                    setRoundCloser('');
+                    setShowResumePrompt(false);
+                  }}>
+                    Empezar de cero
+                  </button>
+                  <button className="btn btn-primary" onClick={() => setShowResumePrompt(false)}>
+                    Continuar con los mismos
+                  </button>
+                </div>
+              </div>
+            ) : (
+              /* Configuración inicial */
+              <div className="glass-panel card">
               <h2>👥 Configuración de Jugadores</h2>
               
               <div className="player-input">
@@ -1328,6 +1354,24 @@
               </button>
             </Tooltip>
           </div>
+
+          {/* Modal de confirmación de reinicio */}
+          {showAbandonConfirmation && (
+            <div className="overlay show">
+              <div className="modal-content" style={{ maxWidth: '400px', textAlign: 'center' }}>
+                <h3 style={{ marginBottom: '1rem', color: 'var(--color-primary)' }}>⚠️ Confirmación</h3>
+                <p style={{ marginBottom: '1.5rem' }}>¿Estás seguro de que quieres reiniciar todas las puntuaciones?</p>
+                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+                  <button className="btn btn-secondary" onClick={() => setShowAbandonConfirmation(false)}>
+                    Cancelar
+                  </button>
+                  <button className="btn btn-primary" onClick={confirmReset}>
+                    Sí, reiniciar
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Modal de reglas */}
           {showRules && (
