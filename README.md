@@ -1,160 +1,172 @@
-# üÉè Continental Pro - Contador de Puntuaciones Profesional
+# Continental Pro - Contador de Puntuaciones Profesional
 
-**Continental Pro** es una aplicaci√≥n web moderna y completamente funcional para llevar el registro de puntuaciones del juego de cartas Continental. Dise√±ada con las mejores pr√°cticas de desarrollo web y un enfoque en la experiencia de usuario.
+**Continental Pro** es una aplicaciÛn web moderna y completamente funcional para llevar el registro de puntuaciones del juego de cartas Continental. DiseÒada con las mejores pr·cticas de desarrollo web y un enfoque en la experiencia de usuario.
 
-![Continental Pro Banner](data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzIxODA4ZCIvPgo8cGF0aCBkPSJNOCAxMmg0djRIOFYxMnptNiAwaDR2NGgtNFYxMnptNiAwaDR2NGgtNFYxMnptLTEyIDZoNHY0SDhWMTh6bTYgMGg0djRoLTRWMTh6bTYgMGg0djRoLTRWMTh6IiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K)
+## CaracterÌ≠sticas Principales
 
-## ‚ú® Caracter√≠sticas Principales
+### Funcionalidades del Juego
 
-### üéÆ Funcionalidades del Juego
-- **Registro de puntuaciones** para las 7 rondas del Continental
-- **Gesti√≥n din√°mica de jugadores** (2-6 jugadores)
-- **C√°lculo autom√°tico** de totales y rondas ganadas
-- **Ordenamiento autom√°tico** por puntuaci√≥n
-- **Navegaci√≥n entre rondas** con controles intuitivos
-- **Sistema de repartidor** con rotaci√≥n autom√°tica
+* **Registro de puntuaciones** para las 7 rondas del Continental
+* **GestiÛn din·mica de jugadores** (2-6 jugadores)
+* **C·lculo autom·tico** de totales y rondas ganadas
+* **Ordenamiento autom·tico** por puntuaciÛn
+* **NavegaciÛn entre rondas** con controles intuitivos
+* **Sistema de repartidor** con rotaciÛn autom·tica
 
-### üìä Estad√≠sticas y An√°lisis
-- **Gr√°fico de barras interactivo** con progreso ascendente
-- **Estad√≠sticas en tiempo real** (promedio, m√°ximo, rondas completadas)
-- **Indicador de l√≠der** con emoji de corona
-- **Posiciones autom√°ticas** con medallas (ü•áü•àü•â)
-- **Conteo de rondas ganadas** por jugador
+### EstadÌ≠sticas y An·lisis
 
-### üìù Historial y Seguimiento
-- **Historial de acciones** completo y detallado
-- **Registro temporal** de todos los cambios
-- **Persistencia autom√°tica** en localStorage
-- **Recuperaci√≥n de datos** entre sesiones
-- **Seguimiento de cambios** por jugador y ronda
+* **Gr·fico de barras interactivo** con progreso ascendente
+* **EstadÌsticas en tiempo real** (promedio, m·ximo, rondas completadas)
+* **Indicador de lÌder** con emoji de corona
+* **Posiciones autom·ticas** con medallas
+* **Conteo de rondas ganadas** por jugador
 
-### üé® Dise√±o y UX
-- **Modo claro/oscuro** con persistencia
-- **Dise√±o completamente responsive** (m√≥vil, tablet, desktop)
-- **Iconograf√≠a moderna** y emojis expresivos
-- **Animaciones suaves** y transiciones elegantes
-- **Sistema de colores profesional** con temas adaptativos
+### Historial y Seguimiento
 
-### üìñ Manual y Reglas
-- **Manual completo** del Continental integrado
-- **Reglas oficiales** con variaciones incluidas
-- **Sistema de puntuaci√≥n detallado** (-10 √ó ronda para ganador)
-- **Lectura en voz alta** con Web Speech API
-- **Exportar/Importar manual** en formato Markdown
+* **Historial de acciones** completo y detallado
+* **Registro temporal** de todos los cambios
+* **Persistencia autom·tica** en localStorage
+* **RecuperaciÛn de datos** entre sesiones
+* **Seguimiento de cambios** por jugador y ronda
 
-### üöÄ Funciones Avanzadas
-- **Compartir resultados** nativos o por portapapeles
-- **Reinicio inteligente** con confirmaci√≥n
-- **Validaciones de entrada** y l√≠mites apropiados
-- **Accesibilidad mejorada** (lectores de pantalla, contraste)
-- **PWA Ready** (Progressive Web App)
+### DiseÌ±o y Ux
 
-## üõ†Ô∏è Tecnolog√≠as Utilizadas
+* **Modo claro/oscuro** con persistencia
+* **DiseÒo completamente responsive** (mÛvil, tablet, desktop)
+* **IconografÌa moderna** y emojis expresivos
+* **Animaciones suaves** y transiciones elegantes
+* **Sistema de colores profesional** con temas adaptativos
+
+### Manual y Reglas
+
+* **Manual completo** del Continental integrado
+* **Reglas oficiales** con variaciones incluidas
+* **Sistema de puntuaciÛn detallado** (-10 ◊ ronda para ganador)
+* **Lectura en voz alta** con Web Speech API
+* **Exportar/importar manual** en formato Markdown
+
+### Funciones Avanzadas
+
+* **Compartir resultados** nativos o por portapapeles
+* **Reinicio inteligente** con confirmaciÛn
+* **Validaciones de entrada** y lÌmites apropiados
+* **Accesibilidad mejorada** (lectores de pantalla, contraste)
+* **PWA ready** (Progressive Web App)
+
+## TecnologÌ≠as Utilizadas
 
 ### Frontend
-- **React 18** - Framework de UI moderno
-- **Chart.js** - Gr√°ficos interactivos y responsive
-- **Web Speech API** - S√≠ntesis de voz nativa
-- **CSS Custom Properties** - Sistema de design tokens
-- **LocalStorage API** - Persistencia de datos
 
-### Caracter√≠sticas T√©cnicas
-- **ES6+ JavaScript** - Sintaxis moderna
-- **CSS Grid & Flexbox** - Layouts avanzados
-- **Media Queries** - Dise√±o responsive
-- **Web APIs** - Navigator.share, SpeechSynthesis
-- **Sin dependencias externas** - Solo CDN para React y Chart.js
+* **React 18** - Framework de UI moderno
+* **Chart.js** - Gr·ficos interactivos y responsive
+* **Web Speech API** - SÌntesis de voz nativa
+* **CSS Custom Properties** - Sistema de design tokens
+* **LocalStorage API** - Persistencia de datos
 
-## üìã Reglas del Continental
+### CaracterÌ≠sticas TÈcnicas
 
-### Configuraci√≥n del Juego
-- **2-6 jugadores** usando dos barajas con comodines
-- **7 rondas** con diferentes combinaciones requeridas
-- **Objetivo**: Obtener la puntuaci√≥n total m√°s baja
+* **ES6+ JavaScript** - Sintaxis moderna
+* **CSS Grid y Flexbox** - Layouts avanzados
+* **Media Queries** - DiseÒo responsive
+* **Web APIs** - Navigator.share, SpeechSynthesis
+* **Sin dependencias externas** - Solo CDN para React y Chart.js
+
+## Reglas del Continental
+
+### ConfiguraciÛn del Juego
+
+* **2-6 jugadores** usando dos barajas con comodines
+* **7 rondas** con diferentes combinaciones requeridas
+* **Objetivo**: obtener la puntuaciÛn total m·s baja
 
 ### Rondas y Combinaciones
-1. **Ronda 1**: 7 cartas - 2 Tr√≠os
-2. **Ronda 2**: 8 cartas - 1 Tr√≠o y 1 Escalera  
-3. **Ronda 3**: 9 cartas - 2 Escaleras
-4. **Ronda 4**: 10 cartas - 3 Tr√≠os
-5. **Ronda 5**: 11 cartas - 2 Tr√≠os y 1 Escalera
-6. **Ronda 6**: 12 cartas - 1 Tr√≠o y 2 Escaleras
-7. **Ronda 7**: 13 cartas - 3 Escaleras
 
-### Sistema de Puntuaci√≥n
-- **Comod√≠n**: 100 puntos
-- **Dos (2)**: 50 puntos
-- **Figuras (J, Q, K)**: 20 puntos cada una
-- **Cartas del 1-10**: Valor facial
-- **Ganador de ronda**: -10 √ó n√∫mero de ronda
+1. **Ronda 1**: 7 cartas - 2 trÌos
+2. **Ronda 2**: 8 cartas - 1 trÌo y 1 escalera
+3. **Ronda 3**: 9 cartas - 2 escaleras
+4. **Ronda 4**: 10 cartas - 3 trÌos
+5. **Ronda 5**: 11 cartas - 2 trÌos y 1 escalera
+6. **Ronda 6**: 12 cartas - 1 trÌo y 2 escaleras
+7. **Ronda 7**: 13 cartas - 3 escaleras
+
+### Sistema de PuntuaciÛn
+
+* **ComodÌn**: 100 puntos
+* **Dos (2)**: 50 puntos
+* **Figuras (J, Q, K)**: 20 puntos cada una
+* **Cartas del 1-10**: valor facial
+* **Ganador de ronda**: -10 ◊ n˙mero de ronda
 
 ### Variaciones Incluidas
-- **Mover comod√≠n**: En escaleras si tienes la carta sustituta
-- **Robo reducido**: Una carta en lugar de dos (4+ jugadores)
-- **Lectura en voz alta**: Para accesibilidad mejorada
 
-## üöÄ Instalaci√≥n y Uso
+* **Mover comodÌn**: en escaleras si tienes la carta sustituta
+* **Robo reducido**: una carta en lugar de dos (4+ jugadores)
+* **Lectura en voz alta**: para accesibilidad mejorada
 
-### Instalaci√≥n R√°pida
-1. Descarga los archivos `continental-pro.html` y `continental-pro.css`
-2. Col√≥calos en la misma carpeta
-3. Abre `continental-pro.html` en cualquier navegador moderno
-4. ¬°Listo para jugar!
+## InstalaciÛn y Uso
 
 ### Requisitos del Sistema
-- **Navegador moderno** (Chrome 88+, Firefox 85+, Safari 14+, Edge 88+)
-- **JavaScript habilitado**
-- **LocalStorage disponible** (para persistencia)
-- **Conexi√≥n a internet** (solo para cargar CDNs)
 
-### Uso B√°sico
-1. **A√±ade jugadores** usando el campo de texto
+* **Navegador moderno** (Chrome 88+, Firefox 85+, Safari 14+, Edge 88+)
+* **JavaScript habilitado**
+* **LocalStorage disponible** (para persistencia)
+* **ConexiÛn a internet** (solo para cargar CDNs)
+
+### Uso B·sico
+
+1. **AÒade jugadores** usando el campo de texto
 2. **Ingresa puntuaciones** en la tabla por ronda
 3. **Navega entre rondas** con los botones anterior/siguiente
-4. **Consulta estad√≠sticas** con el bot√≥n de gr√°fico
-5. **Ve el historial** con el bot√≥n de historial
-6. **Cambia tema** con el bot√≥n sol/luna
+4. **Consulta estadÌsticas** con el botÛn de gr·fico
+5. **Ve el historial** con el botÛn de historial
+6. **Cambia tema** con el botÛn sol/luna
 
-## üì± Compatibilidad y Responsive
+## Compatibilidad y Responsive
 
 ### Breakpoints
-- **M√≥vil**: < 480px
-- **Tablet**: 480px - 768px  
-- **Desktop**: > 768px
-- **Wide**: > 1280px
 
-### Caracter√≠sticas Responsive
-- **Tabla horizontal scroll** en m√≥viles
-- **Grid adaptativo** para cards de jugadores
-- **Botones full-width** en pantallas peque√±as
-- **Tipograf√≠a escalable** seg√∫n dispositivo
-- **Touch-friendly** inputs y botones
+* **MÛvil**: < 480px
+* **Tablet**: 480px - 768px
+* **Desktop**: > 768px
+* **Wide**: > 1280px
 
-## üé® Sistema de Colores
+### CaracterÌ≠sticas Responsive
+
+* **Tabla horizontal scroll** en mÛviles
+* **Grid adaptativo** para cards de jugadores
+* **Botones full-width** en pantallas pequeÒas
+* **TipografÌa escalable** seg˙n dispositivo
+* **Touch-friendly** inputs y botones
+
+## Sistema de Colores
 
 ### Modo Claro
-- **Primario**: Teal 600 (#0D9488)
-- **Superficie**: White (#FFFFFF)
-- **Fondo**: Gray 50 (#F9FAFB)
-- **Texto**: Gray 900 (#111827)
 
-### Modo Oscuro  
-- **Primario**: Teal 400 (#2DD4BF)
-- **Superficie**: Slate 800 (#1E293B)
-- **Fondo**: Slate 900 (#0F172A)
-- **Texto**: Gray 100 (#F1F5F9)
+* **Primario**: teal 600 (#0D9488)
+* **Superficie**: white (#FFFFFF)
+* **Fondo**: gray 50 (#F9FAFB)
+* **Texto**: gray 900 (#111827)
 
-## üìä Arquitectura y Estructura
+### Modo Oscuro
+
+* **Primario**: teal 400 (#2DD4BF)
+* **Superficie**: slate 800 (#1E293B)
+* **Fondo**: slate 900 (#0F172A)
+* **Texto**: gray 100 (#F1F5F9)
+
+## Arquitectura y Estructura
 
 ### Componentes Principales
-- **App**: Componente principal con estado global
-- **ScoreChart**: Gr√°fico de barras con Chart.js
-- **PlayerManagement**: Gesti√≥n de jugadores
-- **Scoreboard**: Tabla de puntuaciones
-- **GameControls**: Controles del juego
-- **RulesSection**: Manual y reglas
 
-### Estado de la Aplicaci√≥n
+* **App**: componente principal con estado global
+* **ScoreChart**: gr·fico de barras con Chart.js
+* **PlayerManagement**: gestiÛn de jugadores
+* **Scoreboard**: tabla de puntuaciones
+* **GameControls**: controles del juego
+* **RulesSection**: manual y reglas
+
+### Estado de la AplicaciÛn
+
 ```javascript
 {
   players: Array,        // Lista de jugadores con puntuaciones
@@ -163,77 +175,91 @@
   darkMode: Boolean,     // Tema actual
   gameHistory: Array,    // Historial de acciones
   showRules: Boolean,    // Mostrar/ocultar reglas
-  showChart: Boolean,    // Mostrar/ocultar gr√°fico
+  showChart: Boolean,    // Mostrar/ocultar gr·fico
   showHistory: Boolean   // Mostrar/ocultar historial
 }
+
 ```
 
-## üîß Personalizaci√≥n
+## PersonalizaciÛn
 
-### Variables CSS
-Todas las variables de dise√±o est√°n centralizadas en `:root`:
+### Variables Css
+
+Todas las variables de diseÒo est·n centralizadas en `:root`:
+
 ```css
 --color-primary: #0D9488;
 --font-family-base: "Inter", sans-serif;
 --space-4: 1rem;
 --radius-lg: 1rem;
+
 ```
 
 ### Temas Personalizados
+
 Modifica las variables en `[data-color-scheme="custom"]` para crear tu propio tema.
 
-## üìà Rendimiento
+## Rendimiento
 
 ### Optimizaciones
-- **React Production Build** desde CDN
-- **CSS Custom Properties** para temas din√°micos
-- **LocalStorage eficiente** con compresi√≥n JSON
-- **Event delegation** para mejor performance
-- **Lazy loading** de gr√°ficos
 
-### M√©tricas
-- **First Contentful Paint**: < 1.5s
-- **Time to Interactive**: < 3s
-- **Bundle size**: < 50KB (sin assets)
+* **React production build** desde CDN
+* **CSS Custom Properties** para temas din·micos
+* **LocalStorage eficiente** con compresiÛn JSON
+* **Event delegation** para mejor performance
+* **Lazy loading** de gr·ficos
 
-## üîê Privacidad y Datos
+### MÈtricas
+
+* **First Contentful Paint**: < 1.5s
+* **Time to Interactive**: < 3s
+* **Bundle size**: < 50KB (sin assets)
+
+## Privacidad y Datos
 
 ### Almacenamiento Local
+
 Todos los datos se guardan **localmente** en tu navegador:
-- `continental-players`: Datos de jugadores
-- `continental-round`: Ronda actual
-- `continental-dealer`: Repartidor actual  
-- `continental-theme`: Tema seleccionado
-- `continental-history`: Historial de acciones
+
+* `continental-players`: datos de jugadores
+* `continental-round`: ronda actual
+* `continental-dealer`: repartidor actual
+* `continental-theme`: tema seleccionado
+* `continental-history`: historial de acciones
 
 ### Sin Tracking
-- **No cookies** de terceros
-- **No analytics** externos
-- **No datos enviados** a servidores
-- **Completamente offline** despu√©s de la carga inicial
 
-## ü§ù Contribuciones
+* **No cookies** de terceros
+* **No analytics** externos
+* **No datos enviados** a servidores
+* **Completamente offline** despuÈs de la carga inicial
+
+## Contribuciones
 
 ### Reporte de Bugs
-Si encuentras alg√∫n problema:
+
+Si encuentras alg˙n problema:
+
 1. Describe el comportamiento esperado vs actual
 2. Incluye pasos para reproducir
-3. Menciona navegador y versi√≥n
+3. Menciona navegador y versiÛn
 4. Adjunta capturas si es relevante
 
 ### Sugerencias de Mejora
-¬øIdeas para nuevas caracter√≠sticas?
-- Sistema de torneos
-- Estad√≠sticas hist√≥ricas
-- Exportaci√≥n a PDF/Excel
-- Modo multijugador online
-- Integraci√≥n con APIs de cartas
 
-## üìÑ Licencia
+øIdeas para nuevas caracterÌsticas?
 
-Este proyecto est√° disponible bajo la **Licencia MIT**.
+* Sistema de torneos
+* EstadÌsticas histÛricas
+* ExportaciÛn a PDF/Excel
+* Modo multijugador online
+* IntegraciÛn con APIs de cartas
 
-```
+## Licencia
+
+Este proyecto est· disponible bajo la **Licencia MIT**.
+
+```text
 MIT License
 
 Copyright (c) 2025 Continental Pro
@@ -251,37 +277,30 @@ copies or substantial portions of the Software.
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+
 ```
 
-## üôè Agradecimientos
+## Agradecimientos
 
-- **React Team** - Por el incre√≠ble framework
-- **Chart.js Contributors** - Por los gr√°ficos hermosos
-- **Continental Players** - Por el feedback y testing
-- **Open Source Community** - Por la inspiraci√≥n
-
----
-
-**Continental Pro v3.0** - Hecho con ‚ù§Ô∏è para jugadores de cartas
-
-üéØ **¬øListo para jugar?** Abre `continental-pro.html` y ¬°que comience la partida!
+* **React Team** - Por el increÌble framework
+* **Chart.js Contributors** - Por los gr·ficos hermosos
+* **Continental Players** - Por el feedback y testing
+* **Open Source Community** - Por la inspiraciÛn
 
 ---
 
-### üîó Enlaces √ötiles
+### Enlaces Ìötiles
 
-- [Documentaci√≥n de React](https://react.dev/)
-- [Chart.js Documentation](https://www.chartjs.org/docs/)
-- [CSS Custom Properties Guide](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)
-- [Web Speech API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API)
+* [DocumentaciÛn de React](https://react.dev/)
+* [Chart.js Documentation](https://www.chartjs.org/docs/)
+* [CSS Custom Properties Guide](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)
+* [Web Speech API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API)
 
-### üìû Soporte
+### Soporte
 
-¬øNecesitas ayuda? Revisa:
+øNecesitas ayuda? Revisa:
+
 1. Este README completo
 2. Las reglas integradas en la app
 3. Los controles de ayuda en la interfaz
-4. La secci√≥n de troubleshooting
-
-**¬°Disfruta jugando Continental Pro!** üÉèüéâ#   T a n t e o C o n t i n e n t a l  
- 
+4. La secciÛn de troubleshooting

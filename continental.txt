@@ -1,5 +1,3 @@
-Te adjunto el código de una aplicación Android para registrar y mostrar puntuaciones de un juego de cartas llamado "Continental" con las siguientes características y funcionalidades:
----
 **Interfaz principal:**
 
 - Una tabla que muestre la información de los jugadores, incluyendo:
@@ -19,9 +17,9 @@ Te adjunto el código de una aplicación Android para registrar y mostrar puntua
 
 **Diseño y experiencia de usuario:**
 
-- Utiliza Material Design para una interfaz moderna y fácil de usar.
+- Utiliza Material 3 Expressive para una interfaz moderna y fácil de usar.
 - Implementa un esquema de colores que sea agradable a la vista y apropiado para un juego de cartas.
-- Asegúrate de que la aplicación sea responsive y se adapte a diferentes tamaños de pantalla.
+- Asegúrate de que la aplicación sea 100% responsive y se adapte a diferentes tamaños de pantalla, tanto en formato vertical como horizontal. Apóyate en el MCP de Stitch para ello.
 
 **Características adicionales:**
 
@@ -38,14 +36,3 @@ Te adjunto el código de una aplicación Android para registrar y mostrar puntua
 Asegúrate de implementar todas las funcionalidades mencionadas y de seguir las mejores prácticas de desarrollo para Android. La aplicación debe ser intuitiva, eficiente y fácil de usar para los jugadores de Continental.
 ---
 
-Revísala y corrige los siguientes fallos:
-- No funciona el historial de rondas.
-- Cambia el gráfico a uno de barras en la que se vea el progreso de cada jugardor ordenando de forma ascendente.
-
-También quiero que añadas a las Reglas del Juego:
-Variaciones
-- Permitir mover un comodín de una escalera a otra posición reglamentaria de la misma si se tiene la carta que lo sustituya y el jugador ya se ha bajado.
-- En partida de más de cuatro jugadores se puede acordar robar solamente una carta en lugar de dos.
-- Posibilidad de leerlas en voz alta.
-
-Además, incorpora cualquier otra característica o funcionalidad que mejore la app.

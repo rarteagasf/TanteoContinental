@@ -1,33 +1,38 @@
-const CACHE_NAME = 'continental-pro-v1';
-const urlsToCache = [
+const CACHE = 'continental-pro-v2';
+const PRECACHE = [
+  '/',
   'index.html',
   'dist/App.js',
   'style.css',
-  'manifest.json'
+  'manifest.json',
+  'app-icon.png'
 ];
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(urlsToCache))
+    caches.open(CACHE).then(cache => cache.addAll(PRECACHE)).then(() => self.skipWaiting())
   );
 });
 
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(cacheNames =>
-      Promise.all(
-        cacheNames
-          .filter(name => name !== CACHE_NAME)
-          .map(name => caches.delete(name))
-      )
-    )
+    caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())
   );
 });
 
 self.addEventListener('fetch', event => {
+  const { request } = event;
+  if (request.method !== 'GET') return;
   event.respondWith(
-    caches.match(event.request)
-      .then(response => response || fetch(event.request))
+    caches.match(request).then(cached => {
+      const fetched = fetch(request).then(response => {
+        if (response.ok) {
+          const copy = response.clone();
+          caches.open(CACHE).then(cache => cache.put(request, copy));
+        }
+        return response;
+      });
+      return cached || fetched;
+    })
   );
 });
