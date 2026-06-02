@@ -1,0 +1,27 @@
+{
+  "name": "tanteo-continental",
+  "version": "1.0.0",
+  "description": "**Continental Pro** es una aplicación web moderna y completamente funcional para llevar el registro de puntuaciones del juego de cartas Continental. Diseñada con las mejores prácticas de desarrollo web y un enfoque en la experiencia de usuario.",
+  "main": "script.js",
+  "scripts": {
+    "build": "babel src/App.jsx --out-file dist/App.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rarteagasf/TanteoContinental.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/rarteagasf/TanteoContinental/issues"
+  },
+  "homepage": "https://github.com/rarteagasf/TanteoContinental#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.29.7",
+    "@babel/core": "^7.29.7",
+    "@babel/preset-react": "^7.29.7"
+  }
+}
