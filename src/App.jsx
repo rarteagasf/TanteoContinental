@@ -95,20 +95,7 @@ const IconHelp = () => (
     <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
   </svg>
 );
-const IconSun = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="5"/>
-    <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-    <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-  </svg>
-);
-const IconMoon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-  </svg>
-);
+
 
 /* ── Player Avatar ── */
 function PlayerAvatar({ name, index, size }) {
@@ -159,7 +146,7 @@ function App() {
   const [showRules, setShowRules] = useState(false);
   const [showHallOfFame, setShowHallOfFame] = useState(false);
   const [hallOfFameData, setHallOfFameData] = useState(() => loadLS('continental-global-stats', []));
-  const [darkMode, setDarkMode] = useState(() => loadLS('continental-theme', 'dark') !== 'light');
+  const [darkMode] = useState(true);
   const [toasts, setToasts] = useState([]);
   const [editingPlayer, setEditingPlayer] = useState(null);
   const [gameStarted, setGameStarted] = useState(() => loadLS('continental-started', false));
@@ -186,10 +173,8 @@ function App() {
   useEffect(() => { saveLS('continental-global-stats', hallOfFameData); }, [hallOfFameData]);
   useEffect(() => { saveLS('continental-undo', undoData); }, [undoData]);
   useEffect(() => {
-    const theme = darkMode ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-color-scheme', theme);
-    saveLS('continental-theme', theme);
-  }, [darkMode]);
+    document.documentElement.setAttribute('data-color-scheme', 'dark');
+  }, []);
 
   /* ── Toast ── */
   const showToast = (msg) => {
@@ -406,8 +391,8 @@ function App() {
 
     return (
       <div className="cc-setup">
-        <div className="cc-page-title">Configurar Partida</div>
-        <p className="cc-section-sub">Añade de 2 a 6 jugadores. Arrastra para reordenar el orden de turno.</p>
+        <div className="cc-page-title">Nueva Partida</div>
+        <p className="cc-section-sub">Registra a los caballeros de 2 a 6. Arrastra para establecer el orden de turno.</p>
 
         <div className="cc-player-add-form">
           <input
@@ -492,7 +477,7 @@ function App() {
         )}
 
         <button className="cc-btn-start" onClick={startGame} disabled={players.length < 2}>
-          🎮 Iniciar Partida — {players.length} jugadores
+          🃏 Iniciar Partida — {players.length} jugadores
         </button>
       </div>
     );
@@ -510,9 +495,9 @@ function App() {
         {/* Header */}
         <div className="cc-game-header">
           <div>
-            <h1 className="cc-page-title">Partida Activa</h1>
+            <h1 className="cc-page-title">Mesa de Juego</h1>
             <p className="cc-page-subtitle">
-              Jugando Ronda {currentRound} de 7 — {currentRoundData.requirement} — {currentRoundData.cards} cartas
+              Ronda {currentRound} de 7 · {currentRoundData.requirement} · {currentRoundData.cards} cartas
             </p>
           </div>
           <div className="cc-winner-rule-badge">
@@ -624,8 +609,8 @@ function App() {
         {/* Scoring Panel */}
         <div className="cc-scoring-panel" ref={scoringPanelRef}>
           <div className="cc-scoring-header">
-            <div className="cc-scoring-title">✏ Puntos — Ronda {currentRound}</div>
-            <div className="cc-scoring-hint">ENTEROS / NO CERO</div>
+            <div className="cc-scoring-title">Puntos · Ronda {currentRound}</div>
+            <div className="cc-scoring-hint">ENTERO · NO CERO</div>
           </div>
           <p className="cc-scoring-desc">
             Selecciona quién cierra (se asignan -{10 * currentRound} pts automáticamente) e ingresa los puntos del resto.
@@ -779,18 +764,7 @@ function App() {
   const renderAjustesTab = () => (
     <div className="cc-settings">
       <div className="cc-page-title">Ajustes</div>
-      <p className="cc-section-sub">Configuración de la aplicación.</p>
-
-      <div className="cc-settings-section">
-        <div className="cc-settings-section-title">Apariencia</div>
-        <div className="cc-settings-row" onClick={() => setDarkMode(!darkMode)}>
-          <div>
-            <div className="cc-settings-row-label">Modo Oscuro</div>
-            <div className="cc-settings-row-desc">Tema de madera oscura premium</div>
-          </div>
-          <div className={`cc-toggle${darkMode ? ' on' : ''}`}></div>
-        </div>
-      </div>
+      <p className="cc-section-sub">Preferencias del club.</p>
 
       <div className="cc-settings-section">
         <div className="cc-settings-section-title">Partida</div>
@@ -839,7 +813,7 @@ function App() {
         <div className="cc-sidebar-brand">
           <div className="cc-brand-name">CONTINENTAL</div>
           <div className="cc-brand-sub">
-            El Libro de Cuentas{gameStarted && players.length > 0 ? ` | Suite ${players.length}` : ''}
+            Club de Caballeros{gameStarted && players.length > 0 ? ` · Mesa ${players.length}` : ''}
           </div>
         </div>
         <nav className="cc-sidebar-nav">
@@ -870,13 +844,13 @@ function App() {
         {/* Top Bar */}
         <div className="cc-topbar">
           <div className="cc-topbar-left">
-            <div className="cc-topbar-title">CONTINENTAL CLUB</div>
+            <div className="cc-topbar-title">CONTINENTAL</div>
             {gameStarted && (
               <>
                 <div className="cc-topbar-sep"></div>
                 <div className="cc-topbar-info">
                   <div className="cc-topbar-dot"></div>
-                  Mesa Principal
+                  Sala de Juego
                   <span>·</span>
                   {currentRoundData.requirement}
                 </div>
@@ -889,9 +863,6 @@ function App() {
             </button>
             <button className="cc-icon-btn" onClick={() => setShowRules(true)} title="Reglas">
               <IconHelp />
-            </button>
-            <button className="cc-icon-btn" onClick={() => setDarkMode(!darkMode)} title="Cambiar tema">
-              {darkMode ? <IconSun /> : <IconMoon />}
             </button>
           </div>
         </div>

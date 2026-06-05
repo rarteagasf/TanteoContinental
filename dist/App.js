@@ -174,68 +174,6 @@ const IconHelp = () => /*#__PURE__*/React.createElement("svg", {
   x2: "12.01",
   y2: "17"
 }));
-const IconSun = () => /*#__PURE__*/React.createElement("svg", {
-  viewBox: "0 0 24 24",
-  fill: "none",
-  stroke: "currentColor",
-  strokeWidth: "2",
-  strokeLinecap: "round",
-  strokeLinejoin: "round"
-}, /*#__PURE__*/React.createElement("circle", {
-  cx: "12",
-  cy: "12",
-  r: "5"
-}), /*#__PURE__*/React.createElement("line", {
-  x1: "12",
-  y1: "1",
-  x2: "12",
-  y2: "3"
-}), /*#__PURE__*/React.createElement("line", {
-  x1: "12",
-  y1: "21",
-  x2: "12",
-  y2: "23"
-}), /*#__PURE__*/React.createElement("line", {
-  x1: "4.22",
-  y1: "4.22",
-  x2: "5.64",
-  y2: "5.64"
-}), /*#__PURE__*/React.createElement("line", {
-  x1: "18.36",
-  y1: "18.36",
-  x2: "19.78",
-  y2: "19.78"
-}), /*#__PURE__*/React.createElement("line", {
-  x1: "1",
-  y1: "12",
-  x2: "3",
-  y2: "12"
-}), /*#__PURE__*/React.createElement("line", {
-  x1: "21",
-  y1: "12",
-  x2: "23",
-  y2: "12"
-}), /*#__PURE__*/React.createElement("line", {
-  x1: "4.22",
-  y1: "19.78",
-  x2: "5.64",
-  y2: "18.36"
-}), /*#__PURE__*/React.createElement("line", {
-  x1: "18.36",
-  y1: "5.64",
-  x2: "19.78",
-  y2: "4.22"
-}));
-const IconMoon = () => /*#__PURE__*/React.createElement("svg", {
-  viewBox: "0 0 24 24",
-  fill: "none",
-  stroke: "currentColor",
-  strokeWidth: "2",
-  strokeLinecap: "round",
-  strokeLinejoin: "round"
-}, /*#__PURE__*/React.createElement("path", {
-  d: "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
-}));
 
 /* ── Player Avatar ── */
 function PlayerAvatar({
@@ -307,7 +245,7 @@ function App() {
   const [showRules, setShowRules] = useState(false);
   const [showHallOfFame, setShowHallOfFame] = useState(false);
   const [hallOfFameData, setHallOfFameData] = useState(() => loadLS('continental-global-stats', []));
-  const [darkMode, setDarkMode] = useState(() => loadLS('continental-theme', 'dark') !== 'light');
+  const [darkMode] = useState(true);
   const [toasts, setToasts] = useState([]);
   const [editingPlayer, setEditingPlayer] = useState(null);
   const [gameStarted, setGameStarted] = useState(() => loadLS('continental-started', false));
@@ -348,10 +286,8 @@ function App() {
     saveLS('continental-undo', undoData);
   }, [undoData]);
   useEffect(() => {
-    const theme = darkMode ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-color-scheme', theme);
-    saveLS('continental-theme', theme);
-  }, [darkMode]);
+    document.documentElement.setAttribute('data-color-scheme', 'dark');
+  }, []);
 
   /* ── Toast ── */
   const showToast = msg => {
@@ -680,9 +616,9 @@ function App() {
       className: "cc-setup"
     }, /*#__PURE__*/React.createElement("div", {
       className: "cc-page-title"
-    }, "Configurar Partida"), /*#__PURE__*/React.createElement("p", {
+    }, "Nueva Partida"), /*#__PURE__*/React.createElement("p", {
       className: "cc-section-sub"
-    }, "A\xF1ade de 2 a 6 jugadores. Arrastra para reordenar el orden de turno."), /*#__PURE__*/React.createElement("div", {
+    }, "Registra a los caballeros de 2 a 6. Arrastra para establecer el orden de turno."), /*#__PURE__*/React.createElement("div", {
       className: "cc-player-add-form"
     }, /*#__PURE__*/React.createElement("input", {
       type: "text",
@@ -773,7 +709,7 @@ function App() {
       className: "cc-btn-start",
       onClick: startGame,
       disabled: players.length < 2
-    }, "\uD83C\uDFAE Iniciar Partida \u2014 ", players.length, " jugadores"));
+    }, "\uD83C\uDCCF Iniciar Partida \u2014 ", players.length, " jugadores"));
   };
 
   /* ══════════════════════════════════════════
@@ -788,9 +724,9 @@ function App() {
       className: "cc-game-header"
     }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", {
       className: "cc-page-title"
-    }, "Partida Activa"), /*#__PURE__*/React.createElement("p", {
+    }, "Mesa de Juego"), /*#__PURE__*/React.createElement("p", {
       className: "cc-page-subtitle"
-    }, "Jugando Ronda ", currentRound, " de 7 \u2014 ", currentRoundData.requirement, " \u2014 ", currentRoundData.cards, " cartas")), /*#__PURE__*/React.createElement("div", {
+    }, "Ronda ", currentRound, " de 7 \xB7 ", currentRoundData.requirement, " \xB7 ", currentRoundData.cards, " cartas")), /*#__PURE__*/React.createElement("div", {
       className: "cc-winner-rule-badge"
     }, /*#__PURE__*/React.createElement("div", {
       className: "cc-rule-icon-wrap"
@@ -900,9 +836,9 @@ function App() {
       className: "cc-scoring-header"
     }, /*#__PURE__*/React.createElement("div", {
       className: "cc-scoring-title"
-    }, "\u270F Puntos \u2014 Ronda ", currentRound), /*#__PURE__*/React.createElement("div", {
+    }, "Puntos \xB7 Ronda ", currentRound), /*#__PURE__*/React.createElement("div", {
       className: "cc-scoring-hint"
-    }, "ENTEROS / NO CERO")), /*#__PURE__*/React.createElement("p", {
+    }, "ENTERO \xB7 NO CERO")), /*#__PURE__*/React.createElement("p", {
       className: "cc-scoring-desc"
     }, "Selecciona qui\xE9n cierra (se asignan -", 10 * currentRound, " pts autom\xE1ticamente) e ingresa los puntos del resto."), /*#__PURE__*/React.createElement("div", {
       className: "cc-scoring-grid"
@@ -1103,20 +1039,7 @@ function App() {
     className: "cc-page-title"
   }, "Ajustes"), /*#__PURE__*/React.createElement("p", {
     className: "cc-section-sub"
-  }, "Configuraci\xF3n de la aplicaci\xF3n."), /*#__PURE__*/React.createElement("div", {
-    className: "cc-settings-section"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "cc-settings-section-title"
-  }, "Apariencia"), /*#__PURE__*/React.createElement("div", {
-    className: "cc-settings-row",
-    onClick: () => setDarkMode(!darkMode)
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-    className: "cc-settings-row-label"
-  }, "Modo Oscuro"), /*#__PURE__*/React.createElement("div", {
-    className: "cc-settings-row-desc"
-  }, "Tema de madera oscura premium")), /*#__PURE__*/React.createElement("div", {
-    className: `cc-toggle${darkMode ? ' on' : ''}`
-  }))), /*#__PURE__*/React.createElement("div", {
+  }, "Preferencias del club."), /*#__PURE__*/React.createElement("div", {
     className: "cc-settings-section"
   }, /*#__PURE__*/React.createElement("div", {
     className: "cc-settings-section-title"
@@ -1171,7 +1094,7 @@ function App() {
     className: "cc-brand-name"
   }, "CONTINENTAL"), /*#__PURE__*/React.createElement("div", {
     className: "cc-brand-sub"
-  }, "El Libro de Cuentas", gameStarted && players.length > 0 ? ` | Suite ${players.length}` : '')), /*#__PURE__*/React.createElement("nav", {
+  }, "Club de Caballeros", gameStarted && players.length > 0 ? ` · Mesa ${players.length}` : '')), /*#__PURE__*/React.createElement("nav", {
     className: "cc-sidebar-nav"
   }, /*#__PURE__*/React.createElement("button", {
     className: `cc-nav-item${activeTab === 'puntos' ? ' active' : ''}`,
@@ -1198,13 +1121,13 @@ function App() {
     className: "cc-topbar-left"
   }, /*#__PURE__*/React.createElement("div", {
     className: "cc-topbar-title"
-  }, "CONTINENTAL CLUB"), gameStarted && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  }, "CONTINENTAL"), gameStarted && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "cc-topbar-sep"
   }), /*#__PURE__*/React.createElement("div", {
     className: "cc-topbar-info"
   }, /*#__PURE__*/React.createElement("div", {
     className: "cc-topbar-dot"
-  }), "Mesa Principal", /*#__PURE__*/React.createElement("span", null, "\xB7"), currentRoundData.requirement))), /*#__PURE__*/React.createElement("div", {
+  }), "Sala de Juego", /*#__PURE__*/React.createElement("span", null, "\xB7"), currentRoundData.requirement))), /*#__PURE__*/React.createElement("div", {
     className: "cc-topbar-actions"
   }, /*#__PURE__*/React.createElement("button", {
     className: "cc-icon-btn",
@@ -1214,11 +1137,7 @@ function App() {
     className: "cc-icon-btn",
     onClick: () => setShowRules(true),
     title: "Reglas"
-  }, /*#__PURE__*/React.createElement(IconHelp, null)), /*#__PURE__*/React.createElement("button", {
-    className: "cc-icon-btn",
-    onClick: () => setDarkMode(!darkMode),
-    title: "Cambiar tema"
-  }, darkMode ? /*#__PURE__*/React.createElement(IconSun, null) : /*#__PURE__*/React.createElement(IconMoon, null)))), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(IconHelp, null)))), /*#__PURE__*/React.createElement("div", {
     className: "cc-content"
   }, activeTab === 'puntos' && (gameStarted ? renderGameView() : renderSetupView()), activeTab === 'estadisticas' && renderEstadisticasTab(), activeTab === 'ajustes' && renderAjustesTab()), /*#__PURE__*/React.createElement("nav", {
     className: "cc-bottom-nav"

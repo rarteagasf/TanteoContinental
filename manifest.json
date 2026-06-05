@@ -4,8 +4,8 @@
   "description": "Contador profesional de puntuaciones para el juego de cartas Continental",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#fffbff",
-  "theme_color": "#6366f1",
+  "background_color": "#1d1009",
+  "theme_color": "#1d1009",
   "orientation": "any",
   "categories": ["games", "utilities"],
   "icons": [
