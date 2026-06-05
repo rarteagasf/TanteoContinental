@@ -10,7 +10,7 @@ const roundsData = [{
 }, {
   round: 2,
   cards: 8,
-  requirement: "1 Trío y 1 Escalera"
+  requirement: "1 Trío, 1 Escalera"
 }, {
   round: 3,
   cards: 9,
@@ -22,16 +22,17 @@ const roundsData = [{
 }, {
   round: 5,
   cards: 11,
-  requirement: "2 Tríos y 1 Escalera"
+  requirement: "2 Tríos, 1 Escalera"
 }, {
   round: 6,
   cards: 12,
-  requirement: "1 Trío y 2 Escaleras"
+  requirement: "1 Trío, 2 Escaleras"
 }, {
   round: 7,
   cards: 13,
   requirement: "3 Escaleras"
 }];
+const PLAYER_COLORS = ['#7a4b1a', '#2a6b4a', '#2a4d7a', '#6a2a7a', '#7a6a1a', '#1a5a7a'];
 const continentalManualHTML = `
   <h1>Manual del Continental</h1>
   <h2>Número de Jugadores</h2>
@@ -84,18 +85,193 @@ const continentalManualHTML = `
     <li><strong>Robar una carta (más de 4 jugadores):</strong> En partida de más de cuatro jugadores se puede acordar robar solamente una carta.</li>
   </ul>
 `;
+
+/* ── SVG Icon Components ── */
+const IconChart = () => /*#__PURE__*/React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "2",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("line", {
+  x1: "18",
+  y1: "20",
+  x2: "18",
+  y2: "10"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "12",
+  y1: "20",
+  x2: "12",
+  y2: "4"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "6",
+  y1: "20",
+  x2: "6",
+  y2: "14"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "2",
+  y1: "20",
+  x2: "22",
+  y2: "20"
+}));
+const IconStats = () => /*#__PURE__*/React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "2",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M3 3v18h18"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "m19 9-5 5-4-4-3 3"
+}));
+const IconSettings = () => /*#__PURE__*/React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "2",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("circle", {
+  cx: "12",
+  cy: "12",
+  r: "3"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
+}));
+const IconHistory = () => /*#__PURE__*/React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "2",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("circle", {
+  cx: "12",
+  cy: "12",
+  r: "10"
+}), /*#__PURE__*/React.createElement("polyline", {
+  points: "12 6 12 12 16 14"
+}));
+const IconHelp = () => /*#__PURE__*/React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "2",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("circle", {
+  cx: "12",
+  cy: "12",
+  r: "10"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "12",
+  y1: "17",
+  x2: "12.01",
+  y2: "17"
+}));
+const IconSun = () => /*#__PURE__*/React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "2",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("circle", {
+  cx: "12",
+  cy: "12",
+  r: "5"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "12",
+  y1: "1",
+  x2: "12",
+  y2: "3"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "12",
+  y1: "21",
+  x2: "12",
+  y2: "23"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "4.22",
+  y1: "4.22",
+  x2: "5.64",
+  y2: "5.64"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "18.36",
+  y1: "18.36",
+  x2: "19.78",
+  y2: "19.78"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "1",
+  y1: "12",
+  x2: "3",
+  y2: "12"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "21",
+  y1: "12",
+  x2: "23",
+  y2: "12"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "4.22",
+  y1: "19.78",
+  x2: "5.64",
+  y2: "18.36"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "18.36",
+  y1: "5.64",
+  x2: "19.78",
+  y2: "4.22"
+}));
+const IconMoon = () => /*#__PURE__*/React.createElement("svg", {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "2",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+}));
+
+/* ── Player Avatar ── */
+function PlayerAvatar({
+  name,
+  index,
+  size
+}) {
+  const sz = size || 40;
+  const initial = (name || '?').charAt(0).toUpperCase();
+  const color = PLAYER_COLORS[index % PLAYER_COLORS.length];
+  return /*#__PURE__*/React.createElement("div", {
+    className: "cc-player-avatar",
+    style: {
+      background: color,
+      width: sz,
+      height: sz,
+      fontSize: Math.round(sz * 0.38)
+    }
+  }, initial);
+}
+
+/* ── Toast ── */
 const Toast = ({
   message,
   onDismiss
 }) => {
   useEffect(() => {
-    const timer = setTimeout(onDismiss, 3000);
-    return () => clearTimeout(timer);
+    const t = setTimeout(onDismiss, 3000);
+    return () => clearTimeout(t);
   }, [onDismiss]);
   return /*#__PURE__*/React.createElement("div", {
-    className: "toast"
+    className: "cc-toast"
   }, message);
 };
+
+/* ── Tooltip ── */
 const Tooltip = ({
   children,
   text
@@ -104,94 +280,105 @@ const Tooltip = ({
 }, children, /*#__PURE__*/React.createElement("div", {
   className: "tooltip-text"
 }, text));
-const calculateRoundsWon = player => player.scores.filter(score => score < 0).length;
-const saveToLocalStorage = (key, data) => {
+
+/* ── Helpers ── */
+const calculateRoundsWon = player => player.scores.filter(s => s < 0).length;
+const saveLS = (key, data) => {
   try {
     localStorage.setItem(key, JSON.stringify(data));
-  } catch (error) {
-    console.error('Error saving to localStorage:', error);
-  }
+  } catch (e) {}
 };
-const loadFromLocalStorage = (key, defaultValue) => {
+const loadLS = (key, def) => {
   try {
-    const data = localStorage.getItem(key);
-    return data ? JSON.parse(data) : defaultValue;
-  } catch (error) {
-    console.error('Error loading from localStorage:', error);
-    return defaultValue;
+    const d = localStorage.getItem(key);
+    return d ? JSON.parse(d) : def;
+  } catch (e) {
+    return def;
   }
 };
+
+/* ══════════════════════════════════════════
+   MAIN APP
+══════════════════════════════════════════ */
 function App() {
-  const [players, setPlayers] = useState(() => loadFromLocalStorage('continental-players', []));
-  const [currentRound, setCurrentRound] = useState(() => loadFromLocalStorage('continental-round', 1));
+  const [players, setPlayers] = useState(() => loadLS('continental-players', []));
+  const [currentRound, setCurrentRound] = useState(() => loadLS('continental-round', 1));
   const [newPlayerName, setNewPlayerName] = useState('');
   const [showRules, setShowRules] = useState(false);
   const [showHallOfFame, setShowHallOfFame] = useState(false);
-  const [hallOfFameData, setHallOfFameData] = useState(() => loadFromLocalStorage('continental-global-stats', []));
-  const [darkMode, setDarkMode] = useState(() => loadFromLocalStorage('continental-theme', 'light') === 'dark');
+  const [hallOfFameData, setHallOfFameData] = useState(() => loadLS('continental-global-stats', []));
+  const [darkMode, setDarkMode] = useState(() => loadLS('continental-theme', 'dark') !== 'light');
   const [toasts, setToasts] = useState([]);
   const [editingPlayer, setEditingPlayer] = useState(null);
-  const [gameStarted, setGameStarted] = useState(() => loadFromLocalStorage('continental-started', false));
-  const [roundCloser, setRoundCloser] = useState(() => loadFromLocalStorage('continental-closer', ''));
-  const [currentRoundScores, setCurrentRoundScores] = useState(() => loadFromLocalStorage('continental-round-scores', {}));
-  const speechUtteranceRef = useRef(null);
-  const [speechStatus, setSpeechStatus] = useState('idle');
+  const [gameStarted, setGameStarted] = useState(() => loadLS('continental-started', false));
+  const [roundCloser, setRoundCloser] = useState(() => loadLS('continental-closer', ''));
+  const [currentRoundScores, setCurrentRoundScores] = useState(() => loadLS('continental-round-scores', {}));
   const [showNewGameDialog, setShowNewGameDialog] = useState(false);
   const [showResumePrompt, setShowResumePrompt] = useState(() => {
-    const savedPlayers = loadFromLocalStorage('continental-players', []);
-    const savedStarted = loadFromLocalStorage('continental-started', false);
-    return savedPlayers.length > 0 && !savedStarted;
+    const saved = loadLS('continental-players', []);
+    const started = loadLS('continental-started', false);
+    return saved.length > 0 && !started;
   });
+  const [activeTab, setActiveTab] = useState('puntos');
+  const [undoData, setUndoData] = useState(() => loadLS('continental-undo', null));
+  const speechRef = useRef(null);
+  const [speechStatus, setSpeechStatus] = useState('idle');
   const dragIndex = useRef(null);
+
+  /* ── Persistence ── */
   useEffect(() => {
-    saveToLocalStorage('continental-players', players);
+    saveLS('continental-players', players);
   }, [players]);
   useEffect(() => {
-    saveToLocalStorage('continental-started', gameStarted);
+    saveLS('continental-started', gameStarted);
   }, [gameStarted]);
   useEffect(() => {
-    saveToLocalStorage('continental-closer', roundCloser);
+    saveLS('continental-closer', roundCloser);
   }, [roundCloser]);
   useEffect(() => {
-    saveToLocalStorage('continental-round-scores', currentRoundScores);
+    saveLS('continental-round-scores', currentRoundScores);
   }, [currentRoundScores]);
   useEffect(() => {
-    saveToLocalStorage('continental-round', currentRound);
+    saveLS('continental-round', currentRound);
   }, [currentRound]);
   useEffect(() => {
-    saveToLocalStorage('continental-global-stats', hallOfFameData);
+    saveLS('continental-global-stats', hallOfFameData);
   }, [hallOfFameData]);
+  useEffect(() => {
+    saveLS('continental-undo', undoData);
+  }, [undoData]);
   useEffect(() => {
     const theme = darkMode ? 'dark' : 'light';
     document.documentElement.setAttribute('data-color-scheme', theme);
-    saveToLocalStorage('continental-theme', theme);
+    saveLS('continental-theme', theme);
   }, [darkMode]);
-  const showToast = message => {
+
+  /* ── Toast ── */
+  const showToast = msg => {
     const id = Date.now();
     setToasts(prev => [...prev, {
       id,
-      message
+      message: msg
     }]);
   };
-  const dismissToast = id => {
-    setToasts(prev => prev.filter(toast => toast.id !== id));
-  };
+  const dismissToast = id => setToasts(prev => prev.filter(t => t.id !== id));
+
+  /* ── Speech ── */
   const speakText = text => {
-    if ('speechSynthesis' in window) {
-      speechSynthesis.cancel();
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = text;
-      const plainText = tempDiv.textContent || tempDiv.innerText || '';
-      const utterance = new SpeechSynthesisUtterance(plainText);
-      utterance.lang = 'es-ES';
-      utterance.onstart = () => setSpeechStatus('speaking');
-      utterance.onend = () => setSpeechStatus('idle');
-      utterance.onpause = () => setSpeechStatus('paused');
-      utterance.onresume = () => setSpeechStatus('speaking');
-      utterance.onerror = () => setSpeechStatus('idle');
-      speechUtteranceRef.current = utterance;
-      speechSynthesis.speak(utterance);
-    }
+    if (!('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    const div = document.createElement('div');
+    div.innerHTML = text;
+    const plain = div.textContent || div.innerText || '';
+    const utt = new SpeechSynthesisUtterance(plain);
+    utt.lang = 'es-ES';
+    utt.onstart = () => setSpeechStatus('speaking');
+    utt.onend = () => setSpeechStatus('idle');
+    utt.onpause = () => setSpeechStatus('paused');
+    utt.onresume = () => setSpeechStatus('speaking');
+    utt.onerror = () => setSpeechStatus('idle');
+    speechRef.current = utt;
+    speechSynthesis.speak(utt);
   };
   const pauseSpeech = () => {
     if ('speechSynthesis' in window) speechSynthesis.pause();
@@ -202,126 +389,120 @@ function App() {
   const cancelSpeech = () => {
     if ('speechSynthesis' in window) {
       speechSynthesis.cancel();
-      speechUtteranceRef.current = null;
+      speechRef.current = null;
       setSpeechStatus('idle');
     }
   };
+
+  /* ── Player Management ── */
   const addPlayer = () => {
-    if (newPlayerName.trim() && players.length < 6) {
-      const capitalized = newPlayerName.trim().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
-      if (players.some(p => p.name.toLowerCase() === capitalized.toLowerCase())) {
-        showToast('Ya existe un jugador con ese nombre');
-        return;
-      }
-      setPlayers([...players, {
-        name: capitalized,
-        scores: Array(7).fill(0),
-        total: 0
-      }]);
-      setNewPlayerName('');
-      showToast(`Jugador ${capitalized} añadido`);
+    if (!newPlayerName.trim() || players.length >= 6) return;
+    const cap = newPlayerName.trim().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+    if (players.some(p => p.name.toLowerCase() === cap.toLowerCase())) {
+      showToast('Ya existe un jugador con ese nombre');
+      return;
     }
+    setPlayers([...players, {
+      name: cap,
+      scores: Array(7).fill(0),
+      total: 0
+    }]);
+    setNewPlayerName('');
+    showToast(`${cap} añadido`);
   };
   const removePlayer = index => {
     if (players.length > 2) {
-      const removedPlayer = players[index];
+      const n = players[index].name;
       setPlayers(players.filter((_, i) => i !== index));
-      showToast(`Jugador ${removedPlayer.name} eliminado`);
+      showToast(`${n} eliminado`);
     }
   };
   const editPlayer = (oldName, newName) => {
     if (!newName.trim()) return;
-    const capitalized = newName.trim().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
-    if (players.some(p => p.name.toLowerCase() === capitalized.toLowerCase() && p.name !== oldName)) {
-      showToast('Ya existe un jugador con ese nombre');
+    const cap = newName.trim().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+    if (players.some(p => p.name.toLowerCase() === cap.toLowerCase() && p.name !== oldName)) {
+      showToast('Ya existe ese nombre');
       return;
     }
-    setPlayers(prev => prev.map(player => player.name === oldName ? {
-      ...player,
-      name: capitalized
-    } : player));
-    showToast(`Jugador renombrado a ${capitalized}`);
+    setPlayers(prev => prev.map(p => p.name === oldName ? {
+      ...p,
+      name: cap
+    } : p));
+    showToast(`Renombrado a ${cap}`);
     setEditingPlayer(null);
   };
-  const movePlayer = (dragIdx, hoverIdx) => {
+  const movePlayer = (di, hi) => {
     if (gameStarted) return;
-    const newPlayers = [...players];
-    const [moved] = newPlayers.splice(dragIdx, 1);
-    newPlayers.splice(hoverIdx, 0, moved);
-    setPlayers(newPlayers);
+    const arr = [...players];
+    const [m] = arr.splice(di, 1);
+    arr.splice(hi, 0, m);
+    setPlayers(arr);
   };
-  const getDealerName = () => {
-    if (!gameStarted || players.length === 0) return '';
-    return players[(currentRound - 1) % players.length].name;
-  };
-  const getHandName = () => {
-    if (!gameStarted || players.length < 2) return '';
-    return players[currentRound % players.length].name;
-  };
-  const changeRound = direction => {
-    let newRound = currentRound;
-    if (direction === 'next' && currentRound < 7) newRound = currentRound + 1;else if (direction === 'prev' && currentRound > 1) newRound = currentRound - 1;
-    setCurrentRound(newRound);
-  };
-  const updateScore = (playerIndex, roundIndex, score) => {
-    if (score === '' || score === null || score === undefined) return;
-    const numScore = Number(score);
-    if (!Number.isInteger(numScore)) {
+
+  /* ── Game Helpers ── */
+  const getDealerName = () => !gameStarted || players.length === 0 ? '' : players[(currentRound - 1) % players.length].name;
+  const getHandName = () => !gameStarted || players.length < 2 ? '' : players[currentRound % players.length].name;
+  const updateScore = (pi, ri, score) => {
+    if (score === '' || score === null) return;
+    const n = Number(score);
+    if (!Number.isInteger(n)) {
       showToast('La puntuación debe ser un número entero');
       return;
     }
-    if (numScore === 0) {
+    if (n === 0) {
       showToast('La puntuación no puede ser 0');
       return;
     }
-    const newPlayers = [...players];
-    newPlayers[playerIndex].scores[roundIndex] = numScore;
-    newPlayers[playerIndex].total = newPlayers[playerIndex].scores.reduce((sum, s) => sum + s, 0);
-    setPlayers(newPlayers);
+    const np = [...players];
+    np[pi].scores[ri] = n;
+    np[pi].total = np[pi].scores.reduce((s, v) => s + v, 0);
+    setPlayers(np);
   };
-  const setRoundCloserPlayer = playerName => {
-    const closerScore = -10 * currentRound;
-    setRoundCloser(playerName);
-    const newScores = {
+  const setRoundCloserPlayer = name => {
+    const cs = -10 * currentRound;
+    setRoundCloser(name);
+    const ns = {
       ...currentRoundScores
     };
-    Object.keys(newScores).forEach(name => {
-      if (newScores[name] === -10 * currentRound) newScores[name] = 0;
+    Object.keys(ns).forEach(k => {
+      if (ns[k] === -10 * currentRound) ns[k] = 0;
     });
-    newScores[playerName] = closerScore;
-    setCurrentRoundScores(newScores);
+    ns[name] = cs;
+    setCurrentRoundScores(ns);
   };
-  const updateCurrentRoundScore = (playerName, score) => {
-    if (score === '' || score === null || score === undefined) {
+  const updateCurrentRoundScore = (name, score) => {
+    if (score === '' || score === null) {
       setCurrentRoundScores(prev => ({
         ...prev,
-        [playerName]: 0
+        [name]: 0
       }));
       return;
     }
-    const numScore = Number(score);
-    if (!Number.isInteger(numScore)) {
+    const n = Number(score);
+    if (!Number.isInteger(n)) {
       showToast('La puntuación debe ser un número entero');
       return;
     }
-    if (numScore === 0) {
+    if (n === 0) {
       showToast('La puntuación no puede ser 0');
       return;
     }
     setCurrentRoundScores(prev => ({
       ...prev,
-      [playerName]: numScore
+      [name]: n
     }));
   };
+
+  /* ── Game Flow ── */
   const startGame = () => {
     setGameStarted(true);
     setCurrentRound(1);
-    setCurrentRoundScores(players.reduce((acc, player) => {
-      acc[player.name] = 0;
+    setCurrentRoundScores(players.reduce((acc, p) => {
+      acc[p.name] = 0;
       return acc;
     }, {}));
     setRoundCloser('');
-    showToast('¡Juego iniciado!');
+    showToast('¡Partida iniciada!');
   };
   const confirmNewGameSame = () => {
     setPlayers(players.map(p => ({
@@ -334,7 +515,8 @@ function App() {
     setCurrentRoundScores({});
     setRoundCloser('');
     setShowResumePrompt(false);
-    showToast('¡Preparaos para una nueva partida!');
+    setUndoData(null);
+    showToast('¡Nueva partida lista!');
     setShowNewGameDialog(false);
   };
   const confirmNewGameNew = () => {
@@ -344,573 +526,849 @@ function App() {
     setCurrentRoundScores({});
     setRoundCloser('');
     setShowResumePrompt(false);
+    setUndoData(null);
     showToast('¡Empezando desde cero!');
     setShowNewGameDialog(false);
   };
   const handleNewGame = () => {
-    if (players.length > 0) {
-      setShowNewGameDialog(true);
-    } else {
+    if (players.length > 0) setShowNewGameDialog(true);else {
       setGameStarted(false);
       setShowResumePrompt(false);
     }
   };
   const finishRound = () => {
     if (!roundCloser) {
-      showToast('Debes seleccionar quién cierra la ronda');
+      showToast('Selecciona quién cierra la ronda');
       return;
     }
-    for (const player of players) {
-      if (player.name !== roundCloser) {
-        const score = currentRoundScores[player.name] || 0;
-        if (score === 0) {
-          showToast(`Debes ingresar la puntuación de ${player.name}`);
+    for (const p of players) {
+      if (p.name !== roundCloser) {
+        const s = currentRoundScores[p.name] || 0;
+        if (s === 0) {
+          showToast(`Falta la puntuación de ${p.name}`);
           return;
         }
       }
     }
-    const updatedPlayers = players.map(player => {
-      const roundScore = currentRoundScores[player.name] || 0;
-      const newScores = [...player.scores];
-      newScores[currentRound - 1] = roundScore;
+    setUndoData({
+      players: JSON.parse(JSON.stringify(players)),
+      currentRound,
+      currentRoundScores: {
+        ...currentRoundScores
+      },
+      roundCloser
+    });
+    const updated = players.map(player => {
+      const rs = currentRoundScores[player.name] || 0;
+      const ns = [...player.scores];
+      ns[currentRound - 1] = rs;
       return {
         ...player,
-        scores: newScores,
-        total: newScores.reduce((sum, s) => sum + s, 0)
+        scores: ns,
+        total: ns.reduce((s, v) => s + v, 0)
       };
     });
-    setPlayers(updatedPlayers);
+    setPlayers(updated);
     if (currentRound < 7) {
       setCurrentRound(prev => prev + 1);
-      setCurrentRoundScores(players.reduce((acc, player) => {
-        acc[player.name] = 0;
+      setCurrentRoundScores(players.reduce((acc, p) => {
+        acc[p.name] = 0;
         return acc;
       }, {}));
       setRoundCloser('');
-      showToast(`Ronda ${currentRound} finalizada`);
+      showToast(`Ronda ${currentRound} completada ✓`);
     } else {
-      const sortedPlayers = [...updatedPlayers].sort((a, b) => a.total - b.total);
-      const winner = sortedPlayers[0];
+      const sorted = [...updated].sort((a, b) => a.total - b.total);
+      const winner = sorted[0];
       setHallOfFameData(prev => [...prev, {
         date: new Date().toISOString(),
         winner: winner.name,
-        players: sortedPlayers.map(p => ({
+        players: sorted.map(p => ({
           name: p.name,
           total: p.total
         }))
       }]);
-      showToast(`¡Juego terminado! Ganador: ${winner.name}`);
+      showToast(`¡Juego terminado! Ganador: ${winner.name} 🏆`);
       setGameStarted(false);
     }
   };
+  const handleUndoLast = () => {
+    if (!undoData) {
+      showToast('Nada que deshacer');
+      return;
+    }
+    setPlayers(undoData.players);
+    setCurrentRound(undoData.currentRound);
+    setCurrentRoundScores(undoData.currentRoundScores);
+    setRoundCloser(undoData.roundCloser);
+    setUndoData(null);
+    showToast('Última ronda deshecha ↩');
+  };
   const shareResults = async () => {
-    const winner = players.reduce((w, p) => p.total < w.total ? p : w);
-    const resultsText = `🏆 Resultados Continental\n\n${players.sort((a, b) => a.total - b.total).map((p, i) => `${i + 1}. ${p.name}: ${p.total} pts`).join('\n')}\n\n¡Ganador: ${winner.name}!`;
+    if (players.length === 0) return;
+    const sorted = [...players].sort((a, b) => a.total - b.total);
+    const text = `🏆 Resultados Continental\n\n${sorted.map((p, i) => `${i + 1}. ${p.name}: ${p.total} pts`).join('\n')}\n\n¡Ganador: ${sorted[0].name}!`;
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'Resultados Continental',
-          text: resultsText
+          title: 'Continental',
+          text
         });
-      } catch (error) {
-        console.log('Error sharing:', error);
-      }
+      } catch (e) {}
     } else {
-      navigator.clipboard.writeText(resultsText);
+      navigator.clipboard.writeText(text);
       showToast('Resultados copiados al portapapeles');
     }
   };
   const getStats = () => {
     if (players.length === 0) return null;
-    const sortedPlayers = [...players].sort((a, b) => a.total - b.total);
-    const winner = sortedPlayers[0];
-    const maxScore = Math.max(...players.map(p => p.total));
-    const totalRounds = players.reduce((sum, p) => sum + calculateRoundsWon(p), 0);
+    const sorted = [...players].sort((a, b) => a.total - b.total);
     return {
-      winner,
-      maxScore,
-      totalRounds,
-      averageScore: Math.round(players.reduce((sum, p) => sum + p.total, 0) / players.length)
+      winner: sorted[0],
+      sorted,
+      averageScore: Math.round(players.reduce((s, p) => s + p.total, 0) / players.length)
     };
+  };
+  const getMediaRonda = () => {
+    if (!gameStarted || players.length === 0 || currentRound <= 1) return '—';
+    const rp = currentRound - 1;
+    const all = players.flatMap(p => p.scores.slice(0, rp).filter(s => s !== 0));
+    if (all.length === 0) return '—';
+    return (all.reduce((s, v) => s + Math.abs(v), 0) / all.length).toFixed(1);
   };
   const stats = getStats();
   const currentRoundData = roundsData[currentRound - 1];
   const dealerName = getDealerName();
-  const handName = getHandName();
-  return /*#__PURE__*/React.createElement("div", {
-    className: "container"
-  }, /*#__PURE__*/React.createElement("header", {
-    className: "glass-panel header"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "header-left"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "logo"
-  }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", null, "Continental Pro"), /*#__PURE__*/React.createElement("p", {
-    className: "subtitle"
-  }, "Contador profesional de puntuaciones"))), /*#__PURE__*/React.createElement("div", {
-    className: "header-buttons"
-  }, /*#__PURE__*/React.createElement(Tooltip, {
-    text: "Sal\xF3n de la Fama"
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: () => setShowHallOfFame(true),
-    className: "btn btn-secondary btn-sm"
-  }, "\uD83C\uDFC6")), /*#__PURE__*/React.createElement(Tooltip, {
-    text: "Ver reglas del juego"
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: () => setShowRules(true),
-    className: "btn btn-secondary btn-sm"
-  }, "\uD83D\uDCCB")), /*#__PURE__*/React.createElement(Tooltip, {
-    text: darkMode ? 'Modo claro' : 'Modo oscuro'
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: () => setDarkMode(!darkMode),
-    className: "btn btn-secondary btn-sm"
-  }, darkMode ? '☀️' : '🌙')))), !gameStarted ? showResumePrompt ? /*#__PURE__*/React.createElement("div", {
-    className: "glass-panel card",
-    style: {
-      textAlign: 'center'
+  const scoringPanelRef = useRef(null);
+
+  /* ══════════════════════════════════════════
+     RENDER: SETUP VIEW
+  ══════════════════════════════════════════ */
+  const renderSetupView = () => {
+    if (showResumePrompt) {
+      return /*#__PURE__*/React.createElement("div", {
+        className: "cc-resume-prompt"
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          fontSize: 36,
+          marginBottom: 12
+        }
+      }, "\uD83D\uDD04"), /*#__PURE__*/React.createElement("div", {
+        className: "cc-page-title",
+        style: {
+          fontSize: 20,
+          marginBottom: 8
+        }
+      }, "Partida Anterior Detectada"), /*#__PURE__*/React.createElement("p", {
+        className: "cc-resume-desc"
+      }, "Jugadores encontrados: ", /*#__PURE__*/React.createElement("strong", null, players.map(p => p.name).join(', ')), ". \xBFQu\xE9 deseas hacer?"), /*#__PURE__*/React.createElement("div", {
+        className: "cc-resume-actions"
+      }, /*#__PURE__*/React.createElement("button", {
+        className: "cc-btn cc-btn-secondary",
+        onClick: () => {
+          setPlayers([]);
+          setCurrentRoundScores({});
+          setRoundCloser('');
+          setShowResumePrompt(false);
+        }
+      }, "Empezar de cero"), /*#__PURE__*/React.createElement("button", {
+        className: "cc-btn cc-btn-primary",
+        onClick: () => setShowResumePrompt(false)
+      }, "Continuar")));
     }
-  }, /*#__PURE__*/React.createElement("h2", null, "\uD83D\uDD04 Partida Anterior Detectada"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      margin: '1rem 0',
-      color: 'var(--text-muted)'
-    }
-  }, "Hemos encontrado jugadores de una sesi\xF3n anterior (", players.map(p => p.name).join(', '), "). \xBFQu\xE9 deseas hacer?"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      gap: '1rem',
-      justifyContent: 'center',
-      marginTop: '1.5rem',
-      flexWrap: 'wrap'
-    }
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
-    onClick: () => {
-      setPlayers([]);
-      setCurrentRoundScores({});
-      setRoundCloser('');
-      setShowResumePrompt(false);
-    }
-  }, "Empezar de cero"), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-primary",
-    onClick: () => setShowResumePrompt(false)
-  }, "Continuar con los mismos"))) : /*#__PURE__*/React.createElement("div", {
-    className: "glass-panel card"
-  }, /*#__PURE__*/React.createElement("h2", null, "\uD83D\uDC65 Configuraci\xF3n de Jugadores"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      font: 'var(--md-body-small)',
-      color: 'var(--md-on-surface-variant)',
-      marginBottom: 'var(--sp-3)'
-    }
-  }, "Arrastra los jugadores para reordenarlos. El primer jugador ser\xE1 ", /*#__PURE__*/React.createElement("strong", null, "Repartidor"), " y el segundo ", /*#__PURE__*/React.createElement("strong", null, "Mano"), " en la primera ronda."), /*#__PURE__*/React.createElement("div", {
-    className: "player-input"
-  }, /*#__PURE__*/React.createElement("input", {
-    type: "text",
-    value: newPlayerName,
-    onChange: e => setNewPlayerName(e.target.value),
-    placeholder: "Nombre del jugador",
-    maxLength: "15",
-    onKeyPress: e => e.key === 'Enter' && addPlayer()
-  }), /*#__PURE__*/React.createElement(Tooltip, {
-    text: "A\xF1adir jugador (m\xE1ximo 6)"
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: addPlayer,
-    disabled: players.length >= 6 || !newPlayerName.trim(),
-    className: "btn btn-primary"
-  }, "\u2795 A\xF1adir"))), /*#__PURE__*/React.createElement("div", {
-    className: "player-list"
-  }, players.map((player, index) => /*#__PURE__*/React.createElement("div", {
-    key: player.name,
-    className: "player-card",
-    draggable: !gameStarted,
-    onDragStart: e => {
-      if (gameStarted) return;
-      dragIndex.current = index;
-      e.dataTransfer.effectAllowed = 'move';
-      setTimeout(() => e.currentTarget.classList.add('player-card-dragging'));
-    },
-    onDragOver: e => {
-      if (gameStarted) return;
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
-      if (dragIndex.current !== index) {
-        e.currentTarget.classList.add('player-card-drag-over');
-      }
-    },
-    onDragLeave: e => {
-      e.currentTarget.classList.remove('player-card-drag-over');
-    },
-    onDrop: e => {
-      e.preventDefault();
-      e.currentTarget.classList.remove('player-card-drag-over');
-      if (dragIndex.current !== null && dragIndex.current !== index && !gameStarted) {
-        movePlayer(dragIndex.current, index);
-      }
-      dragIndex.current = null;
-    },
-    onDragEnd: e => {
-      e.currentTarget.classList.remove('player-card-dragging', 'player-card-drag-over');
-      document.querySelectorAll('.player-card-drag-over').forEach(el => el.classList.remove('player-card-drag-over'));
-      dragIndex.current = null;
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "player-info"
-  }, editingPlayer === player.name ? /*#__PURE__*/React.createElement("input", {
-    type: "text",
-    defaultValue: player.name,
-    onBlur: e => editPlayer(player.name, e.target.value),
-    onKeyPress: e => {
-      if (e.key === 'Enter') editPlayer(player.name, e.target.value);
-    },
-    autoFocus: true,
-    style: {
-      background: 'transparent',
-      border: 'none',
-      fontWeight: 'bold'
-    }
-  }) : /*#__PURE__*/React.createElement("strong", {
-    onClick: () => setEditingPlayer(player.name),
-    style: {
-      cursor: 'pointer'
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "drag-handle"
-  }, "\u283F"), " ", player.name), /*#__PURE__*/React.createElement("small", null, player.total, " pts \u2022 ", calculateRoundsWon(player), " rondas ganadas")), /*#__PURE__*/React.createElement("div", {
-    className: "player-badges"
-  }, index === 0 && /*#__PURE__*/React.createElement("span", {
-    className: "badge badge-dealer"
-  }, "Repartidor"), index === 1 && players.length > 1 && /*#__PURE__*/React.createElement("span", {
-    className: "badge badge-hand"
-  }, "Mano"), players.length > 2 && /*#__PURE__*/React.createElement(Tooltip, {
-    text: "Eliminar jugador"
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: () => removePlayer(index),
-    className: "btn btn-secondary btn-sm"
-  }, "\u274C")))))), /*#__PURE__*/React.createElement(Tooltip, {
-    text: "Iniciar partida con jugadores configurados"
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: startGame,
-    disabled: players.length < 2,
-    className: "btn btn-primary",
-    style: {
-      width: '100%',
-      marginTop: '1rem'
-    }
-  }, "\uD83C\uDFAE Iniciar Juego (", players.length, " Jugadores)"))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "glass-panel round-header"
-  }, /*#__PURE__*/React.createElement("h2", null, "\uD83C\uDFAF Ronda ", currentRoundData.round, " de 7 \u2022 ", currentRoundData.cards, " cartas \u2022 ", currentRoundData.requirement)), /*#__PURE__*/React.createElement("div", {
-    className: "card-grid"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "glass-panel card"
-  }, /*#__PURE__*/React.createElement("h3", null, "\uD83C\uDFAE Estado del Juego"), /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, "Repartidor:"), " ", dealerName), /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, "Mano:"), " ", handName), stats && /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, "\uD83C\uDFC6 L\xEDder:"), " ", stats.winner.name, " (", stats.winner.total, " pts)"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      gap: '0.5rem',
-      marginTop: '1rem'
-    }
-  }, /*#__PURE__*/React.createElement(Tooltip, {
-    text: "Ronda anterior"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: `btn btn-secondary ${currentRound === 1 ? 'disabled' : ''}`,
-    onClick: () => changeRound('prev'),
-    disabled: currentRound === 1
-  }, "\u2190 Anterior")), /*#__PURE__*/React.createElement(Tooltip, {
-    text: "Siguiente ronda"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: `btn btn-primary ${currentRound === 7 ? 'disabled' : ''}`,
-    onClick: () => changeRound('next'),
-    disabled: currentRound === 7
-  }, "Siguiente \u2192")))), stats && /*#__PURE__*/React.createElement("div", {
-    className: "glass-panel card"
-  }, /*#__PURE__*/React.createElement("h3", null, "\uD83D\uDCC8 Estad\xEDsticas"), /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, "Promedio:"), " ", stats.averageScore, " pts"), /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, "M\xE1ximo:"), " ", stats.maxScore, " pts"), /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, "Rondas completadas:"), " ", stats.totalRounds), /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, "Jugadores:"), " ", players.length))), /*#__PURE__*/React.createElement("div", {
-    className: "glass-panel card"
-  }, /*#__PURE__*/React.createElement("h3", null, "\uD83D\uDCCA Puntuaciones Ronda ", currentRound), /*#__PURE__*/React.createElement("p", {
-    style: {
-      font: 'var(--md-body-small)',
-      color: 'var(--md-on-surface-variant)',
-      marginBottom: 'var(--sp-3)'
-    }
-  }, "Selecciona qui\xE9n cierra la ronda \u2014 su puntuaci\xF3n se calcula autom\xE1ticamente (-10 \xD7 ", currentRound, " = ", /*#__PURE__*/React.createElement("strong", {
-    style: {
-      color: 'var(--md-tertiary)'
-    }
-  }, "-", 10 * currentRound, " pts"), "). Ingresa los puntos de penalizaci\xF3n de los dem\xE1s jugadores."), /*#__PURE__*/React.createElement("div", {
-    className: "scoreboard-scroll"
-  }, /*#__PURE__*/React.createElement("table", null, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Jugador"), /*#__PURE__*/React.createElement("th", null, "Cierra"), /*#__PURE__*/React.createElement("th", null, "Puntos"), /*#__PURE__*/React.createElement("th", null, "Total"))), /*#__PURE__*/React.createElement("tbody", null, players.map(player => /*#__PURE__*/React.createElement("tr", {
-    key: player.name
-  }, /*#__PURE__*/React.createElement("td", {
-    className: "player-name"
-  }, player.name, dealerName === player.name && /*#__PURE__*/React.createElement(React.Fragment, null, " ", /*#__PURE__*/React.createElement("span", {
-    className: "badge badge-dealer"
-  }, "Reparte")), handName === player.name && /*#__PURE__*/React.createElement(React.Fragment, null, " ", /*#__PURE__*/React.createElement("span", {
-    className: "badge badge-hand"
-  }, "Mano"))), /*#__PURE__*/React.createElement("td", {
-    style: {
-      textAlign: 'center'
-    }
-  }, /*#__PURE__*/React.createElement("input", {
-    type: "radio",
-    name: "roundCloser",
-    checked: roundCloser === player.name,
-    onChange: () => setRoundCloserPlayer(player.name),
-    style: {
-      accentColor: 'var(--md-primary)',
-      transform: 'scale(1.2)',
-      cursor: 'pointer'
-    }
-  })), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '0.5rem'
-    }
-  }, roundCloser === player.name ? /*#__PURE__*/React.createElement("span", {
-    className: "negative-score",
-    style: {
-      display: 'inline-flex',
-      alignItems: 'center',
-      gap: '0.25rem',
-      padding: '0.5rem 0.75rem',
-      borderRadius: 'var(--md-shape-sm)',
-      fontWeight: 700
-    }
-  }, "-", 10 * currentRound, /*#__PURE__*/React.createElement("span", {
-    className: "auto-score-tag"
-  }, "Auto")) : /*#__PURE__*/React.createElement("input", {
-    type: "number",
-    className: "score-input",
-    value: currentRoundScores[player.name] || '',
-    onChange: e => updateCurrentRoundScore(player.name, e.target.value),
-    disabled: roundCloser === player.name,
-    min: "1",
-    max: "999",
-    placeholder: "0"
-  }))), /*#__PURE__*/React.createElement("td", {
-    className: "total-score"
-  }, player.total)))))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginTop: '1rem',
-      textAlign: 'center'
-    }
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: finishRound,
-    className: "btn btn-primary"
-  }, currentRound < 7 ? 'Finalizar Ronda' : 'Finalizar Juego')))), players.length > 0 && /*#__PURE__*/React.createElement("div", {
-    className: "glass-panel scoreboard"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "scoreboard-scroll"
-  }, /*#__PURE__*/React.createElement("table", null, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "#"), /*#__PURE__*/React.createElement("th", null, "Jugador"), roundsData.map((round, idx) => /*#__PURE__*/React.createElement("th", {
-    key: idx,
-    className: idx === currentRound - 1 && gameStarted ? 'current-round' : '',
-    title: `${round.cards} cartas - ${round.requirement}`
-  }, "R", round.round)), /*#__PURE__*/React.createElement("th", null, "Total"), /*#__PURE__*/React.createElement("th", null, "\uD83C\uDFC6"))), /*#__PURE__*/React.createElement("tbody", null, [...players].sort((a, b) => a.total - b.total).map((player, position) => {
-    const originalIndex = players.findIndex(p => p.name === player.name);
-    return /*#__PURE__*/React.createElement("tr", {
-      key: player.name,
-      className: position === 0 ? 'winner-row' : ''
-    }, /*#__PURE__*/React.createElement("td", {
-      className: "position"
-    }, position + 1), /*#__PURE__*/React.createElement("td", {
-      className: "player-name"
-    }, player.name, position === 0 && ' 🥇', position === 1 && ' 🥈', position === 2 && ' 🥉'), player.scores.map((score, roundIndex) => /*#__PURE__*/React.createElement("td", {
-      key: roundIndex
+    return /*#__PURE__*/React.createElement("div", {
+      className: "cc-setup"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "cc-page-title"
+    }, "Configurar Partida"), /*#__PURE__*/React.createElement("p", {
+      className: "cc-section-sub"
+    }, "A\xF1ade de 2 a 6 jugadores. Arrastra para reordenar el orden de turno."), /*#__PURE__*/React.createElement("div", {
+      className: "cc-player-add-form"
     }, /*#__PURE__*/React.createElement("input", {
-      type: "number",
-      value: score || '',
-      onChange: e => updateScore(originalIndex, roundIndex, e.target.value),
-      className: `score-input${score < 0 ? ' negative-score' : ''}`,
-      min: "-999",
-      max: "999"
-    }))), /*#__PURE__*/React.createElement("td", {
-      className: "total-score"
-    }, player.total), /*#__PURE__*/React.createElement("td", {
-      style: {
-        textAlign: 'center'
+      type: "text",
+      className: "cc-player-name-input",
+      value: newPlayerName,
+      onChange: e => setNewPlayerName(e.target.value),
+      placeholder: "Nombre del jugador...",
+      maxLength: "15",
+      onKeyPress: e => e.key === 'Enter' && addPlayer()
+    }), /*#__PURE__*/React.createElement("button", {
+      className: "cc-btn-add",
+      onClick: addPlayer,
+      disabled: players.length >= 6 || !newPlayerName.trim()
+    }, "A\xF1adir")), /*#__PURE__*/React.createElement("div", {
+      className: "cc-player-list"
+    }, players.map((player, index) => /*#__PURE__*/React.createElement("div", {
+      key: player.name,
+      className: "cc-player-item",
+      draggable: !gameStarted,
+      onDragStart: e => {
+        dragIndex.current = index;
+        e.dataTransfer.effectAllowed = 'move';
+        setTimeout(() => e.currentTarget.classList.add('dragging'));
+      },
+      onDragOver: e => {
+        e.preventDefault();
+        if (dragIndex.current !== index) e.currentTarget.classList.add('drag-over');
+      },
+      onDragLeave: e => e.currentTarget.classList.remove('drag-over'),
+      onDrop: e => {
+        e.preventDefault();
+        e.currentTarget.classList.remove('drag-over');
+        if (dragIndex.current !== null && dragIndex.current !== index && !gameStarted) movePlayer(dragIndex.current, index);
+        dragIndex.current = null;
+      },
+      onDragEnd: e => {
+        e.currentTarget.classList.remove('dragging', 'drag-over');
+        document.querySelectorAll('.cc-player-item.drag-over').forEach(el => el.classList.remove('drag-over'));
+        dragIndex.current = null;
       }
-    }, calculateRoundsWon(player)));
-  }))))), players.length > 0 && /*#__PURE__*/React.createElement("div", {
-    className: "controls"
-  }, /*#__PURE__*/React.createElement(Tooltip, {
-    text: "Comenzar una nueva partida"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
-    onClick: handleNewGame
-  }, "\uD83C\uDCCF Nueva Partida")), /*#__PURE__*/React.createElement(Tooltip, {
-    text: "Compartir resultados"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
-    onClick: shareResults
-  }, "\uD83D\uDCE4 Compartir Resultados"))), showNewGameDialog && /*#__PURE__*/React.createElement("div", {
-    className: "overlay show"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "cc-drag-handle"
+    }, "\u283F"), /*#__PURE__*/React.createElement(PlayerAvatar, {
+      name: player.name,
+      index: index,
+      size: 34
+    }), /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1,
+        minWidth: 0
+      }
+    }, editingPlayer === player.name ? /*#__PURE__*/React.createElement("input", {
+      type: "text",
+      defaultValue: player.name,
+      onBlur: e => editPlayer(player.name, e.target.value),
+      onKeyPress: e => {
+        if (e.key === 'Enter') editPlayer(player.name, e.target.value);
+      },
+      autoFocus: true,
+      style: {
+        background: 'transparent',
+        border: 'none',
+        color: 'inherit',
+        fontWeight: 600,
+        fontSize: 13,
+        outline: 'none',
+        width: '100%'
+      }
+    }) : /*#__PURE__*/React.createElement("div", {
+      className: "cc-player-item-name",
+      onClick: () => setEditingPlayer(player.name),
+      style: {
+        cursor: 'pointer'
+      }
+    }, player.name)), /*#__PURE__*/React.createElement("div", {
+      className: "cc-player-item-badges"
+    }, index === 0 && /*#__PURE__*/React.createElement("span", {
+      className: "cc-badge cc-badge-dealer"
+    }, "Reparte"), index === 1 && players.length > 1 && /*#__PURE__*/React.createElement("span", {
+      className: "cc-badge cc-badge-hand"
+    }, "Mano"), players.length > 2 && /*#__PURE__*/React.createElement("button", {
+      className: "cc-btn-remove",
+      onClick: () => removePlayer(index),
+      title: "Eliminar"
+    }, "\u2715"))))), players.length >= 2 && /*#__PURE__*/React.createElement("div", {
+      className: "cc-info-bar"
+    }, /*#__PURE__*/React.createElement("span", null, "\u2139"), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Repartidor R1:"), " ", players[0]?.name, "\xA0\xA0\xB7\xA0\xA0", /*#__PURE__*/React.createElement("strong", null, "Mano R1:"), " ", players[1]?.name)), /*#__PURE__*/React.createElement("button", {
+      className: "cc-btn-start",
+      onClick: startGame,
+      disabled: players.length < 2
+    }, "\uD83C\uDFAE Iniciar Partida \u2014 ", players.length, " jugadores"));
+  };
+
+  /* ══════════════════════════════════════════
+     RENDER: GAME VIEW (Puntos tab)
+  ══════════════════════════════════════════ */
+  const renderGameView = () => {
+    const progress = Math.round((currentRound - 1) / 7 * 100);
+    const remaining = 7 - currentRound + 1;
+    return /*#__PURE__*/React.createElement("div", {
+      className: "cc-game-view"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "cc-game-header"
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", {
+      className: "cc-page-title"
+    }, "Partida Activa"), /*#__PURE__*/React.createElement("p", {
+      className: "cc-page-subtitle"
+    }, "Jugando Ronda ", currentRound, " de 7 \u2014 ", currentRoundData.requirement, " \u2014 ", currentRoundData.cards, " cartas")), /*#__PURE__*/React.createElement("div", {
+      className: "cc-winner-rule-badge"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "cc-rule-icon-wrap"
+    }, "\uD83C\uDCCF"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      className: "cc-rule-label"
+    }, "Regla del Ganador"), /*#__PURE__*/React.createElement("div", {
+      className: "cc-rule-value"
+    }, "(-10 \xD7 N\xBA de Ronda)")))), /*#__PURE__*/React.createElement("div", {
+      className: "cc-table-container"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "cc-table-scroll"
+    }, /*#__PURE__*/React.createElement("table", {
+      className: "cc-score-table"
+    }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", {
+      className: "cc-th-rounds"
+    }, "Rondas"), players.map((player, idx) => {
+      const isLeader = stats && stats.winner.name === player.name;
+      return /*#__PURE__*/React.createElement("th", {
+        key: player.name,
+        className: `cc-th-player${isLeader ? ' cc-th-leader' : ''}`
+      }, isLeader && /*#__PURE__*/React.createElement("div", {
+        className: "cc-trophy-icon"
+      }, "\uD83C\uDFC6"), /*#__PURE__*/React.createElement(PlayerAvatar, {
+        name: player.name,
+        index: idx,
+        size: 38
+      }), /*#__PURE__*/React.createElement("div", {
+        className: `cc-th-name${isLeader ? ' cc-leader-name' : ''}`
+      }, player.name));
+    }))), /*#__PURE__*/React.createElement("tbody", null, roundsData.map((round, roundIdx) => {
+      const isCurrent = roundIdx === currentRound - 1;
+      const isPast = roundIdx < currentRound - 1;
+      const rowClass = isCurrent ? 'cc-tr-current' : isPast ? 'cc-tr-past' : 'cc-tr-future';
+      return /*#__PURE__*/React.createElement("tr", {
+        key: roundIdx,
+        className: `cc-tr ${rowClass}`
+      }, /*#__PURE__*/React.createElement("td", {
+        className: "cc-td-round-info"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "cc-round-title"
+      }, "R", round.round, ": ", round.requirement), isPast && /*#__PURE__*/React.createElement("span", {
+        className: "cc-round-status-badge completed"
+      }, "Completada"), isCurrent && /*#__PURE__*/React.createElement("span", {
+        className: "cc-round-status-badge active"
+      }, "En curso")), players.map((player, pIdx) => {
+        const origIdx = players.findIndex(p => p.name === player.name);
+        const isLeader = stats && stats.winner.name === player.name;
+        const leaderCls = isLeader ? ' cc-td-leader' : '';
+        if (isCurrent) {
+          if (roundCloser === player.name) {
+            return /*#__PURE__*/React.createElement("td", {
+              key: player.name,
+              className: `cc-td-score cc-td-current${leaderCls}`
+            }, /*#__PURE__*/React.createElement("span", {
+              className: "cc-closer-value"
+            }, "-", 10 * currentRound));
+          }
+          const cs = currentRoundScores[player.name];
+          return /*#__PURE__*/React.createElement("td", {
+            key: player.name,
+            className: `cc-td-score cc-td-current${leaderCls}`
+          }, cs ? /*#__PURE__*/React.createElement("span", {
+            className: "cc-current-score"
+          }, cs) : /*#__PURE__*/React.createElement("span", {
+            className: "cc-placeholder",
+            onClick: () => scoringPanelRef.current?.scrollIntoView({
+              behavior: 'smooth',
+              block: 'nearest'
+            })
+          }, "+"));
+        } else if (isPast) {
+          const score = player.scores[roundIdx];
+          return /*#__PURE__*/React.createElement("td", {
+            key: player.name,
+            className: `cc-td-score cc-td-past${score < 0 ? ' cc-td-negative' : ''}${leaderCls}`
+          }, /*#__PURE__*/React.createElement("input", {
+            type: "number",
+            className: "cc-score-edit",
+            value: score || '',
+            onChange: e => updateScore(origIdx, roundIdx, e.target.value),
+            min: "-999",
+            max: "999"
+          }));
+        } else {
+          return /*#__PURE__*/React.createElement("td", {
+            key: player.name,
+            className: `cc-td-score cc-td-future${leaderCls}`
+          }, /*#__PURE__*/React.createElement("span", {
+            className: "cc-dash"
+          }, "\u2014"));
+        }
+      }));
+    })), /*#__PURE__*/React.createElement("tfoot", null, /*#__PURE__*/React.createElement("tr", {
+      className: "cc-total-row"
+    }, /*#__PURE__*/React.createElement("td", {
+      className: "cc-td-round-info cc-total-label"
+    }, "Puntuaci\xF3n Total"), players.map(player => {
+      const isLeader = stats && stats.winner.name === player.name;
+      return /*#__PURE__*/React.createElement("td", {
+        key: player.name,
+        className: `cc-td-total${isLeader ? ' cc-total-leader' : ''}`
+      }, player.total || 0);
+    })))))), /*#__PURE__*/React.createElement("div", {
+      className: "cc-scoring-panel",
+      ref: scoringPanelRef
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "cc-scoring-header"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "cc-scoring-title"
+    }, "\u270F Puntos \u2014 Ronda ", currentRound), /*#__PURE__*/React.createElement("div", {
+      className: "cc-scoring-hint"
+    }, "ENTEROS / NO CERO")), /*#__PURE__*/React.createElement("p", {
+      className: "cc-scoring-desc"
+    }, "Selecciona qui\xE9n cierra (se asignan -", 10 * currentRound, " pts autom\xE1ticamente) e ingresa los puntos del resto."), /*#__PURE__*/React.createElement("div", {
+      className: "cc-scoring-grid"
+    }, players.map((player, idx) => /*#__PURE__*/React.createElement("div", {
+      key: player.name,
+      className: `cc-scoring-player${roundCloser === player.name ? ' cc-scoring-closer' : ''}`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "cc-scoring-player-info"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "cc-scoring-mini-avatar",
+      style: {
+        background: PLAYER_COLORS[idx % PLAYER_COLORS.length]
+      }
+    }, player.name.charAt(0)), /*#__PURE__*/React.createElement("span", {
+      className: "cc-scoring-player-name"
+    }, player.name)), /*#__PURE__*/React.createElement("div", {
+      className: "cc-scoring-input-area"
+    }, /*#__PURE__*/React.createElement("label", {
+      className: "cc-closer-toggle"
+    }, /*#__PURE__*/React.createElement("input", {
+      type: "radio",
+      name: "roundCloser",
+      checked: roundCloser === player.name,
+      onChange: () => setRoundCloserPlayer(player.name)
+    }), /*#__PURE__*/React.createElement("span", null, "Cierra")), roundCloser === player.name ? /*#__PURE__*/React.createElement("div", {
+      className: "cc-auto-score"
+    }, "-", 10 * currentRound, /*#__PURE__*/React.createElement("span", {
+      className: "cc-auto-tag"
+    }, "Auto")) : /*#__PURE__*/React.createElement("input", {
+      type: "number",
+      className: "cc-score-input-field",
+      value: currentRoundScores[player.name] || '',
+      onChange: e => updateCurrentRoundScore(player.name, e.target.value),
+      placeholder: "Pts",
+      min: "1",
+      max: "999"
+    })))))), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stats-grid"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-card"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-icon-wrap"
+    }, "\uD83D\uDCCA"), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-label"
+    }, "Media Puntos/Ronda"), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-value"
+    }, getMediaRonda())), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-card"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-icon-wrap"
+    }, "\u23F1"), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-label"
+    }, "Rondas Restantes"), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-value"
+    }, remaining, " ", /*#__PURE__*/React.createElement("span", {
+      className: "cc-stat-sub"
+    }, "de 7 Total")), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-hint"
+    }, "Tiempo est. restante: ~", remaining * 7, " min")), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-card"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-icon-wrap"
+    }, "\u2B50"), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-label"
+    }, "Progreso de Partida"), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-value"
+    }, progress, "%"), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-bar-track"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-bar-fill",
+      style: {
+        width: `${progress}%`
+      }
+    })))), /*#__PURE__*/React.createElement("div", {
+      className: "cc-actions-bar"
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "cc-action-btn",
+      onClick: handleUndoLast,
+      disabled: !undoData
+    }, "\u21A9 Deshacer \xDAltimo"), /*#__PURE__*/React.createElement("button", {
+      className: "cc-action-btn",
+      onClick: () => showToast('💾 Guardado automáticamente')
+    }, "\uD83D\uDCBE Guardar Partida"), /*#__PURE__*/React.createElement("button", {
+      className: "cc-action-btn cc-action-accent",
+      onClick: () => scoringPanelRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest'
+      })
+    }, "+1 A\xF1adir Puntos"), /*#__PURE__*/React.createElement("button", {
+      className: "cc-action-btn cc-action-primary",
+      onClick: finishRound
+    }, currentRound < 7 ? 'SIGUIENTE RONDA' : 'FINALIZAR JUEGO', " \u2192")));
+  };
+
+  /* ══════════════════════════════════════════
+     RENDER: ESTADÍSTICAS TAB
+  ══════════════════════════════════════════ */
+  const renderEstadisticasTab = () => {
+    if (players.length === 0) {
+      return /*#__PURE__*/React.createElement("div", {
+        style: {
+          textAlign: 'center',
+          padding: '60px 20px',
+          color: 'var(--cc-text-sec)'
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          fontSize: 56,
+          marginBottom: 16
+        }
+      }, "\uD83D\uDCCA"), /*#__PURE__*/React.createElement("div", {
+        className: "cc-page-title",
+        style: {
+          marginBottom: 8
+        }
+      }, "Sin datos"), /*#__PURE__*/React.createElement("p", null, "Inicia una partida para ver estad\xEDsticas."));
+    }
+    const sorted = [...players].sort((a, b) => a.total - b.total);
+    return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      className: "cc-page-title"
+    }, "Estad\xEDsticas"), /*#__PURE__*/React.createElement("p", {
+      className: "cc-section-sub"
+    }, "Clasificaci\xF3n y rendimiento actual de los jugadores."), /*#__PURE__*/React.createElement("div", {
+      className: "cc-rankings"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "cc-rankings-header"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "cc-rankings-title"
+    }, "Clasificaci\xF3n Actual"), stats && /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 12,
+        color: 'var(--cc-text-sec)'
+      }
+    }, "L\xEDder: ", stats.winner.name)), sorted.map((player, idx) => {
+      const posClass = idx === 0 ? 'first' : idx === 1 ? 'second' : idx === 2 ? 'third' : 'other';
+      const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : '';
+      const origIdx = players.findIndex(p => p.name === player.name);
+      return /*#__PURE__*/React.createElement("div", {
+        key: player.name,
+        className: "cc-ranking-row"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: `cc-rank-pos ${posClass}`
+      }, idx + 1), /*#__PURE__*/React.createElement(PlayerAvatar, {
+        name: player.name,
+        index: origIdx,
+        size: 32
+      }), /*#__PURE__*/React.createElement("div", {
+        style: {
+          flex: 1,
+          minWidth: 0
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "cc-rank-name"
+      }, player.name, " ", medal), /*#__PURE__*/React.createElement("div", {
+        className: "cc-rank-bar-track"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "cc-rank-bar-fill",
+        style: {
+          width: `${100 - idx / Math.max(sorted.length - 1, 1) * 65}%`
+        }
+      }))), /*#__PURE__*/React.createElement("div", {
+        style: {
+          textAlign: 'right',
+          flexShrink: 0
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        className: `cc-rank-total${idx === 0 ? ' leader' : ''}`
+      }, player.total), /*#__PURE__*/React.createElement("div", {
+        className: "cc-rank-rounds-won"
+      }, calculateRoundsWon(player), " rondas ganadas")));
+    })), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        gap: 12,
+        flexWrap: 'wrap'
+      }
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "cc-btn cc-btn-secondary",
+      onClick: () => setShowHallOfFame(true),
+      style: {
+        flex: 1
+      }
+    }, "\uD83C\uDFC6 Sal\xF3n de la Fama"), /*#__PURE__*/React.createElement("button", {
+      className: "cc-btn cc-btn-secondary",
+      onClick: shareResults,
+      style: {
+        flex: 1
+      }
+    }, "\uD83D\uDCE4 Compartir Resultados")));
+  };
+
+  /* ══════════════════════════════════════════
+     RENDER: AJUSTES TAB
+  ══════════════════════════════════════════ */
+  const renderAjustesTab = () => /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "modal-content",
+    className: "cc-page-title"
+  }, "Ajustes"), /*#__PURE__*/React.createElement("p", {
+    className: "cc-section-sub"
+  }, "Configuraci\xF3n de la aplicaci\xF3n."), /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings-section"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings-section-title"
+  }, "Apariencia"), /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings-row",
+    onClick: () => setDarkMode(!darkMode)
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings-row-label"
+  }, "Modo Oscuro"), /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings-row-desc"
+  }, "Tema de madera oscura premium")), /*#__PURE__*/React.createElement("div", {
+    className: `cc-toggle${darkMode ? ' on' : ''}`
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings-section"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings-section-title"
+  }, "Partida"), /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings-row",
+    onClick: () => setShowRules(true)
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings-row-label"
+  }, "\uD83D\uDCD6 Reglas del Continental"), /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings-row-desc"
+  }, "Ver manual completo del juego")), /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings-row-action"
+  }, "\u203A")), /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings-row",
+    onClick: handleNewGame
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings-row-label"
+  }, "\uD83C\uDCCF Nueva Partida"), /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings-row-desc"
+  }, "Reiniciar con los mismos o nuevos jugadores")), /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings-row-action"
+  }, "\u203A")), players.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings-row",
+    onClick: shareResults
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings-row-label"
+  }, "\uD83D\uDCE4 Compartir Resultados"), /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings-row-desc"
+  }, "Enviar las puntuaciones actuales")), /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings-row-action"
+  }, "\u203A")), /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings-row",
+    onClick: () => setShowHallOfFame(true)
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings-row-label"
+  }, "\uD83C\uDFC6 Sal\xF3n de la Fama"), /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings-row-desc"
+  }, "Historial de partidas y campeones")), /*#__PURE__*/React.createElement("div", {
+    className: "cc-settings-row-action"
+  }, "\u203A"))));
+
+  /* ══════════════════════════════════════════
+     MAIN RENDER
+  ══════════════════════════════════════════ */
+  return /*#__PURE__*/React.createElement("div", {
+    className: "cc-app"
+  }, /*#__PURE__*/React.createElement("aside", {
+    className: "cc-sidebar"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cc-sidebar-brand"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cc-brand-name"
+  }, "CONTINENTAL"), /*#__PURE__*/React.createElement("div", {
+    className: "cc-brand-sub"
+  }, "El Libro de Cuentas", gameStarted && players.length > 0 ? ` | Suite ${players.length}` : '')), /*#__PURE__*/React.createElement("nav", {
+    className: "cc-sidebar-nav"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: `cc-nav-item${activeTab === 'puntos' ? ' active' : ''}`,
+    onClick: () => setActiveTab('puntos')
+  }, /*#__PURE__*/React.createElement(IconChart, null), " Puntos"), /*#__PURE__*/React.createElement("button", {
+    className: `cc-nav-item${activeTab === 'estadisticas' ? ' active' : ''}`,
+    onClick: () => setActiveTab('estadisticas')
+  }, /*#__PURE__*/React.createElement(IconStats, null), " Estad\xEDsticas"), /*#__PURE__*/React.createElement("button", {
+    className: `cc-nav-item${activeTab === 'ajustes' ? ' active' : ''}`,
+    onClick: () => setActiveTab('ajustes')
+  }, /*#__PURE__*/React.createElement(IconSettings, null), " Ajustes")), gameStarted && players.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "cc-sidebar-footer"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cc-dealer-badge"
+  }, getDealerName().charAt(0)), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "cc-dealer-label"
+  }, "Director de Partida"), /*#__PURE__*/React.createElement("div", {
+    className: "cc-dealer-name"
+  }, getDealerName())))), /*#__PURE__*/React.createElement("div", {
+    className: "cc-main"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cc-topbar"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cc-topbar-left"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cc-topbar-title"
+  }, "CONTINENTAL CLUB"), gameStarted && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "cc-topbar-sep"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "cc-topbar-info"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cc-topbar-dot"
+  }), "Mesa Principal", /*#__PURE__*/React.createElement("span", null, "\xB7"), currentRoundData.requirement))), /*#__PURE__*/React.createElement("div", {
+    className: "cc-topbar-actions"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "cc-icon-btn",
+    onClick: () => setShowHallOfFame(true),
+    title: "Historial"
+  }, /*#__PURE__*/React.createElement(IconHistory, null)), /*#__PURE__*/React.createElement("button", {
+    className: "cc-icon-btn",
+    onClick: () => setShowRules(true),
+    title: "Reglas"
+  }, /*#__PURE__*/React.createElement(IconHelp, null)), /*#__PURE__*/React.createElement("button", {
+    className: "cc-icon-btn",
+    onClick: () => setDarkMode(!darkMode),
+    title: "Cambiar tema"
+  }, darkMode ? /*#__PURE__*/React.createElement(IconSun, null) : /*#__PURE__*/React.createElement(IconMoon, null)))), /*#__PURE__*/React.createElement("div", {
+    className: "cc-content"
+  }, activeTab === 'puntos' && (gameStarted ? renderGameView() : renderSetupView()), activeTab === 'estadisticas' && renderEstadisticasTab(), activeTab === 'ajustes' && renderAjustesTab()), /*#__PURE__*/React.createElement("nav", {
+    className: "cc-bottom-nav"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: `cc-bottom-nav-item${activeTab === 'puntos' ? ' active' : ''}`,
+    onClick: () => setActiveTab('puntos')
+  }, /*#__PURE__*/React.createElement(IconChart, null), /*#__PURE__*/React.createElement("span", null, "Puntos")), /*#__PURE__*/React.createElement("button", {
+    className: `cc-bottom-nav-item${activeTab === 'estadisticas' ? ' active' : ''}`,
+    onClick: () => setActiveTab('estadisticas')
+  }, /*#__PURE__*/React.createElement(IconStats, null), /*#__PURE__*/React.createElement("span", null, "Estad\xEDsticas")), /*#__PURE__*/React.createElement("button", {
+    className: `cc-bottom-nav-item${activeTab === 'ajustes' ? ' active' : ''}`,
+    onClick: () => setActiveTab('ajustes')
+  }, /*#__PURE__*/React.createElement(IconSettings, null), /*#__PURE__*/React.createElement("span", null, "Ajustes")))), showNewGameDialog && /*#__PURE__*/React.createElement("div", {
+    className: "cc-overlay show"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cc-modal",
     style: {
-      maxWidth: '420px',
+      maxWidth: 380,
       textAlign: 'center'
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      fontSize: '3rem',
-      marginBottom: '0.5rem'
+      fontSize: 40,
+      marginBottom: 12
     }
-  }, "\uD83C\uDCCF"), /*#__PURE__*/React.createElement("h3", {
+  }, "\uD83C\uDCCF"), /*#__PURE__*/React.createElement("div", {
+    className: "cc-modal-title",
     style: {
-      marginBottom: '0.75rem'
+      marginBottom: 8
     }
   }, "Nueva Partida"), /*#__PURE__*/React.createElement("p", {
     style: {
-      marginBottom: '1.5rem',
-      color: 'var(--md-on-surface-variant)'
+      fontSize: 13,
+      color: 'var(--cc-text-sec)',
+      marginBottom: 20
     }
-  }, "\xBFQuieres usar los mismos jugadores o empezar con jugadores nuevos?"), /*#__PURE__*/React.createElement("div", {
+  }, "\xBFUsar los mismos jugadores o empezar de nuevo?"), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       flexDirection: 'column',
-      gap: '0.75rem'
+      gap: 10
     }
   }, /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-primary",
-    onClick: confirmNewGameSame,
-    style: {
-      width: '100%'
-    }
-  }, "Usar los mismos jugadores"), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
-    onClick: confirmNewGameNew,
-    style: {
-      width: '100%'
-    }
-  }, "Empezar con jugadores nuevos"), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
-    onClick: () => setShowNewGameDialog(false),
-    style: {
-      width: '100%'
-    }
+    className: "cc-btn cc-btn-primary cc-btn-full",
+    onClick: confirmNewGameSame
+  }, "Mismos jugadores"), /*#__PURE__*/React.createElement("button", {
+    className: "cc-btn cc-btn-secondary cc-btn-full",
+    onClick: confirmNewGameNew
+  }, "Jugadores nuevos"), /*#__PURE__*/React.createElement("button", {
+    className: "cc-btn cc-btn-secondary cc-btn-full",
+    onClick: () => setShowNewGameDialog(false)
   }, "Cancelar")))), showHallOfFame && /*#__PURE__*/React.createElement("div", {
-    className: "overlay show"
+    className: "cc-overlay show"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "modal-content"
+    className: "cc-modal"
   }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: '1rem'
-    }
-  }, /*#__PURE__*/React.createElement("h3", null, "\uD83C\uDFC6 Sal\xF3n de la Fama"), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary btn-sm",
+    className: "cc-modal-header"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cc-modal-title"
+  }, "\uD83C\uDFC6 Sal\xF3n de la Fama"), /*#__PURE__*/React.createElement("button", {
+    className: "cc-btn cc-btn-secondary cc-btn-sm",
     onClick: () => setShowHallOfFame(false)
-  }, "\u274C")), hallOfFameData.length === 0 ? /*#__PURE__*/React.createElement("p", {
+  }, "\u2715")), hallOfFameData.length === 0 ? /*#__PURE__*/React.createElement("div", {
     style: {
-      color: 'var(--text-muted)',
       textAlign: 'center',
-      padding: '2rem'
+      padding: '32px 0',
+      color: 'var(--cc-text-sec)'
     }
-  }, "A\xFAn no hay partidas registradas. \xA1Juega una partida completa para aparecer aqu\xED!") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h4", {
-    style: {
-      marginBottom: '0.5rem'
-    }
-  }, "Ranking de Campeones"), /*#__PURE__*/React.createElement("div", {
-    className: "scoreboard-scroll"
-  }, /*#__PURE__*/React.createElement("table", null, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "#"), /*#__PURE__*/React.createElement("th", null, "Jugador"), /*#__PURE__*/React.createElement("th", null, "Victorias"))), /*#__PURE__*/React.createElement("tbody", null, Object.entries(hallOfFameData.reduce((acc, game) => {
-    acc[game.winner] = (acc[game.winner] || 0) + 1;
+  }, "A\xFAn no hay partidas registradas. \xA1Completa una partida para aparecer aqu\xED!") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("table", {
+    className: "cc-table"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "#"), /*#__PURE__*/React.createElement("th", null, "Jugador"), /*#__PURE__*/React.createElement("th", null, "Victorias"))), /*#__PURE__*/React.createElement("tbody", null, Object.entries(hallOfFameData.reduce((acc, g) => {
+    acc[g.winner] = (acc[g.winner] || 0) + 1;
     return acc;
   }, {})).sort((a, b) => b[1] - a[1]).map(([name, wins], idx) => /*#__PURE__*/React.createElement("tr", {
-    key: name,
-    className: idx === 0 ? 'winner-row' : ''
-  }, /*#__PURE__*/React.createElement("td", null, idx + 1), /*#__PURE__*/React.createElement("td", null, name, " ", idx === 0 && '🥇', idx === 1 && '🥈', idx === 2 && '🥉'), /*#__PURE__*/React.createElement("td", null, wins, " ", wins === 1 ? 'victoria' : 'victorias')))))), /*#__PURE__*/React.createElement("details", {
+    key: name
+  }, /*#__PURE__*/React.createElement("td", null, idx + 1), /*#__PURE__*/React.createElement("td", null, name, " ", idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : ''), /*#__PURE__*/React.createElement("td", null, wins, " ", wins === 1 ? 'victoria' : 'victorias'))))), /*#__PURE__*/React.createElement("details", {
     style: {
-      marginTop: '1rem'
+      marginTop: 16
     }
   }, /*#__PURE__*/React.createElement("summary", {
     style: {
       cursor: 'pointer',
-      color: 'var(--text-muted)'
+      fontSize: 12,
+      color: 'var(--cc-text-sec)',
+      padding: '4px 0'
     }
-  }, "Historial de partidas (", hallOfFameData.length, ")"), /*#__PURE__*/React.createElement("div", {
+  }, "Historial completo (", hallOfFameData.length, " partidas)"), /*#__PURE__*/React.createElement("div", {
     style: {
-      maxHeight: '200px',
+      maxHeight: 200,
       overflowY: 'auto',
-      marginTop: '0.5rem'
+      marginTop: 8
     }
   }, [...hallOfFameData].reverse().map((game, idx) => /*#__PURE__*/React.createElement("div", {
     key: idx,
     style: {
-      padding: '0.5rem',
-      borderBottom: '1px solid var(--glass-border)',
-      fontSize: '0.85rem'
+      padding: '8px 0',
+      borderBottom: '1px solid var(--cc-border-sub)',
+      fontSize: 12,
+      color: 'var(--cc-text-sec)'
     }
-  }, /*#__PURE__*/React.createElement("strong", null, game.winner), " gan\xF3 el ", new Date(game.date).toLocaleDateString(), " -", game.players.map(p => `${p.name} (${p.total}pts)`).join(', ')))))))), showRules && /*#__PURE__*/React.createElement("div", {
-    className: "overlay show"
+  }, /*#__PURE__*/React.createElement("strong", {
+    style: {
+      color: 'var(--cc-text)'
+    }
+  }, game.winner), " gan\xF3 el ", new Date(game.date).toLocaleDateString(), " \u2014", game.players.map(p => ` ${p.name} (${p.total}pts)`).join(',')))))))), showRules && /*#__PURE__*/React.createElement("div", {
+    className: "cc-overlay show"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "modal-content"
+    className: "cc-modal"
   }, /*#__PURE__*/React.createElement("div", {
+    className: "cc-modal-header"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cc-modal-title"
+  }, "\uD83D\uDCD6 Manual del Continental"), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: '1rem'
-    }
-  }, /*#__PURE__*/React.createElement("h3", null, "\uD83D\uDCD6 Manual del Continental"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      gap: '0.5rem',
+      gap: 8,
       alignItems: 'center'
     }
-  }, speechStatus === 'idle' && /*#__PURE__*/React.createElement(Tooltip, {
-    text: "Leer en voz alta"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary btn-sm",
+  }, speechStatus === 'idle' && /*#__PURE__*/React.createElement("button", {
+    className: "cc-btn cc-btn-secondary cc-btn-sm",
     onClick: () => speakText(continentalManualHTML)
-  }, "\uD83D\uDD0A")), speechStatus === 'speaking' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Tooltip, {
-    text: "Pausar"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary btn-sm",
+  }, "\uD83D\uDD0A"), speechStatus === 'speaking' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+    className: "cc-btn cc-btn-secondary cc-btn-sm",
     onClick: pauseSpeech
-  }, "\u23F8\uFE0F")), /*#__PURE__*/React.createElement(Tooltip, {
-    text: "Detener"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary btn-sm",
+  }, "\u23F8"), /*#__PURE__*/React.createElement("button", {
+    className: "cc-btn cc-btn-secondary cc-btn-sm",
     onClick: cancelSpeech
-  }, "\u23F9\uFE0F"))), speechStatus === 'paused' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Tooltip, {
-    text: "Reanudar"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary btn-sm",
+  }, "\u23F9")), speechStatus === 'paused' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+    className: "cc-btn cc-btn-secondary cc-btn-sm",
     onClick: resumeSpeech
-  }, "\u25B6\uFE0F")), /*#__PURE__*/React.createElement(Tooltip, {
-    text: "Detener"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary btn-sm",
+  }, "\u25B6"), /*#__PURE__*/React.createElement("button", {
+    className: "cc-btn cc-btn-secondary cc-btn-sm",
     onClick: cancelSpeech
-  }, "\u23F9\uFE0F"))), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary btn-sm",
+  }, "\u23F9")), /*#__PURE__*/React.createElement("button", {
+    className: "cc-btn cc-btn-secondary cc-btn-sm",
     onClick: () => {
       cancelSpeech();
       setShowRules(false);
     }
-  }, "\u274C"))), /*#__PURE__*/React.createElement("div", {
-    className: "rules-content",
+  }, "\u2715"))), /*#__PURE__*/React.createElement("div", {
+    className: "cc-rules-content",
     dangerouslySetInnerHTML: {
       __html: continentalManualHTML
     }
   }))), /*#__PURE__*/React.createElement("div", {
-    className: "toast-container"
+    className: "cc-toast-container"
   }, toasts.map(toast => /*#__PURE__*/React.createElement(Toast, {
     key: toast.id,
     message: toast.message,
     onDismiss: () => dismissToast(toast.id)
-  }))), /*#__PURE__*/React.createElement("footer", {
-    className: "footer"
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginBottom: '1rem'
-    }
-  }, /*#__PURE__*/React.createElement("strong", null, "Continental Pro Ultimate"), " - La mejor experiencia de Continental"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      justifyContent: 'center',
-      gap: '2rem',
-      flexWrap: 'wrap'
-    }
-  }, /*#__PURE__*/React.createElement("span", null, "\uD83C\uDCCF Tradicional"), /*#__PURE__*/React.createElement("span", null, "\uD83D\uDCF1 Responsive"), /*#__PURE__*/React.createElement("span", null, "\uD83D\uDCBE Auto-guardado"), /*#__PURE__*/React.createElement("span", null, "\uD83C\uDFAF Profesional"))));
+  }))));
 }
 ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(App, null));
