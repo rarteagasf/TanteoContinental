@@ -16,10 +16,6 @@
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <!-- Babel para procesar JSX -->
-  <!-- Chart.js para gráficos -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- D3.js para gráficos avanzados -->
-  <script src="https://d3js.org/d3.v7.min.js"></script>
 
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -802,6 +798,31 @@
     }
 
     /* ================================================================
+       DRAG & DROP
+       ================================================================ */
+    .player-card[draggable="true"] { cursor: grab; }
+    .player-card[draggable="true"]:active { cursor: grabbing; }
+    .player-card-dragging {
+      opacity: 0.4;
+      transform: scale(0.95);
+    }
+    .player-card-drag-over {
+      border-color: var(--md-primary) !important;
+      box-shadow: 0 0 0 2px var(--md-primary) !important;
+      transform: translateY(-2px);
+    }
+    .drag-handle {
+      display: inline-block;
+      font-size: 0.75rem;
+      color: var(--md-on-surface-variant);
+      margin-right: 0.25rem;
+      opacity: 0.6;
+      letter-spacing: 2px;
+      user-select: none;
+    }
+    .player-card[draggable="true"] .drag-handle { opacity: 0.8; }
+
+    /* ================================================================
        RESPONSIVE — M3 Breakpoints
        ================================================================ */
 
@@ -851,6 +872,14 @@
       .container { padding: var(--sp-3); }
       .player-list { grid-template-columns: repeat(2, 1fr); }
       .header h1 { font: var(--md-headline-medium); }
+      .scoreboard-scroll table { min-width: 100%; }
+      .scoreboard-scroll th,
+      .scoreboard-scroll td { padding: 0.375rem 0.25rem; font-size: 0.6875rem; }
+      .scoreboard-scroll .score-input { width: 36px; padding: 0.1875rem 0.125rem; font-size: 0.6875rem; }
+      .scoreboard-scroll .total-score { font-size: 0.75rem; }
+      .scoreboard-scroll .position { width: 1.25rem; font-size: 0.6875rem; }
+      .scoreboard-scroll .player-name { font-size: 0.6875rem; }
+      .scoreboard-scroll .badge { font-size: 0.5rem; padding: 0.0625rem 0.25rem; }
     }
 
     /* Large 840-1199px (tablet landscape / small desktop) */
