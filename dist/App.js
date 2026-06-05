@@ -582,7 +582,7 @@ function App() {
       className: "cc-page-title"
     }, "Nueva Partida"), /*#__PURE__*/React.createElement("p", {
       className: "cc-section-sub"
-    }, "Registra a los caballeros de 2 a 6. Arrastra para establecer el orden de turno."), /*#__PURE__*/React.createElement("div", {
+    }, "Registra a los jugadores de 2 a 6. Arrastra para establecer el orden de turno."), /*#__PURE__*/React.createElement("div", {
       className: "cc-player-add-form"
     }, /*#__PURE__*/React.createElement("input", {
       type: "text",
@@ -622,6 +622,36 @@ function App() {
       onDragEnd: e => {
         e.currentTarget.classList.remove('dragging', 'drag-over');
         document.querySelectorAll('.cc-player-item.drag-over').forEach(el => el.classList.remove('drag-over'));
+        dragIndex.current = null;
+      },
+      onTouchStart: e => {
+        if (gameStarted) return;
+        dragIndex.current = index;
+        e.currentTarget.classList.add('dragging');
+      },
+      onTouchMove: e => {
+        if (dragIndex.current === null || gameStarted) return;
+        const touch = e.touches[0];
+        const el = document.elementFromPoint(touch.clientX, touch.clientY);
+        if (!el) return;
+        const item = el.closest('.cc-player-item');
+        if (!item) return;
+        const items = item.parentElement.querySelectorAll('.cc-player-item');
+        const i = Array.from(items).indexOf(item);
+        if (i !== -1 && i !== dragIndex.current) {
+          document.querySelectorAll('.cc-player-item.drag-over').forEach(x => x.classList.remove('drag-over'));
+          item.classList.add('drag-over');
+        }
+      },
+      onTouchEnd: e => {
+        if (dragIndex.current === null) return;
+        const from = dragIndex.current;
+        const over = document.querySelector('.cc-player-item.drag-over');
+        if (over && from !== null && from !== Array.from(over.parentElement.querySelectorAll('.cc-player-item')).indexOf(over) && !gameStarted) {
+          movePlayer(from, Array.from(over.parentElement.querySelectorAll('.cc-player-item')).indexOf(over));
+        }
+        e.currentTarget.classList.remove('dragging', 'drag-over');
+        document.querySelectorAll('.cc-player-item.drag-over').forEach(x => x.classList.remove('drag-over'));
         dragIndex.current = null;
       }
     }, /*#__PURE__*/React.createElement("span", {
