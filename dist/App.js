@@ -86,94 +86,17 @@ const continentalManualHTML = `
   </ul>
 `;
 
-/* ── SVG Icon Components ── */
-const IconChart = () => /*#__PURE__*/React.createElement("svg", {
-  viewBox: "0 0 24 24",
-  fill: "none",
-  stroke: "currentColor",
-  strokeWidth: "2",
-  strokeLinecap: "round",
-  strokeLinejoin: "round"
-}, /*#__PURE__*/React.createElement("line", {
-  x1: "18",
-  y1: "20",
-  x2: "18",
-  y2: "10"
-}), /*#__PURE__*/React.createElement("line", {
-  x1: "12",
-  y1: "20",
-  x2: "12",
-  y2: "4"
-}), /*#__PURE__*/React.createElement("line", {
-  x1: "6",
-  y1: "20",
-  x2: "6",
-  y2: "14"
-}), /*#__PURE__*/React.createElement("line", {
-  x1: "2",
-  y1: "20",
-  x2: "22",
-  y2: "20"
-}));
-const IconStats = () => /*#__PURE__*/React.createElement("svg", {
-  viewBox: "0 0 24 24",
-  fill: "none",
-  stroke: "currentColor",
-  strokeWidth: "2",
-  strokeLinecap: "round",
-  strokeLinejoin: "round"
-}, /*#__PURE__*/React.createElement("path", {
-  d: "M3 3v18h18"
-}), /*#__PURE__*/React.createElement("path", {
-  d: "m19 9-5 5-4-4-3 3"
-}));
-const IconSettings = () => /*#__PURE__*/React.createElement("svg", {
-  viewBox: "0 0 24 24",
-  fill: "none",
-  stroke: "currentColor",
-  strokeWidth: "2",
-  strokeLinecap: "round",
-  strokeLinejoin: "round"
-}, /*#__PURE__*/React.createElement("circle", {
-  cx: "12",
-  cy: "12",
-  r: "3"
-}), /*#__PURE__*/React.createElement("path", {
-  d: "M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
-}));
-const IconHistory = () => /*#__PURE__*/React.createElement("svg", {
-  viewBox: "0 0 24 24",
-  fill: "none",
-  stroke: "currentColor",
-  strokeWidth: "2",
-  strokeLinecap: "round",
-  strokeLinejoin: "round"
-}, /*#__PURE__*/React.createElement("circle", {
-  cx: "12",
-  cy: "12",
-  r: "10"
-}), /*#__PURE__*/React.createElement("polyline", {
-  points: "12 6 12 12 16 14"
-}));
-const IconHelp = () => /*#__PURE__*/React.createElement("svg", {
-  viewBox: "0 0 24 24",
-  fill: "none",
-  stroke: "currentColor",
-  strokeWidth: "2",
-  strokeLinecap: "round",
-  strokeLinejoin: "round"
-}, /*#__PURE__*/React.createElement("circle", {
-  cx: "12",
-  cy: "12",
-  r: "10"
-}), /*#__PURE__*/React.createElement("path", {
-  d: "M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"
-}), /*#__PURE__*/React.createElement("line", {
-  x1: "12",
-  y1: "17",
-  x2: "12.01",
-  y2: "17"
-}));
+/* ── Material Symbol Icon helper ── */
+const Icon = ({
+  name,
+  fill,
+  className
+}) => /*#__PURE__*/React.createElement("span", {
+  className: `material-symbols-outlined${className ? ' ' + className : ''}`,
+  style: fill ? {
+    fontVariationSettings: `'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24`
+  } : undefined
+}, name);
 
 /* ── Player Avatar ── */
 function PlayerAvatar({
@@ -193,6 +116,24 @@ function PlayerAvatar({
       fontSize: Math.round(sz * 0.38)
     }
   }, initial);
+}
+function FrameAvatar({
+  name,
+  index,
+  size
+}) {
+  const sz = size || 34;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "avatar-frame",
+    style: {
+      width: sz + 10,
+      height: sz + 10
+    }
+  }, /*#__PURE__*/React.createElement(PlayerAvatar, {
+    name: name,
+    index: index,
+    size: sz
+  }));
 }
 
 /* ── Toast ── */
@@ -245,7 +186,6 @@ function App() {
   const [showRules, setShowRules] = useState(false);
   const [showHallOfFame, setShowHallOfFame] = useState(false);
   const [hallOfFameData, setHallOfFameData] = useState(() => loadLS('continental-global-stats', []));
-  const [darkMode] = useState(true);
   const [toasts, setToasts] = useState([]);
   const [editingPlayer, setEditingPlayer] = useState(null);
   const [gameStarted, setGameStarted] = useState(() => loadLS('continental-started', false));
@@ -262,6 +202,7 @@ function App() {
   const speechRef = useRef(null);
   const [speechStatus, setSpeechStatus] = useState('idle');
   const dragIndex = useRef(null);
+  const atmosphereRef = useRef(null);
 
   /* ── Persistence ── */
   useEffect(() => {
@@ -287,6 +228,29 @@ function App() {
   }, [undoData]);
   useEffect(() => {
     document.documentElement.setAttribute('data-color-scheme', 'dark');
+  }, []);
+
+  /* ── Atmosphere Particles ── */
+  useEffect(() => {
+    const el = atmosphereRef.current;
+    if (!el) return;
+    const particles = 24;
+    for (let i = 0; i < particles; i++) {
+      const p = document.createElement('div');
+      p.className = 'atmosphere-particle';
+      const s = Math.random() * 4 + 1;
+      p.style.width = s + 'px';
+      p.style.height = s + 'px';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.top = Math.random() * 100 + '%';
+      p.style.opacity = Math.random() * 0.4;
+      p.style.animationDelay = Math.random() * -20 + 's';
+      p.style.animationDuration = Math.random() * 15 + 15 + 's';
+      el.appendChild(p);
+    }
+    return () => {
+      while (el.firstChild) el.removeChild(el.firstChild);
+    };
   }, []);
 
   /* ── Toast ── */
@@ -584,12 +548,14 @@ function App() {
     if (showResumePrompt) {
       return /*#__PURE__*/React.createElement("div", {
         className: "cc-resume-prompt"
-      }, /*#__PURE__*/React.createElement("div", {
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "material-symbols-outlined",
         style: {
           fontSize: 36,
-          marginBottom: 12
+          marginBottom: 12,
+          color: 'var(--c-primary)'
         }
-      }, "\uD83D\uDD04"), /*#__PURE__*/React.createElement("div", {
+      }, "restart_alt"), /*#__PURE__*/React.createElement("div", {
         className: "cc-page-title",
         style: {
           fontSize: 20,
@@ -703,13 +669,28 @@ function App() {
       className: "cc-btn-remove",
       onClick: () => removePlayer(index),
       title: "Eliminar"
-    }, "\u2715"))))), players.length >= 2 && /*#__PURE__*/React.createElement("div", {
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "material-symbols-outlined",
+      style: {
+        fontSize: 14
+      }
+    }, "close")))))), players.length >= 2 && /*#__PURE__*/React.createElement("div", {
       className: "cc-info-bar"
-    }, /*#__PURE__*/React.createElement("span", null, "\u2139"), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Repartidor R1:"), " ", players[0]?.name, "\xA0\xA0\xB7\xA0\xA0", /*#__PURE__*/React.createElement("strong", null, "Mano R1:"), " ", players[1]?.name)), /*#__PURE__*/React.createElement("button", {
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "material-symbols-outlined",
+      style: {
+        fontSize: 16
+      }
+    }, "info"), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Repartidor R1:"), " ", players[0]?.name, "\xA0\xA0\xB7\xA0\xA0", /*#__PURE__*/React.createElement("strong", null, "Mano R1:"), " ", players[1]?.name)), /*#__PURE__*/React.createElement("button", {
       className: "cc-btn-start",
       onClick: startGame,
       disabled: players.length < 2
-    }, "\uD83C\uDCCF Iniciar Partida \u2014 ", players.length, " jugadores"));
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "material-symbols-outlined",
+      style: {
+        fontSize: 20
+      }
+    }, "playing_cards"), "Iniciar Partida \u2014 ", players.length, " jugadores"));
   };
 
   /* ══════════════════════════════════════════
@@ -724,53 +705,118 @@ function App() {
       className: "cc-game-header"
     }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", {
       className: "cc-page-title"
-    }, "Mesa de Juego"), /*#__PURE__*/React.createElement("p", {
+    }, "Partida Activa"), /*#__PURE__*/React.createElement("p", {
       className: "cc-page-subtitle"
-    }, "Ronda ", currentRound, " de 7 \xB7 ", currentRoundData.requirement, " \xB7 ", currentRoundData.cards, " cartas")), /*#__PURE__*/React.createElement("div", {
+    }, "Jugando Ronda ", currentRound, " de 7 \xB7 ", currentRoundData.requirement, " \xB7 ", currentRoundData.cards, " cartas")), /*#__PURE__*/React.createElement("div", {
       className: "cc-winner-rule-badge"
     }, /*#__PURE__*/React.createElement("div", {
       className: "cc-rule-icon-wrap"
-    }, "\uD83C\uDCCF"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "material-symbols-outlined",
+      style: {
+        fontSize: 24
+      }
+    }, "gavel")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
       className: "cc-rule-label"
     }, "Regla del Ganador"), /*#__PURE__*/React.createElement("div", {
-      className: "cc-rule-value"
+      className: "cc-rule-value gold-glow"
     }, "(-10 \xD7 N\xBA de Ronda)")))), /*#__PURE__*/React.createElement("div", {
-      className: "cc-table-container"
+      className: "leather-blotter rounded-xl p-1 wood-texture brass-edge relative overflow-hidden",
+      style: {
+        borderRadius: 'var(--radius)'
+      }
     }, /*#__PURE__*/React.createElement("div", {
-      className: "cc-table-scroll"
+      className: "absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none"
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "cc-table-container",
+      style: {
+        background: 'transparent',
+        border: 'none',
+        boxShadow: 'none',
+        marginBottom: 0
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "custom-scrollbar"
     }, /*#__PURE__*/React.createElement("table", {
       className: "cc-score-table"
-    }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", {
-      className: "cc-th-rounds"
+    }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", {
+      className: "etched-border"
+    }, /*#__PURE__*/React.createElement("th", {
+      className: "cc-th-rounds",
+      style: {
+        position: 'sticky',
+        left: 0,
+        zIndex: 10
+      }
     }, "Rondas"), players.map((player, idx) => {
       const isLeader = stats && stats.winner.name === player.name;
       return /*#__PURE__*/React.createElement("th", {
         key: player.name,
         className: `cc-th-player${isLeader ? ' cc-th-leader' : ''}`
-      }, isLeader && /*#__PURE__*/React.createElement("div", {
-        className: "cc-trophy-icon"
-      }, "\uD83C\uDFC6"), /*#__PURE__*/React.createElement(PlayerAvatar, {
+      }, isLeader && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
+        className: "material-symbols-outlined gold-glow",
+        style: {
+          fontSize: 18,
+          fontVariationSettings: `'FILL' 1`
+        }
+      }, "emoji_events")), /*#__PURE__*/React.createElement(FrameAvatar, {
         name: player.name,
         index: idx,
-        size: 38
+        size: 34
       }), /*#__PURE__*/React.createElement("div", {
-        className: `cc-th-name${isLeader ? ' cc-leader-name' : ''}`
+        className: `cc-th-name${isLeader ? ' cc-leader-name gold-glow' : ''}`
       }, player.name));
-    }))), /*#__PURE__*/React.createElement("tbody", null, roundsData.map((round, roundIdx) => {
+    }), players.length < 6 && Array.from({
+      length: 6 - players.length
+    }).map((_, i) => /*#__PURE__*/React.createElement("th", {
+      key: `empty-${i}`,
+      className: "cc-th-player",
+      style: {
+        opacity: 0.3
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "avatar-frame",
+      style: {
+        width: 44,
+        height: 44
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "cc-player-avatar",
+      style: {
+        background: 'var(--c-surface-container-high)',
+        width: 34,
+        height: 34,
+        fontSize: 12,
+        color: 'var(--c-on-surface-variant)'
+      }
+    }, "?")), /*#__PURE__*/React.createElement("div", {
+      className: "cc-th-name",
+      style: {
+        fontSize: 10
+      }
+    }, "Vacante"))))), /*#__PURE__*/React.createElement("tbody", null, roundsData.map((round, roundIdx) => {
       const isCurrent = roundIdx === currentRound - 1;
       const isPast = roundIdx < currentRound - 1;
       const rowClass = isCurrent ? 'cc-tr-current' : isPast ? 'cc-tr-past' : 'cc-tr-future';
       return /*#__PURE__*/React.createElement("tr", {
         key: roundIdx,
-        className: `cc-tr ${rowClass}`
-      }, /*#__PURE__*/React.createElement("td", {
-        className: "cc-td-round-info"
+        className: `cc-tr ${rowClass} relative${isCurrent ? ' bg-primary-container/10' : ''}${isCurrent ? ' etched-border' : ''}`
+      }, isCurrent && /*#__PURE__*/React.createElement("div", {
+        className: "active-row-rail"
+      }), /*#__PURE__*/React.createElement("td", {
+        className: "cc-td-round-info",
+        style: {
+          position: 'sticky',
+          left: 0,
+          zIndex: 5,
+          background: isCurrent ? 'var(--c-surface-container)' : 'var(--c-surface)'
+        }
       }, /*#__PURE__*/React.createElement("div", {
-        className: "cc-round-title"
+        className: `cc-round-title${isCurrent ? ' gold-glow' : ''}`
       }, "R", round.round, ": ", round.requirement), isPast && /*#__PURE__*/React.createElement("span", {
         className: "cc-round-status-badge completed"
       }, "Completada"), isCurrent && /*#__PURE__*/React.createElement("span", {
-        className: "cc-round-status-badge active"
+        className: "cc-round-status-badge active animate-pulse"
       }, "En curso")), players.map((player, pIdx) => {
         const origIdx = players.findIndex(p => p.name === player.name);
         const isLeader = stats && stats.winner.name === player.name;
@@ -780,63 +826,158 @@ function App() {
             return /*#__PURE__*/React.createElement("td", {
               key: player.name,
               className: `cc-td-score cc-td-current${leaderCls}`
+            }, /*#__PURE__*/React.createElement("div", {
+              className: "recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg"
             }, /*#__PURE__*/React.createElement("span", {
-              className: "cc-closer-value"
-            }, "-", 10 * currentRound));
+              className: "cc-closer-value",
+              style: {
+                color: '#1d1009'
+              }
+            }, "-", 10 * currentRound)));
           }
           const cs = currentRoundScores[player.name];
           return /*#__PURE__*/React.createElement("td", {
             key: player.name,
             className: `cc-td-score cc-td-current${leaderCls}`
-          }, cs ? /*#__PURE__*/React.createElement("span", {
-            className: "cc-current-score"
-          }, cs) : /*#__PURE__*/React.createElement("span", {
+          }, cs ? /*#__PURE__*/React.createElement("div", {
+            className: "recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg"
+          }, /*#__PURE__*/React.createElement("span", null, cs)) : /*#__PURE__*/React.createElement("div", {
+            className: "recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg"
+          }, /*#__PURE__*/React.createElement("span", {
             className: "cc-placeholder",
             onClick: () => scoringPanelRef.current?.scrollIntoView({
               behavior: 'smooth',
               block: 'nearest'
             })
-          }, "+"));
+          }, /*#__PURE__*/React.createElement("span", {
+            className: "material-symbols-outlined",
+            style: {
+              fontSize: 18,
+              color: '#1d1009',
+              opacity: 0.3
+            }
+          }, "add"))));
         } else if (isPast) {
           const score = player.scores[roundIdx];
+          const isWinner = score < 0;
           return /*#__PURE__*/React.createElement("td", {
             key: player.name,
             className: `cc-td-score cc-td-past${score < 0 ? ' cc-td-negative' : ''}${leaderCls}`
-          }, /*#__PURE__*/React.createElement("input", {
+          }, /*#__PURE__*/React.createElement("div", {
+            className: "recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg relative"
+          }, isWinner && /*#__PURE__*/React.createElement("span", {
+            className: "star-badge material-symbols-outlined",
+            style: {
+              fontVariationSettings: `'FILL' 1`,
+              fontSize: 12
+            }
+          }, "star"), /*#__PURE__*/React.createElement("input", {
             type: "number",
-            className: "cc-score-edit",
+            className: "recessed-input",
             value: score || '',
             onChange: e => updateScore(origIdx, roundIdx, e.target.value),
             min: "-999",
             max: "999"
-          }));
+          })));
         } else {
           return /*#__PURE__*/React.createElement("td", {
             key: player.name,
             className: `cc-td-score cc-td-future${leaderCls}`
+          }, /*#__PURE__*/React.createElement("div", {
+            className: "recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg opacity-25"
           }, /*#__PURE__*/React.createElement("span", {
             className: "cc-dash"
-          }, "\u2014"));
+          }, "\u2014")));
         }
-      }));
+      }), players.length < 6 && Array.from({
+        length: 6 - players.length
+      }).map((_, i) => /*#__PURE__*/React.createElement("td", {
+        key: `empty-cell-${i}`,
+        className: "cc-td-score cc-td-future"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg opacity-25"
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "cc-dash"
+      }, "\u2014")))));
     })), /*#__PURE__*/React.createElement("tfoot", null, /*#__PURE__*/React.createElement("tr", {
-      className: "cc-total-row"
+      className: "cc-total-row",
+      style: {
+        background: 'var(--c-surface-container-highest)'
+      }
     }, /*#__PURE__*/React.createElement("td", {
-      className: "cc-td-round-info cc-total-label"
+      className: "cc-td-round-info cc-total-label",
+      style: {
+        position: 'sticky',
+        left: 0,
+        zIndex: 5,
+        background: 'var(--c-surface-container-highest)'
+      }
     }, "Puntuaci\xF3n Total"), players.map(player => {
       const isLeader = stats && stats.winner.name === player.name;
       return /*#__PURE__*/React.createElement("td", {
         key: player.name,
-        className: `cc-td-total${isLeader ? ' cc-total-leader' : ''}`
-      }, player.total || 0);
-    })))))), /*#__PURE__*/React.createElement("div", {
+        className: `cc-td-total${isLeader ? ' cc-total-leader gold-glow' : ''}`
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "font-score-display",
+        style: {
+          fontSize: 24,
+          fontWeight: 700
+        }
+      }, player.total || 0));
+    }), players.length < 6 && Array.from({
+      length: 6 - players.length
+    }).map((_, i) => /*#__PURE__*/React.createElement("td", {
+      key: `empty-total-${i}`,
+      className: "cc-td-total"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "font-score-display",
+      style: {
+        fontSize: 24,
+        fontWeight: 700,
+        opacity: 0.2
+      }
+    }, "\u2014"))))))))), /*#__PURE__*/React.createElement("div", {
+      className: "cc-info-bar",
+      style: {
+        marginBottom: 16,
+        border: '1px solid rgba(242,202,80,0.15)',
+        background: 'rgba(242,202,80,0.04)'
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "material-symbols-outlined",
+      style: {
+        fontSize: 20,
+        color: 'var(--c-primary)'
+      }
+    }, "info"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 12,
+        fontWeight: 600
+      }
+    }, "Regla del Ganador"), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 11,
+        color: 'var(--c-on-surface-variant)'
+      }
+    }, "El jugador que cierra la ronda recibe ", /*#__PURE__*/React.createElement("strong", {
+      style: {
+        color: 'var(--c-primary)'
+      }
+    }, "-", 10 * currentRound, " pts"), " (ronda \xD7 -10). Por cada punto ingresado se acumula."))), /*#__PURE__*/React.createElement("div", {
       className: "cc-scoring-panel",
       ref: scoringPanelRef
     }, /*#__PURE__*/React.createElement("div", {
       className: "cc-scoring-header"
     }, /*#__PURE__*/React.createElement("div", {
       className: "cc-scoring-title"
-    }, "Puntos \xB7 Ronda ", currentRound), /*#__PURE__*/React.createElement("div", {
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "material-symbols-outlined",
+      style: {
+        fontSize: 18,
+        verticalAlign: 'middle',
+        marginRight: 4
+      }
+    }, "edit_note"), "Puntos \xB7 Ronda ", currentRound), /*#__PURE__*/React.createElement("div", {
       className: "cc-scoring-hint"
     }, "ENTERO \xB7 NO CERO")), /*#__PURE__*/React.createElement("p", {
       className: "cc-scoring-desc"
@@ -869,7 +1010,7 @@ function App() {
       className: "cc-auto-tag"
     }, "Auto")) : /*#__PURE__*/React.createElement("input", {
       type: "number",
-      className: "cc-score-input-field",
+      className: "cc-score-input-field ivory-plate",
       value: currentRoundScores[player.name] || '',
       onChange: e => updateCurrentRoundScore(player.name, e.target.value),
       placeholder: "Pts",
@@ -878,59 +1019,259 @@ function App() {
     })))))), /*#__PURE__*/React.createElement("div", {
       className: "cc-stats-grid"
     }, /*#__PURE__*/React.createElement("div", {
-      className: "cc-stat-card"
+      className: "cc-stat-card",
+      style: {
+        border: '1px solid rgba(212,175,55,0.15)'
+      }
     }, /*#__PURE__*/React.createElement("div", {
-      className: "cc-stat-icon-wrap"
-    }, "\uD83D\uDCCA"), /*#__PURE__*/React.createElement("div", {
-      className: "cc-stat-label"
-    }, "Media Puntos/Ronda"), /*#__PURE__*/React.createElement("div", {
-      className: "cc-stat-value"
-    }, getMediaRonda())), /*#__PURE__*/React.createElement("div", {
-      className: "cc-stat-card"
+      className: "flex items-center gap-2",
+      style: {
+        marginBottom: 4
+      }
     }, /*#__PURE__*/React.createElement("div", {
-      className: "cc-stat-icon-wrap"
-    }, "\u23F1"), /*#__PURE__*/React.createElement("div", {
-      className: "cc-stat-label"
-    }, "Rondas Restantes"), /*#__PURE__*/React.createElement("div", {
-      className: "cc-stat-value"
+      style: {
+        background: 'rgba(242,202,80,0.1)',
+        borderRadius: 'var(--radius-lg)',
+        padding: 6,
+        display: 'inline-flex'
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "material-symbols-outlined",
+      style: {
+        color: 'var(--c-primary)',
+        fontVariationSettings: `'FILL' 1`,
+        fontSize: 20
+      }
+    }, "workspace_premium")), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-label",
+      style: {
+        marginBottom: 0
+      }
+    }, "L\xEDder")), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-value",
+      style: {
+        fontSize: 22
+      }
+    }, stats ? stats.winner.name : '—'), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-sub",
+      style: {
+        marginTop: 2
+      }
+    }, stats ? `${stats.winner.total} pts` : '')), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-card",
+      style: {
+        border: '1px solid rgba(207,208,184,0.1)'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-2",
+      style: {
+        marginBottom: 4
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        background: 'rgba(207,208,184,0.08)',
+        borderRadius: 'var(--radius-lg)',
+        padding: 6,
+        display: 'inline-flex'
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "material-symbols-outlined",
+      style: {
+        color: 'var(--c-tertiary)',
+        fontSize: 20
+      }
+    }, "analytics")), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-label",
+      style: {
+        marginBottom: 0
+      }
+    }, "Media / Ronda")), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-value",
+      style: {
+        fontSize: 22
+      }
+    }, getMediaRonda()), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-sub",
+      style: {
+        marginTop: 2
+      }
+    }, "pts por ronda")), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-card",
+      style: {
+        border: '1px solid rgba(212,175,55,0.1)'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-2",
+      style: {
+        marginBottom: 4
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        background: 'rgba(242,202,80,0.08)',
+        borderRadius: 'var(--radius-lg)',
+        padding: 6,
+        display: 'inline-flex'
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "material-symbols-outlined",
+      style: {
+        color: 'var(--c-primary)',
+        fontSize: 20
+      }
+    }, "hourglass_empty")), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-label",
+      style: {
+        marginBottom: 0
+      }
+    }, "Restantes")), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-value",
+      style: {
+        fontSize: 22
+      }
     }, remaining, " ", /*#__PURE__*/React.createElement("span", {
-      className: "cc-stat-sub"
-    }, "de 7 Total")), /*#__PURE__*/React.createElement("div", {
-      className: "cc-stat-hint"
-    }, "Tiempo est. restante: ~", remaining * 7, " min")), /*#__PURE__*/React.createElement("div", {
-      className: "cc-stat-card"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "cc-stat-icon-wrap"
-    }, "\u2B50"), /*#__PURE__*/React.createElement("div", {
-      className: "cc-stat-label"
-    }, "Progreso de Partida"), /*#__PURE__*/React.createElement("div", {
-      className: "cc-stat-value"
-    }, progress, "%"), /*#__PURE__*/React.createElement("div", {
-      className: "cc-stat-bar-track"
+      className: "cc-stat-sub",
+      style: {
+        fontSize: 14
+      }
+    }, "de 7")), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-bar-track",
+      style: {
+        marginTop: 6
+      }
     }, /*#__PURE__*/React.createElement("div", {
       className: "cc-stat-bar-fill",
       style: {
         width: `${progress}%`
       }
-    })))), /*#__PURE__*/React.createElement("div", {
-      className: "cc-actions-bar"
+    }))), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-card relative overflow-hidden",
+      style: {
+        border: '1px solid rgba(207,208,184,0.1)'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-2",
+      style: {
+        marginBottom: 4
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        background: 'rgba(207,208,184,0.08)',
+        borderRadius: 'var(--radius-lg)',
+        padding: 6,
+        display: 'inline-flex',
+        position: 'relative'
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "material-symbols-outlined",
+      style: {
+        fontVariationSettings: `'FILL' 1`,
+        color: 'var(--c-secondary)',
+        fontSize: 20
+      }
+    }, "hotel_class")), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-label",
+      style: {
+        marginBottom: 0
+      }
+    }, "Progreso")), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-value",
+      style: {
+        fontSize: 22
+      }
+    }, progress, "%"), /*#__PURE__*/React.createElement("div", {
+      className: "cc-stat-hint"
+    }, "Completado"))), /*#__PURE__*/React.createElement("div", {
+      className: "grid grid-cols-2 gap-2",
+      style: {
+        marginBottom: 20
+      }
     }, /*#__PURE__*/React.createElement("button", {
-      className: "cc-action-btn",
-      onClick: handleUndoLast,
-      disabled: !undoData
-    }, "\u21A9 Deshacer \xDAltimo"), /*#__PURE__*/React.createElement("button", {
-      className: "cc-action-btn",
-      onClick: () => showToast('💾 Guardado automáticamente')
-    }, "\uD83D\uDCBE Guardar Partida"), /*#__PURE__*/React.createElement("button", {
-      className: "cc-action-btn cc-action-accent",
+      className: "brass-button",
       onClick: () => scoringPanelRef.current?.scrollIntoView({
         behavior: 'smooth',
         block: 'nearest'
-      })
-    }, "+1 A\xF1adir Puntos"), /*#__PURE__*/React.createElement("button", {
-      className: "cc-action-btn cc-action-primary",
-      onClick: finishRound
-    }, currentRound < 7 ? 'SIGUIENTE RONDA' : 'FINALIZAR JUEGO', " \u2192")));
+      }),
+      style: {
+        padding: '16px 24px',
+        flexDirection: 'column',
+        gap: 2
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-2"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "material-symbols-outlined",
+      style: {
+        fontSize: 22
+      }
+    }, "exposure_plus_1"), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 16
+      }
+    }, "Puntos")), /*#__PURE__*/React.createElement("span", {
+      className: "sub-label",
+      style: {
+        fontSize: 10
+      }
+    }, "Enteros / No Cero")), /*#__PURE__*/React.createElement("button", {
+      className: "brass-button",
+      onClick: finishRound,
+      style: {
+        padding: '16px 24px',
+        flexDirection: 'column',
+        gap: 2
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-2"
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 16
+      }
+    }, currentRound < 7 ? 'Siguiente Ronda' : 'Finalizar Juego'), /*#__PURE__*/React.createElement("span", {
+      className: "material-symbols-outlined",
+      style: {
+        fontSize: 22
+      }
+    }, "arrow_forward")), /*#__PURE__*/React.createElement("span", {
+      className: "sub-label",
+      style: {
+        fontSize: 10
+      }
+    }, "Avanzar partida"))), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        gap: 8,
+        marginBottom: 20
+      }
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "cc-action-btn",
+      onClick: handleUndoLast,
+      disabled: !undoData,
+      style: {
+        flex: 1,
+        justifyContent: 'center',
+        padding: '8px 16px',
+        fontSize: 12
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "material-symbols-outlined",
+      style: {
+        fontSize: 16
+      }
+    }, "undo"), "Deshacer"), /*#__PURE__*/React.createElement("button", {
+      className: "cc-action-btn",
+      onClick: () => showToast('Guardado automáticamente'),
+      style: {
+        flex: 1,
+        justifyContent: 'center',
+        padding: '8px 16px',
+        fontSize: 12
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "material-symbols-outlined",
+      style: {
+        fontSize: 16
+      }
+    }, "save"), "Guardar")));
   };
 
   /* ══════════════════════════════════════════
@@ -942,14 +1283,16 @@ function App() {
         style: {
           textAlign: 'center',
           padding: '60px 20px',
-          color: 'var(--cc-text-sec)'
+          color: 'var(--c-on-surface-variant)'
         }
-      }, /*#__PURE__*/React.createElement("div", {
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "material-symbols-outlined",
         style: {
           fontSize: 56,
-          marginBottom: 16
+          marginBottom: 16,
+          color: 'var(--c-on-surface-variant)'
         }
-      }, "\uD83D\uDCCA"), /*#__PURE__*/React.createElement("div", {
+      }, "query_stats"), /*#__PURE__*/React.createElement("div", {
         className: "cc-page-title",
         style: {
           marginBottom: 8
@@ -970,7 +1313,7 @@ function App() {
     }, "Clasificaci\xF3n Actual"), stats && /*#__PURE__*/React.createElement("div", {
       style: {
         fontSize: 12,
-        color: 'var(--cc-text-sec)'
+        color: 'var(--c-on-surface-variant)'
       }
     }, "L\xEDder: ", stats.winner.name)), sorted.map((player, idx) => {
       const posClass = idx === 0 ? 'first' : idx === 1 ? 'second' : idx === 2 ? 'third' : 'other';
@@ -1021,13 +1364,23 @@ function App() {
       style: {
         flex: 1
       }
-    }, "\uD83C\uDFC6 Sal\xF3n de la Fama"), /*#__PURE__*/React.createElement("button", {
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "material-symbols-outlined",
+      style: {
+        fontSize: 16
+      }
+    }, "emoji_events"), "Sal\xF3n de la Fama"), /*#__PURE__*/React.createElement("button", {
       className: "cc-btn cc-btn-secondary",
       onClick: shareResults,
       style: {
         flex: 1
       }
-    }, "\uD83D\uDCE4 Compartir Resultados")));
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "material-symbols-outlined",
+      style: {
+        fontSize: 16
+      }
+    }, "share"), "Compartir Resultados")));
   };
 
   /* ══════════════════════════════════════════
@@ -1048,38 +1401,82 @@ function App() {
     onClick: () => setShowRules(true)
   }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "cc-settings-row-label"
-  }, "\uD83D\uDCD6 Reglas del Continental"), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: {
+      fontSize: 16,
+      marginRight: 6,
+      verticalAlign: 'middle'
+    }
+  }, "menu_book"), "Reglas del Continental"), /*#__PURE__*/React.createElement("div", {
     className: "cc-settings-row-desc"
-  }, "Ver manual completo del juego")), /*#__PURE__*/React.createElement("div", {
-    className: "cc-settings-row-action"
-  }, "\u203A")), /*#__PURE__*/React.createElement("div", {
+  }, "Ver manual completo del juego")), /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: {
+      fontSize: 18,
+      color: 'var(--c-on-surface-variant)'
+    }
+  }, "chevron_right")), /*#__PURE__*/React.createElement("div", {
     className: "cc-settings-row",
     onClick: handleNewGame
   }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "cc-settings-row-label"
-  }, "\uD83C\uDCCF Nueva Partida"), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: {
+      fontSize: 16,
+      marginRight: 6,
+      verticalAlign: 'middle'
+    }
+  }, "playing_cards"), "Nueva Partida"), /*#__PURE__*/React.createElement("div", {
     className: "cc-settings-row-desc"
-  }, "Reiniciar con los mismos o nuevos jugadores")), /*#__PURE__*/React.createElement("div", {
-    className: "cc-settings-row-action"
-  }, "\u203A")), players.length > 0 && /*#__PURE__*/React.createElement("div", {
+  }, "Reiniciar con los mismos o nuevos jugadores")), /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: {
+      fontSize: 18,
+      color: 'var(--c-on-surface-variant)'
+    }
+  }, "chevron_right")), players.length > 0 && /*#__PURE__*/React.createElement("div", {
     className: "cc-settings-row",
     onClick: shareResults
   }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "cc-settings-row-label"
-  }, "\uD83D\uDCE4 Compartir Resultados"), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: {
+      fontSize: 16,
+      marginRight: 6,
+      verticalAlign: 'middle'
+    }
+  }, "share"), "Compartir Resultados"), /*#__PURE__*/React.createElement("div", {
     className: "cc-settings-row-desc"
-  }, "Enviar las puntuaciones actuales")), /*#__PURE__*/React.createElement("div", {
-    className: "cc-settings-row-action"
-  }, "\u203A")), /*#__PURE__*/React.createElement("div", {
+  }, "Enviar las puntuaciones actuales")), /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: {
+      fontSize: 18,
+      color: 'var(--c-on-surface-variant)'
+    }
+  }, "chevron_right")), /*#__PURE__*/React.createElement("div", {
     className: "cc-settings-row",
     onClick: () => setShowHallOfFame(true)
   }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "cc-settings-row-label"
-  }, "\uD83C\uDFC6 Sal\xF3n de la Fama"), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: {
+      fontSize: 16,
+      marginRight: 6,
+      verticalAlign: 'middle'
+    }
+  }, "emoji_events"), "Sal\xF3n de la Fama"), /*#__PURE__*/React.createElement("div", {
     className: "cc-settings-row-desc"
-  }, "Historial de partidas y campeones")), /*#__PURE__*/React.createElement("div", {
-    className: "cc-settings-row-action"
-  }, "\u203A"))));
+  }, "Historial de partidas y campeones")), /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: {
+      fontSize: 18,
+      color: 'var(--c-on-surface-variant)'
+    }
+  }, "chevron_right"))));
 
   /* ══════════════════════════════════════════
      MAIN RENDER
@@ -1094,63 +1491,139 @@ function App() {
     className: "cc-brand-name"
   }, "CONTINENTAL"), /*#__PURE__*/React.createElement("div", {
     className: "cc-brand-sub"
-  }, "Club de Caballeros", gameStarted && players.length > 0 ? ` · Mesa ${players.length}` : '')), /*#__PURE__*/React.createElement("nav", {
+  }, "El Libro de Cuentas", gameStarted && players.length > 0 ? ` · Suite ${players.length}` : '')), /*#__PURE__*/React.createElement("nav", {
     className: "cc-sidebar-nav"
   }, /*#__PURE__*/React.createElement("button", {
     className: `cc-nav-item${activeTab === 'puntos' ? ' active' : ''}`,
     onClick: () => setActiveTab('puntos')
-  }, /*#__PURE__*/React.createElement(IconChart, null), " Puntos"), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: activeTab === 'puntos' ? {
+      fontVariationSettings: `'FILL' 1`
+    } : undefined
+  }, "leaderboard"), "Puntos"), /*#__PURE__*/React.createElement("button", {
     className: `cc-nav-item${activeTab === 'estadisticas' ? ' active' : ''}`,
     onClick: () => setActiveTab('estadisticas')
-  }, /*#__PURE__*/React.createElement(IconStats, null), " Estad\xEDsticas"), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: activeTab === 'estadisticas' ? {
+      fontVariationSettings: `'FILL' 1`
+    } : undefined
+  }, "query_stats"), "Estad\xEDsticas"), /*#__PURE__*/React.createElement("button", {
     className: `cc-nav-item${activeTab === 'ajustes' ? ' active' : ''}`,
     onClick: () => setActiveTab('ajustes')
-  }, /*#__PURE__*/React.createElement(IconSettings, null), " Ajustes")), gameStarted && players.length > 0 && /*#__PURE__*/React.createElement("div", {
-    className: "cc-sidebar-footer"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: activeTab === 'ajustes' ? {
+      fontVariationSettings: `'FILL' 1`
+    } : undefined
+  }, "settings"), "Ajustes")), gameStarted && players.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "cc-sidebar-footer",
+    style: {
+      border: '1px solid rgba(212,175,55,0.15)',
+      borderRadius: 'var(--radius-xl)',
+      background: 'var(--c-surface-container-low)',
+      padding: 16,
+      marginTop: 'auto'
+    }
   }, /*#__PURE__*/React.createElement("div", {
-    className: "cc-dealer-badge"
+    className: "flex items-center gap-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cc-dealer-badge",
+    style: {
+      width: 40,
+      height: 40,
+      fontSize: 16
+    }
   }, getDealerName().charAt(0)), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-    className: "cc-dealer-label"
+    className: "cc-dealer-label",
+    style: {
+      fontSize: 10
+    }
   }, "Director de Partida"), /*#__PURE__*/React.createElement("div", {
-    className: "cc-dealer-name"
-  }, getDealerName())))), /*#__PURE__*/React.createElement("div", {
+    className: "cc-dealer-name",
+    style: {
+      fontSize: 11,
+      color: 'var(--c-primary)'
+    }
+  }, getDealerName()))))), /*#__PURE__*/React.createElement("div", {
     className: "cc-main"
   }, /*#__PURE__*/React.createElement("div", {
     className: "cc-topbar"
   }, /*#__PURE__*/React.createElement("div", {
     className: "cc-topbar-left"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: {
+      fontSize: 20,
+      color: 'var(--c-primary)'
+    }
+  }, "menu_book"), /*#__PURE__*/React.createElement("div", {
     className: "cc-topbar-title"
-  }, "CONTINENTAL"), gameStarted && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  }, "Marcador Continental"), gameStarted && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "cc-topbar-sep"
   }), /*#__PURE__*/React.createElement("div", {
-    className: "cc-topbar-info"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "cc-topbar-dot"
-  }), "Sala de Juego", /*#__PURE__*/React.createElement("span", null, "\xB7"), currentRoundData.requirement))), /*#__PURE__*/React.createElement("div", {
+    className: "cc-topbar-info",
+    style: {
+      background: 'var(--c-surface-container)',
+      borderRadius: 'var(--radius-full)',
+      padding: '4px 12px',
+      border: '1px solid rgba(255,255,255,0.04)'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: {
+      fontSize: 14
+    }
+  }, "stadium"), "Mesa Principal", /*#__PURE__*/React.createElement("span", null, "\xB7"), currentRoundData.requirement))), /*#__PURE__*/React.createElement("div", {
     className: "cc-topbar-actions"
   }, /*#__PURE__*/React.createElement("button", {
     className: "cc-icon-btn",
+    onClick: () => showToast('Añadir jugador'),
+    title: "A\xF1adir jugador"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined"
+  }, "person_add")), /*#__PURE__*/React.createElement("button", {
+    className: "cc-icon-btn",
     onClick: () => setShowHallOfFame(true),
     title: "Historial"
-  }, /*#__PURE__*/React.createElement(IconHistory, null)), /*#__PURE__*/React.createElement("button", {
-    className: "cc-icon-btn",
-    onClick: () => setShowRules(true),
-    title: "Reglas"
-  }, /*#__PURE__*/React.createElement(IconHelp, null)))), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined"
+  }, "history")))), /*#__PURE__*/React.createElement("div", {
     className: "cc-content"
   }, activeTab === 'puntos' && (gameStarted ? renderGameView() : renderSetupView()), activeTab === 'estadisticas' && renderEstadisticasTab(), activeTab === 'ajustes' && renderAjustesTab()), /*#__PURE__*/React.createElement("nav", {
-    className: "cc-bottom-nav"
+    className: "cc-bottom-nav rounded-t-xl"
   }, /*#__PURE__*/React.createElement("button", {
     className: `cc-bottom-nav-item${activeTab === 'puntos' ? ' active' : ''}`,
     onClick: () => setActiveTab('puntos')
-  }, /*#__PURE__*/React.createElement(IconChart, null), /*#__PURE__*/React.createElement("span", null, "Puntos")), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: activeTab === 'puntos' ? {
+      fontVariationSettings: `'FILL' 1`
+    } : undefined
+  }, "format_list_numbered"), /*#__PURE__*/React.createElement("span", null, "Puntos")), /*#__PURE__*/React.createElement("button", {
     className: `cc-bottom-nav-item${activeTab === 'estadisticas' ? ' active' : ''}`,
     onClick: () => setActiveTab('estadisticas')
-  }, /*#__PURE__*/React.createElement(IconStats, null), /*#__PURE__*/React.createElement("span", null, "Estad\xEDsticas")), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: activeTab === 'estadisticas' ? {
+      fontVariationSettings: `'FILL' 1`
+    } : undefined
+  }, "leaderboard"), /*#__PURE__*/React.createElement("span", null, "Estad\xEDsticas")), /*#__PURE__*/React.createElement("button", {
     className: `cc-bottom-nav-item${activeTab === 'ajustes' ? ' active' : ''}`,
     onClick: () => setActiveTab('ajustes')
-  }, /*#__PURE__*/React.createElement(IconSettings, null), /*#__PURE__*/React.createElement("span", null, "Ajustes")))), showNewGameDialog && /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: activeTab === 'ajustes' ? {
+      fontVariationSettings: `'FILL' 1`
+    } : undefined
+  }, "settings"), /*#__PURE__*/React.createElement("span", null, "Ajustes")))), /*#__PURE__*/React.createElement("div", {
+    ref: atmosphereRef,
+    className: "fixed inset-0 pointer-events-none opacity-20",
+    style: {
+      zIndex: 0
+    }
+  }), showNewGameDialog && /*#__PURE__*/React.createElement("div", {
     className: "cc-overlay show"
   }, /*#__PURE__*/React.createElement("div", {
     className: "cc-modal",
@@ -1158,12 +1631,14 @@ function App() {
       maxWidth: 380,
       textAlign: 'center'
     }
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
     style: {
       fontSize: 40,
-      marginBottom: 12
+      marginBottom: 12,
+      color: 'var(--c-primary)'
     }
-  }, "\uD83C\uDCCF"), /*#__PURE__*/React.createElement("div", {
+  }, "playing_cards"), /*#__PURE__*/React.createElement("div", {
     className: "cc-modal-title",
     style: {
       marginBottom: 8
@@ -1171,7 +1646,7 @@ function App() {
   }, "Nueva Partida"), /*#__PURE__*/React.createElement("p", {
     style: {
       fontSize: 13,
-      color: 'var(--cc-text-sec)',
+      color: 'var(--c-on-surface-variant)',
       marginBottom: 20
     }
   }, "\xBFUsar los mismos jugadores o empezar de nuevo?"), /*#__PURE__*/React.createElement("div", {
@@ -1197,14 +1672,27 @@ function App() {
     className: "cc-modal-header"
   }, /*#__PURE__*/React.createElement("div", {
     className: "cc-modal-title"
-  }, "\uD83C\uDFC6 Sal\xF3n de la Fama"), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: {
+      fontSize: 20,
+      verticalAlign: 'middle',
+      marginRight: 4,
+      color: 'var(--c-primary)'
+    }
+  }, "emoji_events"), "Sal\xF3n de la Fama"), /*#__PURE__*/React.createElement("button", {
     className: "cc-btn cc-btn-secondary cc-btn-sm",
     onClick: () => setShowHallOfFame(false)
-  }, "\u2715")), hallOfFameData.length === 0 ? /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: {
+      fontSize: 14
+    }
+  }, "close"))), hallOfFameData.length === 0 ? /*#__PURE__*/React.createElement("div", {
     style: {
       textAlign: 'center',
       padding: '32px 0',
-      color: 'var(--cc-text-sec)'
+      color: 'var(--c-on-surface-variant)'
     }
   }, "A\xFAn no hay partidas registradas. \xA1Completa una partida para aparecer aqu\xED!") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("table", {
     className: "cc-table"
@@ -1221,7 +1709,7 @@ function App() {
     style: {
       cursor: 'pointer',
       fontSize: 12,
-      color: 'var(--cc-text-sec)',
+      color: 'var(--c-on-surface-variant)',
       padding: '4px 0'
     }
   }, "Historial completo (", hallOfFameData.length, " partidas)"), /*#__PURE__*/React.createElement("div", {
@@ -1234,13 +1722,13 @@ function App() {
     key: idx,
     style: {
       padding: '8px 0',
-      borderBottom: '1px solid var(--cc-border-sub)',
+      borderBottom: '1px solid rgba(153,144,124,0.15)',
       fontSize: 12,
-      color: 'var(--cc-text-sec)'
+      color: 'var(--c-on-surface-variant)'
     }
   }, /*#__PURE__*/React.createElement("strong", {
     style: {
-      color: 'var(--cc-text)'
+      color: 'var(--c-on-surface)'
     }
   }, game.winner), " gan\xF3 el ", new Date(game.date).toLocaleDateString(), " \u2014", game.players.map(p => ` ${p.name} (${p.total}pts)`).join(',')))))))), showRules && /*#__PURE__*/React.createElement("div", {
     className: "cc-overlay show"
@@ -1250,7 +1738,14 @@ function App() {
     className: "cc-modal-header"
   }, /*#__PURE__*/React.createElement("div", {
     className: "cc-modal-title"
-  }, "\uD83D\uDCD6 Manual del Continental"), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: {
+      fontSize: 20,
+      verticalAlign: 'middle',
+      marginRight: 4
+    }
+  }, "menu_book"), "Manual del Continental"), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: 8,
@@ -1259,25 +1754,55 @@ function App() {
   }, speechStatus === 'idle' && /*#__PURE__*/React.createElement("button", {
     className: "cc-btn cc-btn-secondary cc-btn-sm",
     onClick: () => speakText(continentalManualHTML)
-  }, "\uD83D\uDD0A"), speechStatus === 'speaking' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: {
+      fontSize: 14
+    }
+  }, "volume_up")), speechStatus === 'speaking' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
     className: "cc-btn cc-btn-secondary cc-btn-sm",
     onClick: pauseSpeech
-  }, "\u23F8"), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: {
+      fontSize: 14
+    }
+  }, "pause")), /*#__PURE__*/React.createElement("button", {
     className: "cc-btn cc-btn-secondary cc-btn-sm",
     onClick: cancelSpeech
-  }, "\u23F9")), speechStatus === 'paused' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: {
+      fontSize: 14
+    }
+  }, "stop"))), speechStatus === 'paused' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
     className: "cc-btn cc-btn-secondary cc-btn-sm",
     onClick: resumeSpeech
-  }, "\u25B6"), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: {
+      fontSize: 14
+    }
+  }, "play_arrow")), /*#__PURE__*/React.createElement("button", {
     className: "cc-btn cc-btn-secondary cc-btn-sm",
     onClick: cancelSpeech
-  }, "\u23F9")), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: {
+      fontSize: 14
+    }
+  }, "stop"))), /*#__PURE__*/React.createElement("button", {
     className: "cc-btn cc-btn-secondary cc-btn-sm",
     onClick: () => {
       cancelSpeech();
       setShowRules(false);
     }
-  }, "\u2715"))), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined",
+    style: {
+      fontSize: 14
+    }
+  }, "close")))), /*#__PURE__*/React.createElement("div", {
     className: "cc-rules-content",
     dangerouslySetInnerHTML: {
       __html: continentalManualHTML

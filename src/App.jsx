@@ -67,35 +67,13 @@ const continentalManualHTML = `
   </ul>
 `;
 
-/* ── SVG Icon Components ── */
-const IconChart = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
-    <line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/>
-  </svg>
+/* ── Material Symbol Icon helper ── */
+const Icon = ({ name, fill, className }) => (
+  <span
+    className={`material-symbols-outlined${className ? ' ' + className : ''}`}
+    style={fill ? { fontVariationSettings: `'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24` } : undefined}
+  >{name}</span>
 );
-const IconStats = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/>
-  </svg>
-);
-const IconSettings = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="3"/>
-    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-  </svg>
-);
-const IconHistory = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-  </svg>
-);
-const IconHelp = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-  </svg>
-);
-
 
 /* ── Player Avatar ── */
 function PlayerAvatar({ name, index, size }) {
@@ -105,6 +83,15 @@ function PlayerAvatar({ name, index, size }) {
   return (
     <div className="cc-player-avatar" style={{ background: color, width: sz, height: sz, fontSize: Math.round(sz * 0.38) }}>
       {initial}
+    </div>
+  );
+}
+
+function FrameAvatar({ name, index, size }) {
+  const sz = size || 34;
+  return (
+    <div className="avatar-frame" style={{ width: sz + 10, height: sz + 10 }}>
+      <PlayerAvatar name={name} index={index} size={sz} />
     </div>
   );
 }
@@ -146,7 +133,6 @@ function App() {
   const [showRules, setShowRules] = useState(false);
   const [showHallOfFame, setShowHallOfFame] = useState(false);
   const [hallOfFameData, setHallOfFameData] = useState(() => loadLS('continental-global-stats', []));
-  const [darkMode] = useState(true);
   const [toasts, setToasts] = useState([]);
   const [editingPlayer, setEditingPlayer] = useState(null);
   const [gameStarted, setGameStarted] = useState(() => loadLS('continental-started', false));
@@ -163,6 +149,7 @@ function App() {
   const speechRef = useRef(null);
   const [speechStatus, setSpeechStatus] = useState('idle');
   const dragIndex = useRef(null);
+  const atmosphereRef = useRef(null);
 
   /* ── Persistence ── */
   useEffect(() => { saveLS('continental-players', players); }, [players]);
@@ -174,6 +161,27 @@ function App() {
   useEffect(() => { saveLS('continental-undo', undoData); }, [undoData]);
   useEffect(() => {
     document.documentElement.setAttribute('data-color-scheme', 'dark');
+  }, []);
+
+  /* ── Atmosphere Particles ── */
+  useEffect(() => {
+    const el = atmosphereRef.current;
+    if (!el) return;
+    const particles = 24;
+    for (let i = 0; i < particles; i++) {
+      const p = document.createElement('div');
+      p.className = 'atmosphere-particle';
+      const s = Math.random() * 4 + 1;
+      p.style.width = s + 'px';
+      p.style.height = s + 'px';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.top = Math.random() * 100 + '%';
+      p.style.opacity = Math.random() * 0.4;
+      p.style.animationDelay = Math.random() * -20 + 's';
+      p.style.animationDuration = (Math.random() * 15 + 15) + 's';
+      el.appendChild(p);
+    }
+    return () => { while (el.firstChild) el.removeChild(el.firstChild); };
   }, []);
 
   /* ── Toast ── */
@@ -372,7 +380,7 @@ function App() {
     if (showResumePrompt) {
       return (
         <div className="cc-resume-prompt">
-          <div style={{ fontSize: 36, marginBottom: 12 }}>🔄</div>
+          <span className="material-symbols-outlined" style={{ fontSize: 36, marginBottom: 12, color: 'var(--c-primary)' }}>restart_alt</span>
           <div className="cc-page-title" style={{ fontSize: 20, marginBottom: 8 }}>Partida Anterior Detectada</div>
           <p className="cc-resume-desc">
             Jugadores encontrados: <strong>{players.map(p => p.name).join(', ')}</strong>. ¿Qué deseas hacer?
@@ -459,7 +467,9 @@ function App() {
                 {index === 0 && <span className="cc-badge cc-badge-dealer">Reparte</span>}
                 {index === 1 && players.length > 1 && <span className="cc-badge cc-badge-hand">Mano</span>}
                 {players.length > 2 && (
-                  <button className="cc-btn-remove" onClick={() => removePlayer(index)} title="Eliminar">✕</button>
+                  <button className="cc-btn-remove" onClick={() => removePlayer(index)} title="Eliminar">
+                    <span className="material-symbols-outlined" style={{ fontSize: 14 }}>close</span>
+                  </button>
                 )}
               </div>
             </div>
@@ -468,7 +478,7 @@ function App() {
 
         {players.length >= 2 && (
           <div className="cc-info-bar">
-            <span>ℹ</span>
+            <span className="material-symbols-outlined" style={{ fontSize: 16 }}>info</span>
             <span>
               <strong>Repartidor R1:</strong> {players[0]?.name}&nbsp;&nbsp;·&nbsp;&nbsp;
               <strong>Mano R1:</strong> {players[1]?.name}
@@ -477,7 +487,8 @@ function App() {
         )}
 
         <button className="cc-btn-start" onClick={startGame} disabled={players.length < 2}>
-          🃏 Iniciar Partida — {players.length} jugadores
+          <span className="material-symbols-outlined" style={{ fontSize: 20 }}>playing_cards</span>
+          Iniciar Partida — {players.length} jugadores
         </button>
       </div>
     );
@@ -495,121 +506,175 @@ function App() {
         {/* Header */}
         <div className="cc-game-header">
           <div>
-            <h1 className="cc-page-title">Mesa de Juego</h1>
+            <h1 className="cc-page-title">Partida Activa</h1>
             <p className="cc-page-subtitle">
-              Ronda {currentRound} de 7 · {currentRoundData.requirement} · {currentRoundData.cards} cartas
+              Jugando Ronda {currentRound} de 7 · {currentRoundData.requirement} · {currentRoundData.cards} cartas
             </p>
           </div>
           <div className="cc-winner-rule-badge">
-            <div className="cc-rule-icon-wrap">🃏</div>
+            <div className="cc-rule-icon-wrap">
+              <span className="material-symbols-outlined" style={{ fontSize: 24 }}>gavel</span>
+            </div>
             <div>
               <div className="cc-rule-label">Regla del Ganador</div>
-              <div className="cc-rule-value">(-10 × Nº de Ronda)</div>
+              <div className="cc-rule-value gold-glow">(-10 × Nº de Ronda)</div>
             </div>
           </div>
         </div>
 
-        {/* Score Table */}
-        <div className="cc-table-container">
-          <div className="cc-table-scroll">
-            <table className="cc-score-table">
-              <thead>
-                <tr>
-                  <th className="cc-th-rounds">Rondas</th>
-                  {players.map((player, idx) => {
-                    const isLeader = stats && stats.winner.name === player.name;
-                    return (
-                      <th key={player.name} className={`cc-th-player${isLeader ? ' cc-th-leader' : ''}`}>
-                        {isLeader && <div className="cc-trophy-icon">🏆</div>}
-                        <PlayerAvatar name={player.name} index={idx} size={38} />
-                        <div className={`cc-th-name${isLeader ? ' cc-leader-name' : ''}`}>{player.name}</div>
+        {/* Score Table - Wood Texture + Recessed Panels */}
+        <div className="leather-blotter rounded-xl p-1 wood-texture brass-edge relative overflow-hidden" style={{ borderRadius: 'var(--radius)' }}>
+          <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none"></div>
+          <div className="cc-table-container" style={{ background: 'transparent', border: 'none', boxShadow: 'none', marginBottom: 0 }}>
+            <div className="custom-scrollbar">
+              <table className="cc-score-table">
+                <thead>
+                  <tr className="etched-border">
+                    <th className="cc-th-rounds" style={{ position: 'sticky', left: 0, zIndex: 10 }}>Rondas</th>
+                    {players.map((player, idx) => {
+                      const isLeader = stats && stats.winner.name === player.name;
+                      return (
+                        <th key={player.name} className={`cc-th-player${isLeader ? ' cc-th-leader' : ''}`}>
+                          {isLeader && <div><span className="material-symbols-outlined gold-glow" style={{ fontSize: 18, fontVariationSettings: `'FILL' 1` }}>emoji_events</span></div>}
+                          <FrameAvatar name={player.name} index={idx} size={34} />
+                          <div className={`cc-th-name${isLeader ? ' cc-leader-name gold-glow' : ''}`}>{player.name}</div>
+                        </th>
+                      );
+                    })}
+                    {players.length < 6 && Array.from({ length: 6 - players.length }).map((_, i) => (
+                      <th key={`empty-${i}`} className="cc-th-player" style={{ opacity: 0.3 }}>
+                        <div className="avatar-frame" style={{ width: 44, height: 44 }}>
+                          <div className="cc-player-avatar" style={{ background: 'var(--c-surface-container-high)', width: 34, height: 34, fontSize: 12, color: 'var(--c-on-surface-variant)' }}>?</div>
+                        </div>
+                        <div className="cc-th-name" style={{ fontSize: 10 }}>Vacante</div>
                       </th>
-                    );
-                  })}
-                </tr>
-              </thead>
-              <tbody>
-                {roundsData.map((round, roundIdx) => {
-                  const isCurrent = roundIdx === currentRound - 1;
-                  const isPast = roundIdx < currentRound - 1;
-                  const rowClass = isCurrent ? 'cc-tr-current' : isPast ? 'cc-tr-past' : 'cc-tr-future';
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {roundsData.map((round, roundIdx) => {
+                    const isCurrent = roundIdx === currentRound - 1;
+                    const isPast = roundIdx < currentRound - 1;
+                    const rowClass = isCurrent ? 'cc-tr-current' : isPast ? 'cc-tr-past' : 'cc-tr-future';
 
-                  return (
-                    <tr key={roundIdx} className={`cc-tr ${rowClass}`}>
-                      <td className="cc-td-round-info">
-                        <div className="cc-round-title">R{round.round}: {round.requirement}</div>
-                        {isPast && <span className="cc-round-status-badge completed">Completada</span>}
-                        {isCurrent && <span className="cc-round-status-badge active">En curso</span>}
-                      </td>
-                      {players.map((player, pIdx) => {
-                        const origIdx = players.findIndex(p => p.name === player.name);
-                        const isLeader = stats && stats.winner.name === player.name;
-                        const leaderCls = isLeader ? ' cc-td-leader' : '';
+                    return (
+                      <tr key={roundIdx} className={`cc-tr ${rowClass} relative${isCurrent ? ' bg-primary-container/10' : ''}${isCurrent ? ' etched-border' : ''}`}>
+                        {isCurrent && <div className="active-row-rail"></div>}
+                        <td className="cc-td-round-info" style={{ position: 'sticky', left: 0, zIndex: 5, background: isCurrent ? 'var(--c-surface-container)' : 'var(--c-surface)' }}>
+                          <div className={`cc-round-title${isCurrent ? ' gold-glow' : ''}`}>R{round.round}: {round.requirement}</div>
+                          {isPast && <span className="cc-round-status-badge completed">Completada</span>}
+                          {isCurrent && <span className="cc-round-status-badge active animate-pulse">En curso</span>}
+                        </td>
+                        {players.map((player, pIdx) => {
+                          const origIdx = players.findIndex(p => p.name === player.name);
+                          const isLeader = stats && stats.winner.name === player.name;
+                          const leaderCls = isLeader ? ' cc-td-leader' : '';
 
-                        if (isCurrent) {
-                          if (roundCloser === player.name) {
+                          if (isCurrent) {
+                            if (roundCloser === player.name) {
+                              return (
+                                <td key={player.name} className={`cc-td-score cc-td-current${leaderCls}`}>
+                                  <div className="recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg">
+                                    <span className="cc-closer-value" style={{ color: '#1d1009' }}>-{10 * currentRound}</span>
+                                  </div>
+                                </td>
+                              );
+                            }
+                            const cs = currentRoundScores[player.name];
                             return (
                               <td key={player.name} className={`cc-td-score cc-td-current${leaderCls}`}>
-                                <span className="cc-closer-value">-{10 * currentRound}</span>
+                                {cs ? (
+                                  <div className="recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg">
+                                    <span>{cs}</span>
+                                  </div>
+                                ) : (
+                                  <div className="recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg">
+                                    <span className="cc-placeholder" onClick={() => scoringPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })}>
+                                      <span className="material-symbols-outlined" style={{ fontSize: 18, color: '#1d1009', opacity: 0.3 }}>add</span>
+                                    </span>
+                                  </div>
+                                )}
+                              </td>
+                            );
+                          } else if (isPast) {
+                            const score = player.scores[roundIdx];
+                            const isWinner = score < 0;
+                            return (
+                              <td key={player.name} className={`cc-td-score cc-td-past${score < 0 ? ' cc-td-negative' : ''}${leaderCls}`}>
+                                <div className="recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg relative">
+                                  {isWinner && <span className="star-badge material-symbols-outlined" style={{ fontVariationSettings: `'FILL' 1`, fontSize: 12 }}>star</span>}
+                                  <input
+                                    type="number"
+                                    className="recessed-input"
+                                    value={score || ''}
+                                    onChange={e => updateScore(origIdx, roundIdx, e.target.value)}
+                                    min="-999" max="999"
+                                  />
+                                </div>
+                              </td>
+                            );
+                          } else {
+                            return (
+                              <td key={player.name} className={`cc-td-score cc-td-future${leaderCls}`}>
+                                <div className="recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg opacity-25">
+                                  <span className="cc-dash">—</span>
+                                </div>
                               </td>
                             );
                           }
-                          const cs = currentRoundScores[player.name];
-                          return (
-                            <td key={player.name} className={`cc-td-score cc-td-current${leaderCls}`}>
-                              {cs ? (
-                                <span className="cc-current-score">{cs}</span>
-                              ) : (
-                                <span className="cc-placeholder" onClick={() => scoringPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })}>+</span>
-                              )}
-                            </td>
-                          );
-                        } else if (isPast) {
-                          const score = player.scores[roundIdx];
-                          return (
-                            <td key={player.name} className={`cc-td-score cc-td-past${score < 0 ? ' cc-td-negative' : ''}${leaderCls}`}>
-                              <input
-                                type="number"
-                                className="cc-score-edit"
-                                value={score || ''}
-                                onChange={e => updateScore(origIdx, roundIdx, e.target.value)}
-                                min="-999" max="999"
-                              />
-                            </td>
-                          );
-                        } else {
-                          return (
-                            <td key={player.name} className={`cc-td-score cc-td-future${leaderCls}`}>
+                        })}
+                        {players.length < 6 && Array.from({ length: 6 - players.length }).map((_, i) => (
+                          <td key={`empty-cell-${i}`} className="cc-td-score cc-td-future">
+                            <div className="recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg opacity-25">
                               <span className="cc-dash">—</span>
-                            </td>
-                          );
-                        }
-                      })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-              <tfoot>
-                <tr className="cc-total-row">
-                  <td className="cc-td-round-info cc-total-label">Puntuación Total</td>
-                  {players.map(player => {
-                    const isLeader = stats && stats.winner.name === player.name;
-                    return (
-                      <td key={player.name} className={`cc-td-total${isLeader ? ' cc-total-leader' : ''}`}>
-                        {player.total || 0}
-                      </td>
+                            </div>
+                          </td>
+                        ))}
+                      </tr>
                     );
                   })}
-                </tr>
-              </tfoot>
-            </table>
+                </tbody>
+                <tfoot>
+                  <tr className="cc-total-row" style={{ background: 'var(--c-surface-container-highest)' }}>
+                    <td className="cc-td-round-info cc-total-label" style={{ position: 'sticky', left: 0, zIndex: 5, background: 'var(--c-surface-container-highest)' }}>
+                      Puntuación Total
+                    </td>
+                    {players.map(player => {
+                      const isLeader = stats && stats.winner.name === player.name;
+                      return (
+                        <td key={player.name} className={`cc-td-total${isLeader ? ' cc-total-leader gold-glow' : ''}`}>
+                          <div className="font-score-display" style={{ fontSize: 24, fontWeight: 700 }}>{player.total || 0}</div>
+                        </td>
+                      );
+                    })}
+                    {players.length < 6 && Array.from({ length: 6 - players.length }).map((_, i) => (
+                      <td key={`empty-total-${i}`} className="cc-td-total"><div className="font-score-display" style={{ fontSize: 24, fontWeight: 700, opacity: 0.2 }}>—</div></td>
+                    ))}
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        {/* Rules Reminder */}
+        <div className="cc-info-bar" style={{ marginBottom: 16, border: '1px solid rgba(242,202,80,0.15)', background: 'rgba(242,202,80,0.04)' }}>
+          <span className="material-symbols-outlined" style={{ fontSize: 20, color: 'var(--c-primary)' }}>info</span>
+          <div>
+            <div style={{ fontSize: 12, fontWeight: 600 }}>Regla del Ganador</div>
+            <div style={{ fontSize: 11, color: 'var(--c-on-surface-variant)' }}>
+              El jugador que cierra la ronda recibe <strong style={{ color: 'var(--c-primary)' }}>-{10 * currentRound} pts</strong> (ronda × -10). Por cada punto ingresado se acumula.
+            </div>
           </div>
         </div>
 
         {/* Scoring Panel */}
         <div className="cc-scoring-panel" ref={scoringPanelRef}>
           <div className="cc-scoring-header">
-            <div className="cc-scoring-title">Puntos · Ronda {currentRound}</div>
+            <div className="cc-scoring-title">
+              <span className="material-symbols-outlined" style={{ fontSize: 18, verticalAlign: 'middle', marginRight: 4 }}>edit_note</span>
+              Puntos · Ronda {currentRound}
+            </div>
             <div className="cc-scoring-hint">ENTERO · NO CERO</div>
           </div>
           <p className="cc-scoring-desc">
@@ -642,7 +707,7 @@ function App() {
                   ) : (
                     <input
                       type="number"
-                      className="cc-score-input-field"
+                      className="cc-score-input-field ivory-plate"
                       value={currentRoundScores[player.name] || ''}
                       onChange={e => updateCurrentRoundScore(player.name, e.target.value)}
                       placeholder="Pts"
@@ -655,42 +720,78 @@ function App() {
           </div>
         </div>
 
-        {/* Stats Cards */}
+        {/* Quick Stats Bento Grid */}
         <div className="cc-stats-grid">
-          <div className="cc-stat-card">
-            <div className="cc-stat-icon-wrap">📊</div>
-            <div className="cc-stat-label">Media Puntos/Ronda</div>
-            <div className="cc-stat-value">{getMediaRonda()}</div>
+          <div className="cc-stat-card" style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
+            <div className="flex items-center gap-2" style={{ marginBottom: 4 }}>
+              <div style={{ background: 'rgba(242,202,80,0.1)', borderRadius: 'var(--radius-lg)', padding: 6, display: 'inline-flex' }}>
+                <span className="material-symbols-outlined" style={{ color: 'var(--c-primary)', fontVariationSettings: `'FILL' 1`, fontSize: 20 }}>workspace_premium</span>
+              </div>
+              <div className="cc-stat-label" style={{ marginBottom: 0 }}>Líder</div>
+            </div>
+            <div className="cc-stat-value" style={{ fontSize: 22 }}>{stats ? stats.winner.name : '—'}</div>
+            <div className="cc-stat-sub" style={{ marginTop: 2 }}>{stats ? `${stats.winner.total} pts` : ''}</div>
           </div>
-          <div className="cc-stat-card">
-            <div className="cc-stat-icon-wrap">⏱</div>
-            <div className="cc-stat-label">Rondas Restantes</div>
-            <div className="cc-stat-value">{remaining} <span className="cc-stat-sub">de 7 Total</span></div>
-            <div className="cc-stat-hint">Tiempo est. restante: ~{remaining * 7} min</div>
+          <div className="cc-stat-card" style={{ border: '1px solid rgba(207,208,184,0.1)' }}>
+            <div className="flex items-center gap-2" style={{ marginBottom: 4 }}>
+              <div style={{ background: 'rgba(207,208,184,0.08)', borderRadius: 'var(--radius-lg)', padding: 6, display: 'inline-flex' }}>
+                <span className="material-symbols-outlined" style={{ color: 'var(--c-tertiary)', fontSize: 20 }}>analytics</span>
+              </div>
+              <div className="cc-stat-label" style={{ marginBottom: 0 }}>Media / Ronda</div>
+            </div>
+            <div className="cc-stat-value" style={{ fontSize: 22 }}>{getMediaRonda()}</div>
+            <div className="cc-stat-sub" style={{ marginTop: 2 }}>pts por ronda</div>
           </div>
-          <div className="cc-stat-card">
-            <div className="cc-stat-icon-wrap">⭐</div>
-            <div className="cc-stat-label">Progreso de Partida</div>
-            <div className="cc-stat-value">{progress}%</div>
-            <div className="cc-stat-bar-track">
+          <div className="cc-stat-card" style={{ border: '1px solid rgba(212,175,55,0.1)' }}>
+            <div className="flex items-center gap-2" style={{ marginBottom: 4 }}>
+              <div style={{ background: 'rgba(242,202,80,0.08)', borderRadius: 'var(--radius-lg)', padding: 6, display: 'inline-flex' }}>
+                <span className="material-symbols-outlined" style={{ color: 'var(--c-primary)', fontSize: 20 }}>hourglass_empty</span>
+              </div>
+              <div className="cc-stat-label" style={{ marginBottom: 0 }}>Restantes</div>
+            </div>
+            <div className="cc-stat-value" style={{ fontSize: 22 }}>{remaining} <span className="cc-stat-sub" style={{ fontSize: 14 }}>de 7</span></div>
+            <div className="cc-stat-bar-track" style={{ marginTop: 6 }}>
               <div className="cc-stat-bar-fill" style={{ width: `${progress}%` }}></div>
             </div>
           </div>
+          <div className="cc-stat-card relative overflow-hidden" style={{ border: '1px solid rgba(207,208,184,0.1)' }}>
+            <div className="flex items-center gap-2" style={{ marginBottom: 4 }}>
+              <div style={{ background: 'rgba(207,208,184,0.08)', borderRadius: 'var(--radius-lg)', padding: 6, display: 'inline-flex', position: 'relative' }}>
+                <span className="material-symbols-outlined" style={{ fontVariationSettings: `'FILL' 1`, color: 'var(--c-secondary)', fontSize: 20 }}>hotel_class</span>
+              </div>
+              <div className="cc-stat-label" style={{ marginBottom: 0 }}>Progreso</div>
+            </div>
+            <div className="cc-stat-value" style={{ fontSize: 22 }}>{progress}%</div>
+            <div className="cc-stat-hint">Completado</div>
+          </div>
         </div>
 
-        {/* Action Bar */}
-        <div className="cc-actions-bar">
-          <button className="cc-action-btn" onClick={handleUndoLast} disabled={!undoData}>
-            ↩ Deshacer Último
+        {/* Action Bar - Brass Buttons */}
+        <div className="grid grid-cols-2 gap-2" style={{ marginBottom: 20 }}>
+          <button className="brass-button" onClick={() => scoringPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })} style={{ padding: '16px 24px', flexDirection: 'column', gap: 2 }}>
+            <div className="flex items-center gap-2">
+              <span className="material-symbols-outlined" style={{ fontSize: 22 }}>exposure_plus_1</span>
+              <span style={{ fontSize: 16 }}>Puntos</span>
+            </div>
+            <span className="sub-label" style={{ fontSize: 10 }}>Enteros / No Cero</span>
           </button>
-          <button className="cc-action-btn" onClick={() => showToast('💾 Guardado automáticamente')}>
-            💾 Guardar Partida
+          <button className="brass-button" onClick={finishRound} style={{ padding: '16px 24px', flexDirection: 'column', gap: 2 }}>
+            <div className="flex items-center gap-2">
+              <span style={{ fontSize: 16 }}>{currentRound < 7 ? 'Siguiente Ronda' : 'Finalizar Juego'}</span>
+              <span className="material-symbols-outlined" style={{ fontSize: 22 }}>arrow_forward</span>
+            </div>
+            <span className="sub-label" style={{ fontSize: 10 }}>Avanzar partida</span>
           </button>
-          <button className="cc-action-btn cc-action-accent" onClick={() => scoringPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })}>
-            +1 Añadir Puntos
+        </div>
+
+        <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
+          <button className="cc-action-btn" onClick={handleUndoLast} disabled={!undoData} style={{ flex: 1, justifyContent: 'center', padding: '8px 16px', fontSize: 12 }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 16 }}>undo</span>
+            Deshacer
           </button>
-          <button className="cc-action-btn cc-action-primary" onClick={finishRound}>
-            {currentRound < 7 ? 'SIGUIENTE RONDA' : 'FINALIZAR JUEGO'} →
+          <button className="cc-action-btn" onClick={() => showToast('Guardado automáticamente')} style={{ flex: 1, justifyContent: 'center', padding: '8px 16px', fontSize: 12 }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 16 }}>save</span>
+            Guardar
           </button>
         </div>
       </div>
@@ -703,8 +804,8 @@ function App() {
   const renderEstadisticasTab = () => {
     if (players.length === 0) {
       return (
-        <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--cc-text-sec)' }}>
-          <div style={{ fontSize: 56, marginBottom: 16 }}>📊</div>
+        <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--c-on-surface-variant)' }}>
+          <span className="material-symbols-outlined" style={{ fontSize: 56, marginBottom: 16, color: 'var(--c-on-surface-variant)' }}>query_stats</span>
           <div className="cc-page-title" style={{ marginBottom: 8 }}>Sin datos</div>
           <p>Inicia una partida para ver estadísticas.</p>
         </div>
@@ -721,7 +822,7 @@ function App() {
         <div className="cc-rankings">
           <div className="cc-rankings-header">
             <div className="cc-rankings-title">Clasificación Actual</div>
-            {stats && <div style={{ fontSize: 12, color: 'var(--cc-text-sec)' }}>Líder: {stats.winner.name}</div>}
+            {stats && <div style={{ fontSize: 12, color: 'var(--c-on-surface-variant)' }}>Líder: {stats.winner.name}</div>}
           </div>
           {sorted.map((player, idx) => {
             const posClass = idx === 0 ? 'first' : idx === 1 ? 'second' : idx === 2 ? 'third' : 'other';
@@ -748,10 +849,12 @@ function App() {
 
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
           <button className="cc-btn cc-btn-secondary" onClick={() => setShowHallOfFame(true)} style={{ flex: 1 }}>
-            🏆 Salón de la Fama
+            <span className="material-symbols-outlined" style={{ fontSize: 16 }}>emoji_events</span>
+            Salón de la Fama
           </button>
           <button className="cc-btn cc-btn-secondary" onClick={shareResults} style={{ flex: 1 }}>
-            📤 Compartir Resultados
+            <span className="material-symbols-outlined" style={{ fontSize: 16 }}>share</span>
+            Compartir Resultados
           </button>
         </div>
       </div>
@@ -770,33 +873,45 @@ function App() {
         <div className="cc-settings-section-title">Partida</div>
         <div className="cc-settings-row" onClick={() => setShowRules(true)}>
           <div>
-            <div className="cc-settings-row-label">📖 Reglas del Continental</div>
+            <div className="cc-settings-row-label">
+              <span className="material-symbols-outlined" style={{ fontSize: 16, marginRight: 6, verticalAlign: 'middle' }}>menu_book</span>
+              Reglas del Continental
+            </div>
             <div className="cc-settings-row-desc">Ver manual completo del juego</div>
           </div>
-          <div className="cc-settings-row-action">›</div>
+          <span className="material-symbols-outlined" style={{ fontSize: 18, color: 'var(--c-on-surface-variant)' }}>chevron_right</span>
         </div>
         <div className="cc-settings-row" onClick={handleNewGame}>
           <div>
-            <div className="cc-settings-row-label">🃏 Nueva Partida</div>
+            <div className="cc-settings-row-label">
+              <span className="material-symbols-outlined" style={{ fontSize: 16, marginRight: 6, verticalAlign: 'middle' }}>playing_cards</span>
+              Nueva Partida
+            </div>
             <div className="cc-settings-row-desc">Reiniciar con los mismos o nuevos jugadores</div>
           </div>
-          <div className="cc-settings-row-action">›</div>
+          <span className="material-symbols-outlined" style={{ fontSize: 18, color: 'var(--c-on-surface-variant)' }}>chevron_right</span>
         </div>
         {players.length > 0 && (
           <div className="cc-settings-row" onClick={shareResults}>
             <div>
-              <div className="cc-settings-row-label">📤 Compartir Resultados</div>
+              <div className="cc-settings-row-label">
+                <span className="material-symbols-outlined" style={{ fontSize: 16, marginRight: 6, verticalAlign: 'middle' }}>share</span>
+                Compartir Resultados
+              </div>
               <div className="cc-settings-row-desc">Enviar las puntuaciones actuales</div>
             </div>
-            <div className="cc-settings-row-action">›</div>
+            <span className="material-symbols-outlined" style={{ fontSize: 18, color: 'var(--c-on-surface-variant)' }}>chevron_right</span>
           </div>
         )}
         <div className="cc-settings-row" onClick={() => setShowHallOfFame(true)}>
           <div>
-            <div className="cc-settings-row-label">🏆 Salón de la Fama</div>
+            <div className="cc-settings-row-label">
+              <span className="material-symbols-outlined" style={{ fontSize: 16, marginRight: 6, verticalAlign: 'middle' }}>emoji_events</span>
+              Salón de la Fama
+            </div>
             <div className="cc-settings-row-desc">Historial de partidas y campeones</div>
           </div>
-          <div className="cc-settings-row-action">›</div>
+          <span className="material-symbols-outlined" style={{ fontSize: 18, color: 'var(--c-on-surface-variant)' }}>chevron_right</span>
         </div>
       </div>
     </div>
@@ -813,26 +928,31 @@ function App() {
         <div className="cc-sidebar-brand">
           <div className="cc-brand-name">CONTINENTAL</div>
           <div className="cc-brand-sub">
-            Club de Caballeros{gameStarted && players.length > 0 ? ` · Mesa ${players.length}` : ''}
+            El Libro de Cuentas{gameStarted && players.length > 0 ? ` · Suite ${players.length}` : ''}
           </div>
         </div>
         <nav className="cc-sidebar-nav">
           <button className={`cc-nav-item${activeTab === 'puntos' ? ' active' : ''}`} onClick={() => setActiveTab('puntos')}>
-            <IconChart /> Puntos
+            <span className="material-symbols-outlined" style={activeTab === 'puntos' ? { fontVariationSettings: `'FILL' 1` } : undefined}>leaderboard</span>
+            Puntos
           </button>
           <button className={`cc-nav-item${activeTab === 'estadisticas' ? ' active' : ''}`} onClick={() => setActiveTab('estadisticas')}>
-            <IconStats /> Estadísticas
+            <span className="material-symbols-outlined" style={activeTab === 'estadisticas' ? { fontVariationSettings: `'FILL' 1` } : undefined}>query_stats</span>
+            Estadísticas
           </button>
           <button className={`cc-nav-item${activeTab === 'ajustes' ? ' active' : ''}`} onClick={() => setActiveTab('ajustes')}>
-            <IconSettings /> Ajustes
+            <span className="material-symbols-outlined" style={activeTab === 'ajustes' ? { fontVariationSettings: `'FILL' 1` } : undefined}>settings</span>
+            Ajustes
           </button>
         </nav>
         {gameStarted && players.length > 0 && (
-          <div className="cc-sidebar-footer">
-            <div className="cc-dealer-badge">{getDealerName().charAt(0)}</div>
-            <div>
-              <div className="cc-dealer-label">Director de Partida</div>
-              <div className="cc-dealer-name">{getDealerName()}</div>
+          <div className="cc-sidebar-footer" style={{ border: '1px solid rgba(212,175,55,0.15)', borderRadius: 'var(--radius-xl)', background: 'var(--c-surface-container-low)', padding: 16, marginTop: 'auto' }}>
+            <div className="flex items-center gap-3">
+              <div className="cc-dealer-badge" style={{ width: 40, height: 40, fontSize: 16 }}>{getDealerName().charAt(0)}</div>
+              <div>
+                <div className="cc-dealer-label" style={{ fontSize: 10 }}>Director de Partida</div>
+                <div className="cc-dealer-name" style={{ fontSize: 11, color: 'var(--c-primary)' }}>{getDealerName()}</div>
+              </div>
             </div>
           </div>
         )}
@@ -844,13 +964,14 @@ function App() {
         {/* Top Bar */}
         <div className="cc-topbar">
           <div className="cc-topbar-left">
-            <div className="cc-topbar-title">CONTINENTAL</div>
+            <span className="material-symbols-outlined" style={{ fontSize: 20, color: 'var(--c-primary)' }}>menu_book</span>
+            <div className="cc-topbar-title">Marcador Continental</div>
             {gameStarted && (
               <>
                 <div className="cc-topbar-sep"></div>
-                <div className="cc-topbar-info">
-                  <div className="cc-topbar-dot"></div>
-                  Sala de Juego
+                <div className="cc-topbar-info" style={{ background: 'var(--c-surface-container)', borderRadius: 'var(--radius-full)', padding: '4px 12px', border: '1px solid rgba(255,255,255,0.04)' }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: 14 }}>stadium</span>
+                  Mesa Principal
                   <span>·</span>
                   {currentRoundData.requirement}
                 </div>
@@ -858,11 +979,11 @@ function App() {
             )}
           </div>
           <div className="cc-topbar-actions">
-            <button className="cc-icon-btn" onClick={() => setShowHallOfFame(true)} title="Historial">
-              <IconHistory />
+            <button className="cc-icon-btn" onClick={() => showToast('Añadir jugador')} title="Añadir jugador">
+              <span className="material-symbols-outlined">person_add</span>
             </button>
-            <button className="cc-icon-btn" onClick={() => setShowRules(true)} title="Reglas">
-              <IconHelp />
+            <button className="cc-icon-btn" onClick={() => setShowHallOfFame(true)} title="Historial">
+              <span className="material-symbols-outlined">history</span>
             </button>
           </div>
         </div>
@@ -874,28 +995,34 @@ function App() {
           {activeTab === 'ajustes' && renderAjustesTab()}
         </div>
 
-        {/* Bottom Nav (mobile) */}
-        <nav className="cc-bottom-nav">
+        {/* Bottom Nav (mobile) - rounded top */}
+        <nav className="cc-bottom-nav rounded-t-xl">
           <button className={`cc-bottom-nav-item${activeTab === 'puntos' ? ' active' : ''}`} onClick={() => setActiveTab('puntos')}>
-            <IconChart /><span>Puntos</span>
+            <span className="material-symbols-outlined" style={activeTab === 'puntos' ? { fontVariationSettings: `'FILL' 1` } : undefined}>format_list_numbered</span>
+            <span>Puntos</span>
           </button>
           <button className={`cc-bottom-nav-item${activeTab === 'estadisticas' ? ' active' : ''}`} onClick={() => setActiveTab('estadisticas')}>
-            <IconStats /><span>Estadísticas</span>
+            <span className="material-symbols-outlined" style={activeTab === 'estadisticas' ? { fontVariationSettings: `'FILL' 1` } : undefined}>leaderboard</span>
+            <span>Estadísticas</span>
           </button>
           <button className={`cc-bottom-nav-item${activeTab === 'ajustes' ? ' active' : ''}`} onClick={() => setActiveTab('ajustes')}>
-            <IconSettings /><span>Ajustes</span>
+            <span className="material-symbols-outlined" style={activeTab === 'ajustes' ? { fontVariationSettings: `'FILL' 1` } : undefined}>settings</span>
+            <span>Ajustes</span>
           </button>
         </nav>
       </div>
+
+      {/* Atmosphere Particles */}
+      <div ref={atmosphereRef} className="fixed inset-0 pointer-events-none opacity-20" style={{ zIndex: 0 }}></div>
 
       {/* ══ MODALS ══ */}
 
       {showNewGameDialog && (
         <div className="cc-overlay show">
           <div className="cc-modal" style={{ maxWidth: 380, textAlign: 'center' }}>
-            <div style={{ fontSize: 40, marginBottom: 12 }}>🃏</div>
+            <span className="material-symbols-outlined" style={{ fontSize: 40, marginBottom: 12, color: 'var(--c-primary)' }}>playing_cards</span>
             <div className="cc-modal-title" style={{ marginBottom: 8 }}>Nueva Partida</div>
-            <p style={{ fontSize: 13, color: 'var(--cc-text-sec)', marginBottom: 20 }}>
+            <p style={{ fontSize: 13, color: 'var(--c-on-surface-variant)', marginBottom: 20 }}>
               ¿Usar los mismos jugadores o empezar de nuevo?
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -911,11 +1038,16 @@ function App() {
         <div className="cc-overlay show">
           <div className="cc-modal">
             <div className="cc-modal-header">
-              <div className="cc-modal-title">🏆 Salón de la Fama</div>
-              <button className="cc-btn cc-btn-secondary cc-btn-sm" onClick={() => setShowHallOfFame(false)}>✕</button>
+              <div className="cc-modal-title">
+                <span className="material-symbols-outlined" style={{ fontSize: 20, verticalAlign: 'middle', marginRight: 4, color: 'var(--c-primary)' }}>emoji_events</span>
+                Salón de la Fama
+              </div>
+              <button className="cc-btn cc-btn-secondary cc-btn-sm" onClick={() => setShowHallOfFame(false)}>
+                <span className="material-symbols-outlined" style={{ fontSize: 14 }}>close</span>
+              </button>
             </div>
             {hallOfFameData.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '32px 0', color: 'var(--cc-text-sec)' }}>
+              <div style={{ textAlign: 'center', padding: '32px 0', color: 'var(--c-on-surface-variant)' }}>
                 Aún no hay partidas registradas. ¡Completa una partida para aparecer aquí!
               </div>
             ) : (
@@ -937,13 +1069,13 @@ function App() {
                   </tbody>
                 </table>
                 <details style={{ marginTop: 16 }}>
-                  <summary style={{ cursor: 'pointer', fontSize: 12, color: 'var(--cc-text-sec)', padding: '4px 0' }}>
+                  <summary style={{ cursor: 'pointer', fontSize: 12, color: 'var(--c-on-surface-variant)', padding: '4px 0' }}>
                     Historial completo ({hallOfFameData.length} partidas)
                   </summary>
                   <div style={{ maxHeight: 200, overflowY: 'auto', marginTop: 8 }}>
                     {[...hallOfFameData].reverse().map((game, idx) => (
-                      <div key={idx} style={{ padding: '8px 0', borderBottom: '1px solid var(--cc-border-sub)', fontSize: 12, color: 'var(--cc-text-sec)' }}>
-                        <strong style={{ color: 'var(--cc-text)' }}>{game.winner}</strong> ganó el {new Date(game.date).toLocaleDateString()} —
+                      <div key={idx} style={{ padding: '8px 0', borderBottom: '1px solid rgba(153,144,124,0.15)', fontSize: 12, color: 'var(--c-on-surface-variant)' }}>
+                        <strong style={{ color: 'var(--c-on-surface)' }}>{game.winner}</strong> ganó el {new Date(game.date).toLocaleDateString()} —
                         {game.players.map(p => ` ${p.name} (${p.total}pts)`).join(',')}
                       </div>
                     ))}
@@ -959,24 +1091,39 @@ function App() {
         <div className="cc-overlay show">
           <div className="cc-modal">
             <div className="cc-modal-header">
-              <div className="cc-modal-title">📖 Manual del Continental</div>
+              <div className="cc-modal-title">
+                <span className="material-symbols-outlined" style={{ fontSize: 20, verticalAlign: 'middle', marginRight: 4 }}>menu_book</span>
+                Manual del Continental
+              </div>
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                 {speechStatus === 'idle' && (
-                  <button className="cc-btn cc-btn-secondary cc-btn-sm" onClick={() => speakText(continentalManualHTML)}>🔊</button>
+                  <button className="cc-btn cc-btn-secondary cc-btn-sm" onClick={() => speakText(continentalManualHTML)}>
+                    <span className="material-symbols-outlined" style={{ fontSize: 14 }}>volume_up</span>
+                  </button>
                 )}
                 {speechStatus === 'speaking' && (
                   <>
-                    <button className="cc-btn cc-btn-secondary cc-btn-sm" onClick={pauseSpeech}>⏸</button>
-                    <button className="cc-btn cc-btn-secondary cc-btn-sm" onClick={cancelSpeech}>⏹</button>
+                    <button className="cc-btn cc-btn-secondary cc-btn-sm" onClick={pauseSpeech}>
+                      <span className="material-symbols-outlined" style={{ fontSize: 14 }}>pause</span>
+                    </button>
+                    <button className="cc-btn cc-btn-secondary cc-btn-sm" onClick={cancelSpeech}>
+                      <span className="material-symbols-outlined" style={{ fontSize: 14 }}>stop</span>
+                    </button>
                   </>
                 )}
                 {speechStatus === 'paused' && (
                   <>
-                    <button className="cc-btn cc-btn-secondary cc-btn-sm" onClick={resumeSpeech}>▶</button>
-                    <button className="cc-btn cc-btn-secondary cc-btn-sm" onClick={cancelSpeech}>⏹</button>
+                    <button className="cc-btn cc-btn-secondary cc-btn-sm" onClick={resumeSpeech}>
+                      <span className="material-symbols-outlined" style={{ fontSize: 14 }}>play_arrow</span>
+                    </button>
+                    <button className="cc-btn cc-btn-secondary cc-btn-sm" onClick={cancelSpeech}>
+                      <span className="material-symbols-outlined" style={{ fontSize: 14 }}>stop</span>
+                    </button>
                   </>
                 )}
-                <button className="cc-btn cc-btn-secondary cc-btn-sm" onClick={() => { cancelSpeech(); setShowRules(false); }}>✕</button>
+                <button className="cc-btn cc-btn-secondary cc-btn-sm" onClick={() => { cancelSpeech(); setShowRules(false); }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: 14 }}>close</span>
+                </button>
               </div>
             </div>
             <div className="cc-rules-content" dangerouslySetInnerHTML={{ __html: continentalManualHTML }} />
