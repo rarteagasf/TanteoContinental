@@ -554,7 +554,7 @@ function App() {
                             if (roundCloser === player.name) {
                               return (
                                 <td key={player.name} className={`cc-td-score cc-td-current${leaderCls}`}>
-                                  <div className="recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg">
+                                  <div className="recessed-panel  rounded-sm py-1 font-bold text-lg">
                                     <span className="cc-closer-value" style={{ color: '#1d1009' }}>-{10 * currentRound}</span>
                                   </div>
                                 </td>
@@ -564,11 +564,11 @@ function App() {
                             return (
                               <td key={player.name} className={`cc-td-score cc-td-current${leaderCls}`}>
                                 {cs ? (
-                                  <div className="recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg">
+                                  <div className="recessed-panel  rounded-sm py-1 font-bold text-lg">
                                     <span>{cs}</span>
                                   </div>
                                 ) : (
-                                  <div className="recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg">
+                                  <div className="recessed-panel  rounded-sm py-1 font-bold text-lg">
                                     <span className="cc-placeholder" onClick={() => scoringPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })}>
                                       <span className="material-symbols-outlined" style={{ fontSize: 18, color: '#1d1009', opacity: 0.3 }}>add</span>
                                     </span>
@@ -581,7 +581,7 @@ function App() {
                             const isWinner = score < 0;
                             return (
                               <td key={player.name} className={`cc-td-score cc-td-past${score < 0 ? ' cc-td-negative' : ''}${leaderCls}`}>
-                                <div className="recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg relative">
+                                <div className="recessed-panel  rounded-sm py-1 font-bold text-lg relative">
                                   {isWinner && <span className="star-badge material-symbols-outlined" style={{ fontVariationSettings: `'FILL' 1`, fontSize: 12 }}>star</span>}
                                   <input
                                     type="number"
@@ -596,7 +596,7 @@ function App() {
                           } else {
                             return (
                               <td key={player.name} className={`cc-td-score cc-td-future${leaderCls}`}>
-                                <div className="recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg opacity-25">
+                                <div className="recessed-panel  rounded-sm py-1 font-bold text-lg opacity-25">
                                   <span className="cc-dash">—</span>
                                 </div>
                               </td>
@@ -605,7 +605,7 @@ function App() {
                         })}
                         {players.length < 6 && Array.from({ length: 6 - players.length }).map((_, i) => (
                           <td key={`empty-cell-${i}`} className="cc-td-score cc-td-future">
-                            <div className="recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg opacity-25">
+                            <div className="recessed-panel  rounded-sm py-1 font-bold text-lg opacity-25">
                               <span className="cc-dash">—</span>
                             </div>
                           </td>

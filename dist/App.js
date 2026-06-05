@@ -807,7 +807,7 @@ function App() {
               key: player.name,
               className: `cc-td-score cc-td-current${leaderCls}`
             }, /*#__PURE__*/React.createElement("div", {
-              className: "recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg"
+              className: "recessed-panel  rounded-sm py-1 font-bold text-lg"
             }, /*#__PURE__*/React.createElement("span", {
               className: "cc-closer-value",
               style: {
@@ -820,9 +820,9 @@ function App() {
             key: player.name,
             className: `cc-td-score cc-td-current${leaderCls}`
           }, cs ? /*#__PURE__*/React.createElement("div", {
-            className: "recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg"
+            className: "recessed-panel  rounded-sm py-1 font-bold text-lg"
           }, /*#__PURE__*/React.createElement("span", null, cs)) : /*#__PURE__*/React.createElement("div", {
-            className: "recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg"
+            className: "recessed-panel  rounded-sm py-1 font-bold text-lg"
           }, /*#__PURE__*/React.createElement("span", {
             className: "cc-placeholder",
             onClick: () => scoringPanelRef.current?.scrollIntoView({
@@ -844,7 +844,7 @@ function App() {
             key: player.name,
             className: `cc-td-score cc-td-past${score < 0 ? ' cc-td-negative' : ''}${leaderCls}`
           }, /*#__PURE__*/React.createElement("div", {
-            className: "recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg relative"
+            className: "recessed-panel  rounded-sm py-1 font-bold text-lg relative"
           }, isWinner && /*#__PURE__*/React.createElement("span", {
             className: "star-badge material-symbols-outlined",
             style: {
@@ -864,7 +864,7 @@ function App() {
             key: player.name,
             className: `cc-td-score cc-td-future${leaderCls}`
           }, /*#__PURE__*/React.createElement("div", {
-            className: "recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg opacity-25"
+            className: "recessed-panel  rounded-sm py-1 font-bold text-lg opacity-25"
           }, /*#__PURE__*/React.createElement("span", {
             className: "cc-dash"
           }, "\u2014")));
@@ -875,7 +875,7 @@ function App() {
         key: `empty-cell-${i}`,
         className: "cc-td-score cc-td-future"
       }, /*#__PURE__*/React.createElement("div", {
-        className: "recessed-panel bg-[#fdfcf0] text-[#1d1009] rounded-sm py-1 font-bold text-lg opacity-25"
+        className: "recessed-panel  rounded-sm py-1 font-bold text-lg opacity-25"
       }, /*#__PURE__*/React.createElement("span", {
         className: "cc-dash"
       }, "\u2014")))));
