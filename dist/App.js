@@ -99,7 +99,7 @@ const Icon = ({
 }, name);
 
 /* ── Player Avatar ── */
-function PlayerAvatar({
+const PlayerAvatar = React.memo(function PlayerAvatar({
   name,
   index,
   size
@@ -116,8 +116,8 @@ function PlayerAvatar({
       fontSize: Math.round(sz * 0.38)
     }
   }, initial);
-}
-function FrameAvatar({
+});
+const FrameAvatar = React.memo(function FrameAvatar({
   name,
   index,
   size
@@ -134,10 +134,10 @@ function FrameAvatar({
     index: index,
     size: sz
   }));
-}
+});
 
 /* ── Toast ── */
-const Toast = ({
+const Toast = React.memo(({
   message,
   onDismiss
 }) => {
@@ -148,7 +148,7 @@ const Toast = ({
   return /*#__PURE__*/React.createElement("div", {
     className: "cc-toast"
   }, message);
-};
+});
 
 /* ── Tooltip ── */
 const Tooltip = ({
@@ -199,10 +199,10 @@ function App() {
   });
   const [activeTab, setActiveTab] = useState('puntos');
   const [undoData, setUndoData] = useState(() => loadLS('continental-undo', null));
+  const [darkMode, setDarkMode] = useState(() => loadLS('continental-theme', true));
   const speechRef = useRef(null);
   const [speechStatus, setSpeechStatus] = useState('idle');
   const dragIndex = useRef(null);
-  const atmosphereRef = useRef(null);
 
   /* ── Persistence ── */
   useEffect(() => {
@@ -227,31 +227,12 @@ function App() {
     saveLS('continental-undo', undoData);
   }, [undoData]);
   useEffect(() => {
-    document.documentElement.setAttribute('data-color-scheme', 'dark');
-  }, []);
-
-  /* ── Atmosphere Particles ── */
+    saveLS('continental-theme', darkMode);
+  }, [darkMode]);
   useEffect(() => {
-    const el = atmosphereRef.current;
-    if (!el) return;
-    const particles = 24;
-    for (let i = 0; i < particles; i++) {
-      const p = document.createElement('div');
-      p.className = 'atmosphere-particle';
-      const s = Math.random() * 4 + 1;
-      p.style.width = s + 'px';
-      p.style.height = s + 'px';
-      p.style.left = Math.random() * 100 + '%';
-      p.style.top = Math.random() * 100 + '%';
-      p.style.opacity = Math.random() * 0.4;
-      p.style.animationDelay = Math.random() * -20 + 's';
-      p.style.animationDuration = Math.random() * 15 + 15 + 's';
-      el.appendChild(p);
-    }
-    return () => {
-      while (el.firstChild) el.removeChild(el.firstChild);
-    };
-  }, []);
+    document.documentElement.setAttribute('data-color-scheme', darkMode ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+  }, [darkMode]);
 
   /* ── Toast ── */
   const showToast = msg => {
@@ -520,7 +501,7 @@ function App() {
       showToast('Resultados copiados al portapapeles');
     }
   };
-  const getStats = () => {
+  const stats = React.useMemo(() => {
     if (players.length === 0) return null;
     const sorted = [...players].sort((a, b) => a.total - b.total);
     return {
@@ -528,15 +509,14 @@ function App() {
       sorted,
       averageScore: Math.round(players.reduce((s, p) => s + p.total, 0) / players.length)
     };
-  };
-  const getMediaRonda = () => {
+  }, [players]);
+  const getMediaRonda = React.useCallback(() => {
     if (!gameStarted || players.length === 0 || currentRound <= 1) return '—';
     const rp = currentRound - 1;
     const all = players.flatMap(p => p.scores.slice(0, rp).filter(s => s !== 0));
     if (all.length === 0) return '—';
     return (all.reduce((s, v) => s + Math.abs(v), 0) / all.length).toFixed(1);
-  };
-  const stats = getStats();
+  }, [players, gameStarted, currentRound]);
   const currentRoundData = roundsData[currentRound - 1];
   const dealerName = getDealerName();
   const scoringPanelRef = useRef(null);
@@ -1579,6 +1559,12 @@ function App() {
     className: "cc-topbar-actions"
   }, /*#__PURE__*/React.createElement("button", {
     className: "cc-icon-btn",
+    onClick: () => setDarkMode(!darkMode),
+    title: darkMode ? 'Modo claro' : 'Modo oscuro'
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "material-symbols-outlined"
+  }, darkMode ? 'light_mode' : 'dark_mode')), /*#__PURE__*/React.createElement("button", {
+    className: "cc-icon-btn",
     onClick: () => showToast('Añadir jugador'),
     title: "A\xF1adir jugador"
   }, /*#__PURE__*/React.createElement("span", {
@@ -1617,13 +1603,7 @@ function App() {
     style: activeTab === 'ajustes' ? {
       fontVariationSettings: `'FILL' 1`
     } : undefined
-  }, "settings"), /*#__PURE__*/React.createElement("span", null, "Ajustes")))), /*#__PURE__*/React.createElement("div", {
-    ref: atmosphereRef,
-    className: "fixed inset-0 pointer-events-none opacity-20",
-    style: {
-      zIndex: 0
-    }
-  }), showNewGameDialog && /*#__PURE__*/React.createElement("div", {
+  }, "settings"), /*#__PURE__*/React.createElement("span", null, "Ajustes")))), showNewGameDialog && /*#__PURE__*/React.createElement("div", {
     className: "cc-overlay show"
   }, /*#__PURE__*/React.createElement("div", {
     className: "cc-modal",
