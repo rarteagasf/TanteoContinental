@@ -136,7 +136,7 @@ function App() {
   const [currentRoundScores, setCurrentRoundScores] = useState(() => loadFromLocalStorage('continental-round-scores', {}));
   const speechUtteranceRef = useRef(null);
   const [speechStatus, setSpeechStatus] = useState('idle');
-  const [showAbandonConfirmation, setShowAbandonConfirmation] = useState(false);
+  const [showNewGameDialog, setShowNewGameDialog] = useState(false);
   const [showResumePrompt, setShowResumePrompt] = useState(() => {
     const savedPlayers = loadFromLocalStorage('continental-players', []);
     const savedStarted = loadFromLocalStorage('continental-started', false);
@@ -323,7 +323,7 @@ function App() {
     setRoundCloser('');
     showToast('¡Juego iniciado!');
   };
-  const confirmReset = () => {
+  const confirmNewGameSame = () => {
     setPlayers(players.map(p => ({
       ...p,
       scores: Array(7).fill(0),
@@ -334,10 +334,27 @@ function App() {
     setCurrentRoundScores({});
     setRoundCloser('');
     setShowResumePrompt(false);
-    showToast('Juego reiniciado');
-    setShowAbandonConfirmation(false);
+    showToast('¡Preparaos para una nueva partida!');
+    setShowNewGameDialog(false);
   };
-  const resetGame = () => setShowAbandonConfirmation(true);
+  const confirmNewGameNew = () => {
+    setPlayers([]);
+    setCurrentRound(1);
+    setGameStarted(false);
+    setCurrentRoundScores({});
+    setRoundCloser('');
+    setShowResumePrompt(false);
+    showToast('¡Empezando desde cero!');
+    setShowNewGameDialog(false);
+  };
+  const handleNewGame = () => {
+    if (players.length > 0) {
+      setShowNewGameDialog(true);
+    } else {
+      setGameStarted(false);
+      setShowResumePrompt(false);
+    }
+  };
   const finishRound = () => {
     if (!roundCloser) {
       showToast('Debes seleccionar quién cierra la ronda');
@@ -713,45 +730,62 @@ function App() {
   }))))), players.length > 0 && /*#__PURE__*/React.createElement("div", {
     className: "controls"
   }, /*#__PURE__*/React.createElement(Tooltip, {
-    text: "Reiniciar partida completa"
+    text: "Comenzar una nueva partida"
   }, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-secondary",
-    onClick: resetGame
-  }, "\u267B\uFE0F Reiniciar Partida")), /*#__PURE__*/React.createElement(Tooltip, {
+    onClick: handleNewGame
+  }, "\uD83C\uDCCF Nueva Partida")), /*#__PURE__*/React.createElement(Tooltip, {
     text: "Compartir resultados"
   }, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-secondary",
     onClick: shareResults
-  }, "\uD83D\uDCE4 Compartir Resultados"))), showAbandonConfirmation && /*#__PURE__*/React.createElement("div", {
+  }, "\uD83D\uDCE4 Compartir Resultados"))), showNewGameDialog && /*#__PURE__*/React.createElement("div", {
     className: "overlay show"
   }, /*#__PURE__*/React.createElement("div", {
     className: "modal-content",
     style: {
-      maxWidth: '400px',
+      maxWidth: '420px',
       textAlign: 'center'
     }
-  }, /*#__PURE__*/React.createElement("h3", {
+  }, /*#__PURE__*/React.createElement("div", {
     style: {
-      marginBottom: '1rem',
-      color: 'var(--color-primary)'
+      fontSize: '3rem',
+      marginBottom: '0.5rem'
     }
-  }, "\u26A0\uFE0F Confirmaci\xF3n"), /*#__PURE__*/React.createElement("p", {
+  }, "\uD83C\uDCCF"), /*#__PURE__*/React.createElement("h3", {
     style: {
-      marginBottom: '1.5rem'
+      marginBottom: '0.75rem'
     }
-  }, "\xBFEst\xE1s seguro de que quieres reiniciar todas las puntuaciones?"), /*#__PURE__*/React.createElement("div", {
+  }, "Nueva Partida"), /*#__PURE__*/React.createElement("p", {
+    style: {
+      marginBottom: '1.5rem',
+      color: 'var(--md-on-surface-variant)'
+    }
+  }, "\xBFQuieres usar los mismos jugadores o empezar con jugadores nuevos?"), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
-      gap: '1rem',
-      justifyContent: 'center'
+      flexDirection: 'column',
+      gap: '0.75rem'
     }
   }, /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
-    onClick: () => setShowAbandonConfirmation(false)
-  }, "Cancelar"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-primary",
-    onClick: confirmReset
-  }, "S\xED, reiniciar")))), showHallOfFame && /*#__PURE__*/React.createElement("div", {
+    onClick: confirmNewGameSame,
+    style: {
+      width: '100%'
+    }
+  }, "Usar los mismos jugadores"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    onClick: confirmNewGameNew,
+    style: {
+      width: '100%'
+    }
+  }, "Empezar con jugadores nuevos"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    onClick: () => setShowNewGameDialog(false),
+    style: {
+      width: '100%'
+    }
+  }, "Cancelar")))), showHallOfFame && /*#__PURE__*/React.createElement("div", {
     className: "overlay show"
   }, /*#__PURE__*/React.createElement("div", {
     className: "modal-content"

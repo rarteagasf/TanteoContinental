@@ -31,56 +31,56 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { font-size: 16px; -webkit-text-size-adjust: 100%; }
 
-    /* --- M3 Color Tokens (Light) --- */
+    /* --- M3 Color Tokens (Light) - Baraja Española --- */
     :root {
-      /* Primary */
-      --md-primary: #6366f1;
+      /* Primary - Gold/Dorado español */
+      --md-primary: #b8860b;
       --md-on-primary: #ffffff;
-      --md-primary-container: #e0e0ff;
-      --md-on-primary-container: #1a1b6e;
+      --md-primary-container: #fef3c7;
+      --md-on-primary-container: #5c3d00;
 
-      /* Secondary */
-      --md-secondary: #ec4899;
+      /* Secondary - Rojo cardenalicio */
+      --md-secondary: #c0392b;
       --md-on-secondary: #ffffff;
-      --md-secondary-container: #ffe0ec;
-      --md-on-secondary-container: #5c1138;
+      --md-secondary-container: #fce4e4;
+      --md-on-secondary-container: #5c1111;
 
-      /* Tertiary */
-      --md-tertiary: #10b981;
+      /* Tertiary - Verde botella */
+      --md-tertiary: #2d7d46;
       --md-on-tertiary: #ffffff;
-      --md-tertiary-container: #d1fae5;
-      --md-on-tertiary-container: #064e3b;
+      --md-tertiary-container: #d4edda;
+      --md-on-tertiary-container: #0a3d1c;
 
       /* Error */
-      --md-error: #f43f5e;
+      --md-error: #dc3545;
       --md-on-error: #ffffff;
-      --md-error-container: #ffe0e6;
-      --md-on-error-container: #5c1120;
+      --md-error-container: #f8d7da;
+      --md-on-error-container: #5c1111;
 
-      /* Surface / Background */
-      --md-surface: #fffbff;
-      --md-surface-dim: #e0dde7;
-      --md-surface-bright: #fffbff;
-      --md-surface-container: #f0effa;
-      --md-surface-container-high: #eae9f4;
-      --md-surface-container-highest: #e4e3ef;
-      --md-surface-container-low: #f6f5ff;
+      /* Surface / Background - verde feltro */
+      --md-surface: #f5f0e8;
+      --md-surface-dim: #e8e0d0;
+      --md-surface-bright: #fffcf5;
+      --md-surface-container: #faf3e6;
+      --md-surface-container-high: #f5ecd9;
+      --md-surface-container-highest: #efe4cf;
+      --md-surface-container-low: #fdf8ef;
       --md-surface-container-lowest: #ffffff;
-      --md-on-surface: #1c1b21;
-      --md-on-surface-variant: #494659;
+      --md-on-surface: #2c1810;
+      --md-on-surface-variant: #6b5c4f;
 
       /* Outline */
-      --md-outline: #7a778a;
-      --md-outline-variant: #cac6db;
+      --md-outline: #a0927e;
+      --md-outline-variant: #ddd0bf;
       --md-scrim: #000000;
 
       /* Inverses */
-      --md-inverse-surface: #313036;
-      --md-inverse-on-surface: #f4effa;
-      --md-inverse-primary: #c4bfff;
+      --md-inverse-surface: #3a2a20;
+      --md-inverse-on-surface: #f5f0e8;
+      --md-inverse-primary: #f0d68a;
 
       /* Fixed accent colors */
-      --md-warning: #f59e0b;
+      --md-warning: #d4a017;
       --md-on-warning: #ffffff;
 
       /* --- M3 Typography --- */
@@ -137,56 +137,77 @@
       --md-easing-emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
     }
 
-    /* --- M3 Color Tokens (Dark) --- */
+    /* --- M3 Color Tokens (Dark) - Baraja Española --- */
     [data-color-scheme="dark"] {
-      --md-primary: #c4bfff;
-      --md-on-primary: #2b2994;
-      --md-primary-container: #4947c8;
-      --md-on-primary-container: #e0e0ff;
+      --md-primary: #f0d68a;
+      --md-on-primary: #3d2800;
+      --md-primary-container: #7a5c00;
+      --md-on-primary-container: #fef3c7;
 
-      --md-secondary: #ffb0cd;
-      --md-on-secondary: #5c1138;
-      --md-secondary-container: #a13160;
-      --md-on-secondary-container: #ffe0ec;
+      --md-secondary: #f5a89e;
+      --md-on-secondary: #5c1111;
+      --md-secondary-container: #8a2a20;
+      --md-on-secondary-container: #fce4e4;
 
-      --md-tertiary: #64ddb7;
-      --md-on-tertiary: #064e3b;
-      --md-tertiary-container: #0d7a5a;
-      --md-on-tertiary-container: #d1fae5;
+      --md-tertiary: #7cc48a;
+      --md-on-tertiary: #0a3d1c;
+      --md-tertiary-container: #1d6b34;
+      --md-on-tertiary-container: #d4edda;
 
-      --md-error: #ffb3b8;
-      --md-on-error: #5c1120;
-      --md-error-container: #a1303c;
-      --md-on-error-container: #ffe0e6;
+      --md-error: #f5a0a8;
+      --md-on-error: #5c1111;
+      --md-error-container: #8a2028;
+      --md-on-error-container: #f8d7da;
 
-      --md-surface: #13131a;
-      --md-surface-dim: #13131a;
-      --md-surface-bright: #3a3842;
-      --md-surface-container: #201f27;
-      --md-surface-container-high: #2b2a32;
-      --md-surface-container-highest: #36353d;
-      --md-surface-container-low: #1b1b23;
-      --md-surface-container-lowest: #0e0e14;
-      --md-on-surface: #e4e1ec;
-      --md-on-surface-variant: #cac6db;
+      --md-surface: #1a1410;
+      --md-surface-dim: #1a1410;
+      --md-surface-bright: #3a3028;
+      --md-surface-container: #282018;
+      --md-surface-container-high: #332a20;
+      --md-surface-container-highest: #3e3428;
+      --md-surface-container-low: #201a14;
+      --md-surface-container-lowest: #0e0a08;
+      --md-on-surface: #efe4cf;
+      --md-on-surface-variant: #c4b8a8;
 
-      --md-outline: #9491a4;
-      --md-outline-variant: #494659;
-      --md-inverse-surface: #e4e1ec;
-      --md-inverse-on-surface: #313036;
-      --md-inverse-primary: #6366f1;
+      --md-outline: #a0927e;
+      --md-outline-variant: #5c4e3e;
+      --md-inverse-surface: #efe4cf;
+      --md-inverse-on-surface: #2c1810;
+      --md-inverse-primary: #b8860b;
     }
 
     /* --- Base Typography --- */
     body {
       font: var(--md-body-large);
       color: var(--md-on-surface);
-      background: var(--md-surface);
+      background: 
+        radial-gradient(ellipse at 20% 50%, rgba(45, 125, 70, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 50%, rgba(184, 134, 11, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 0%, rgba(192, 57, 43, 0.06) 0%, transparent 40%),
+        var(--md-surface);
       min-height: 100vh;
+      position: relative;
       transition: background var(--md-duration-medium) var(--md-easing-emphasized-decelerate),
                   color var(--md-duration-medium) var(--md-easing-emphasized-decelerate);
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+    }
+
+    body::before {
+      content: "🂡🂱🃁🃑🂢🂲🃂🃒🂣🂳🃃🃓🂤🂴🃄🃔🂥🂵🃅🃕🂦🂶🃆🃖🂧🂷🃇🃗🂨🂸🃈🃘🂩🂹🃉🃙🂪🂺🃊🃚🂫🂻🃋🃛🂭🂽🃍🃝🂮🂾🃎🃞";
+      position: fixed;
+      inset: 0;
+      font-size: 4rem;
+      line-height: 1.4;
+      letter-spacing: 3rem;
+      color: var(--md-on-surface);
+      opacity: 0.02;
+      pointer-events: none;
+      z-index: 0;
+      transform: rotate(-8deg) scale(1.5);
+      overflow: hidden;
+      user-select: none;
     }
 
     h1 { font: var(--md-headline-large); margin-bottom: var(--sp-2); }
@@ -205,6 +226,8 @@
       margin: 0 auto;
       padding: var(--sp-3);
       animation: fadeSlideIn var(--md-duration-slow) var(--md-easing-emphasized-decelerate);
+      position: relative;
+      z-index: 1;
     }
 
     @keyframes fadeSlideIn {
@@ -213,20 +236,42 @@
     }
 
     /* ================================================================
-       M3 SURFACE (replaces glass-panel)
+       M3 SURFACE - Glassmorphism estilo baraja
        ================================================================ */
     .glass-panel {
-      background: var(--md-surface-container-low);
-      border: 1px solid var(--md-outline-variant);
+      background: color-mix(in srgb, var(--md-surface-container-low) 85%, transparent);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid color-mix(in srgb, var(--md-outline-variant) 60%, transparent);
       border-radius: var(--md-shape-lg);
-      box-shadow: var(--md-elevation-1);
+      box-shadow: 
+        0 2px 8px rgba(0,0,0,0.06),
+        0 8px 32px rgba(0,0,0,0.04),
+        inset 0 1px 0 color-mix(in srgb, var(--md-on-surface) 6%, transparent);
       padding: var(--sp-4);
       margin-bottom: var(--sp-4);
       transition: box-shadow var(--md-duration-medium) var(--md-easing-emphasized-decelerate),
                   transform var(--md-duration-medium) var(--md-easing-emphasized-decelerate);
+      position: relative;
     }
     .glass-panel:hover {
-      box-shadow: var(--md-elevation-2);
+      box-shadow: 
+        0 4px 12px rgba(0,0,0,0.08),
+        0 12px 40px rgba(0,0,0,0.06),
+        inset 0 1px 0 color-mix(in srgb, var(--md-on-surface) 8%, transparent);
+    }
+
+    /* Decorative top border accent */
+    .glass-panel::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 2rem;
+      right: 2rem;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--md-primary), transparent);
+      border-radius: 0 0 2px 2px;
+      opacity: 0.4;
     }
 
     /* ================================================================
@@ -237,11 +282,27 @@
       justify-content: space-between;
       align-items: center;
       padding: var(--sp-3) var(--sp-4);
-      background: var(--md-surface-container);
-      border: 1px solid var(--md-outline-variant);
+      background: color-mix(in srgb, var(--md-surface-container) 80%, transparent);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid color-mix(in srgb, var(--md-primary) 20%, transparent);
       border-radius: var(--md-shape-xl);
-      box-shadow: var(--md-elevation-1);
+      box-shadow: 
+        0 2px 8px rgba(0,0,0,0.06),
+        0 8px 32px rgba(0,0,0,0.04),
+        inset 0 1px 0 color-mix(in srgb, var(--md-primary) 10%, transparent);
       margin-bottom: var(--sp-4);
+      position: relative;
+    }
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 3rem;
+      right: 3rem;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--md-primary), transparent);
+      opacity: 0.3;
     }
 
     .header-left {
@@ -264,7 +325,7 @@
       transition: transform var(--md-duration-medium) var(--md-easing-emphasized-decelerate);
     }
     .logo:hover { transform: scale(1.08) rotate(-4deg); }
-    .logo::before { content: "🃏"; position: absolute; }
+    .logo::before { content: "🂡"; position: absolute; font-size: 1.6rem; }
 
     .header h1 {
       font: var(--md-headline-medium);
@@ -467,39 +528,44 @@
     .badge-hand { background: var(--md-warning); color: #000000; }
 
     /* ================================================================
-       ROUND HEADER (Expressive Banner)
+       ROUND HEADER - Baraja Española Banner
        ================================================================ */
     .round-header {
-      background: linear-gradient(135deg, var(--md-primary), var(--md-secondary));
+      background: linear-gradient(135deg, var(--md-primary), #8a6b0a);
       color: var(--md-on-primary);
       text-align: center;
       border: none;
       border-radius: var(--md-shape-xl);
       padding: var(--sp-5) var(--sp-4);
       margin-bottom: var(--sp-4);
-      box-shadow: var(--md-elevation-2);
+      box-shadow: 
+        0 4px 16px rgba(0,0,0,0.12),
+        0 8px 32px color-mix(in srgb, var(--md-primary) 20%, transparent),
+        inset 0 1px 0 rgba(255,255,255,0.2);
       position: relative;
       overflow: hidden;
     }
     .round-header::before {
-      content: '';
+      content: '🂡🂱🃁🃑';
       position: absolute;
       top: -50%;
-      right: -20%;
-      width: 300px;
-      height: 300px;
-      background: rgba(255,255,255,0.06);
-      border-radius: 50%;
+      right: -10%;
+      font-size: 8rem;
+      opacity: 0.08;
       pointer-events: none;
+      transform: rotate(15deg);
+      line-height: 1;
+      white-space: nowrap;
+      letter-spacing: 1rem;
     }
     .round-header::after {
       content: '';
       position: absolute;
-      bottom: -30%;
-      left: -10%;
-      width: 200px;
-      height: 200px;
-      background: rgba(255,255,255,0.04);
+      bottom: -40%;
+      left: -5%;
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
       border-radius: 50%;
       pointer-events: none;
     }
@@ -508,6 +574,7 @@
       letter-spacing: -0.02em;
       position: relative;
       z-index: 1;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
 
     /* ================================================================

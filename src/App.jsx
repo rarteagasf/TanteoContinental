@@ -128,7 +128,7 @@ function App() {
   );
   const speechUtteranceRef = useRef(null);
   const [speechStatus, setSpeechStatus] = useState('idle');
-  const [showAbandonConfirmation, setShowAbandonConfirmation] = useState(false);
+  const [showNewGameDialog, setShowNewGameDialog] = useState(false);
   const [showResumePrompt, setShowResumePrompt] = useState(() => {
     const savedPlayers = loadFromLocalStorage('continental-players', []);
     const savedStarted = loadFromLocalStorage('continental-started', false);
@@ -293,18 +293,36 @@ function App() {
     showToast('¡Juego iniciado!');
   };
 
-  const confirmReset = () => {
+  const confirmNewGameSame = () => {
     setPlayers(players.map(p => ({ ...p, scores: Array(7).fill(0), total: 0 })));
     setCurrentRound(1);
     setGameStarted(false);
     setCurrentRoundScores({});
     setRoundCloser('');
     setShowResumePrompt(false);
-    showToast('Juego reiniciado');
-    setShowAbandonConfirmation(false);
+    showToast('¡Preparaos para una nueva partida!');
+    setShowNewGameDialog(false);
   };
 
-  const resetGame = () => setShowAbandonConfirmation(true);
+  const confirmNewGameNew = () => {
+    setPlayers([]);
+    setCurrentRound(1);
+    setGameStarted(false);
+    setCurrentRoundScores({});
+    setRoundCloser('');
+    setShowResumePrompt(false);
+    showToast('¡Empezando desde cero!');
+    setShowNewGameDialog(false);
+  };
+
+  const handleNewGame = () => {
+    if (players.length > 0) {
+      setShowNewGameDialog(true);
+    } else {
+      setGameStarted(false);
+      setShowResumePrompt(false);
+    }
+  };
 
   const finishRound = () => {
     if (!roundCloser) { showToast('Debes seleccionar quién cierra la ronda'); return; }
@@ -683,8 +701,8 @@ function App() {
 
       {players.length > 0 && (
         <div className="controls">
-          <Tooltip text="Reiniciar partida completa">
-            <button className="btn btn-secondary" onClick={resetGame}>♻️ Reiniciar Partida</button>
+          <Tooltip text="Comenzar una nueva partida">
+            <button className="btn btn-secondary" onClick={handleNewGame}>🃏 Nueva Partida</button>
           </Tooltip>
           <Tooltip text="Compartir resultados">
             <button className="btn btn-secondary" onClick={shareResults}>📤 Compartir Resultados</button>
@@ -692,14 +710,24 @@ function App() {
         </div>
       )}
 
-      {showAbandonConfirmation && (
+      {showNewGameDialog && (
         <div className="overlay show">
-          <div className="modal-content" style={{ maxWidth: '400px', textAlign: 'center' }}>
-            <h3 style={{ marginBottom: '1rem', color: 'var(--color-primary)' }}>⚠️ Confirmación</h3>
-            <p style={{ marginBottom: '1.5rem' }}>¿Estás seguro de que quieres reiniciar todas las puntuaciones?</p>
-            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-              <button className="btn btn-secondary" onClick={() => setShowAbandonConfirmation(false)}>Cancelar</button>
-              <button className="btn btn-primary" onClick={confirmReset}>Sí, reiniciar</button>
+          <div className="modal-content" style={{ maxWidth: '420px', textAlign: 'center' }}>
+            <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>🃏</div>
+            <h3 style={{ marginBottom: '0.75rem' }}>Nueva Partida</h3>
+            <p style={{ marginBottom: '1.5rem', color: 'var(--md-on-surface-variant)' }}>
+              ¿Quieres usar los mismos jugadores o empezar con jugadores nuevos?
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <button className="btn btn-primary" onClick={confirmNewGameSame} style={{ width: '100%' }}>
+                Usar los mismos jugadores
+              </button>
+              <button className="btn btn-secondary" onClick={confirmNewGameNew} style={{ width: '100%' }}>
+                Empezar con jugadores nuevos
+              </button>
+              <button className="btn btn-secondary" onClick={() => setShowNewGameDialog(false)} style={{ width: '100%' }}>
+                Cancelar
+              </button>
             </div>
           </div>
         </div>
