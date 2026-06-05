@@ -197,7 +197,7 @@ function App() {
     const started = loadLS('continental-started', false);
     return saved.length > 0 && !started;
   });
-  const [activeTab, setActiveTab] = useState('puntos');
+  const [activeTab, setActiveTab] = useState(() => loadLS('continental-tab', 'puntos'));
   const [undoData, setUndoData] = useState(() => loadLS('continental-undo', null));
   const [darkMode, setDarkMode] = useState(() => loadLS('continental-theme', true));
   const speechRef = useRef(null);
@@ -227,12 +227,30 @@ function App() {
     saveLS('continental-undo', undoData);
   }, [undoData]);
   useEffect(() => {
+    saveLS('continental-tab', activeTab);
+  }, [activeTab]);
+  useEffect(() => {
     saveLS('continental-theme', darkMode);
   }, [darkMode]);
   useEffect(() => {
     document.documentElement.setAttribute('data-color-scheme', darkMode ? 'dark' : 'light');
     document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
   }, [darkMode]);
+
+  /* ── Force-save on unload ── */
+  useEffect(() => {
+    const save = () => {
+      saveLS('continental-players', players);
+      saveLS('continental-started', gameStarted);
+      saveLS('continental-round', currentRound);
+      saveLS('continental-closer', roundCloser);
+      saveLS('continental-round-scores', currentRoundScores);
+      saveLS('continental-undo', undoData);
+      saveLS('continental-global-stats', hallOfFameData);
+    };
+    window.addEventListener('beforeunload', save);
+    return () => window.removeEventListener('beforeunload', save);
+  }, [players, gameStarted, currentRound, roundCloser, currentRoundScores, undoData, hallOfFameData]);
 
   /* ── Toast ── */
   const showToast = msg => {
@@ -587,7 +605,8 @@ function App() {
       onDragStart: e => {
         dragIndex.current = index;
         e.dataTransfer.effectAllowed = 'move';
-        setTimeout(() => e.currentTarget.classList.add('dragging'));
+        e.dataTransfer.setData('text/plain', String(index));
+        e.currentTarget.classList.add('dragging');
       },
       onDragOver: e => {
         e.preventDefault();
