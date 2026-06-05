@@ -257,6 +257,18 @@ function App() {
     return () => window.removeEventListener('beforeunload', save);
   }, [players, gameStarted, currentRound, roundCloser, currentRoundScores, undoData, redoData, hallOfFameData]);
 
+  /* ── Touch drag: non-passive listener ensures preventDefault works ── */
+  useEffect(() => {
+    const onMove = e => {
+      if (dragIndex.current === null) return;
+      e.preventDefault();
+    };
+    document.addEventListener('touchmove', onMove, {
+      passive: false
+    });
+    return () => document.removeEventListener('touchmove', onMove);
+  }, []);
+
   /* ── Toast ── */
   const showToast = msg => {
     const id = Date.now();

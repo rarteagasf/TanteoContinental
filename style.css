@@ -122,7 +122,7 @@
 }
 
 [data-theme="light"] body {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Ctext x='30' y='60' font-size='42' fill='%23b8962e' opacity='0.05' font-family='serif'%3E♠%3C/text%3E%3Ctext x='140' y='180' font-size='34' fill='%23c49f30' opacity='0.04' font-family='serif'%3E♥%3C/text%3E%3Ctext x='25' y='190' font-size='36' fill='%238a7e6e' opacity='0.04' font-family='serif'%3E♦%3C/text%3E%3Ctext x='140' y='55' font-size='38' fill='%23b8962e' opacity='0.045' font-family='serif'%3E♣%3C/text%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Ctext x='30' y='60' font-size='42' fill='%23b8962e' opacity='0.12' font-family='serif'%3E♠%3C/text%3E%3Ctext x='140' y='180' font-size='34' fill='%23c49f30' opacity='0.10' font-family='serif'%3E♥%3C/text%3E%3Ctext x='25' y='190' font-size='36' fill='%238a7e6e' opacity='0.10' font-family='serif'%3E♦%3C/text%3E%3Ctext x='140' y='55' font-size='38' fill='%23b8962e' opacity='0.11' font-family='serif'%3E♣%3C/text%3E%3C/svg%3E");
   background-color: var(--c-bg);
 }
 [data-theme="light"] .leather-blotter {
@@ -306,7 +306,7 @@ body {
   font-family: var(--font-body);
   color: var(--c-on-surface);
   background-color: #1d1009;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Ctext x='30' y='60' font-size='42' fill='%23f2ca50' opacity='0.04' font-family='serif'%3E♠%3C/text%3E%3Ctext x='140' y='180' font-size='34' fill='%23d4af37' opacity='0.03' font-family='serif'%3E♥%3C/text%3E%3Ctext x='25' y='190' font-size='36' fill='%23f2ca50' opacity='0.035' font-family='serif'%3E♦%3C/text%3E%3Ctext x='140' y='55' font-size='38' fill='%23d4af37' opacity='0.035' font-family='serif'%3E♣%3C/text%3E%3C/svg%3E"), linear-gradient(rgba(29, 16, 9, 0.88), rgba(29, 16, 9, 0.88)), url('https://www.transparenttextures.com/patterns/dark-wood.png');
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Ctext x='30' y='60' font-size='42' fill='%23f2ca50' opacity='0.07' font-family='serif'%3E♠%3C/text%3E%3Ctext x='140' y='180' font-size='34' fill='%23d4af37' opacity='0.05' font-family='serif'%3E♥%3C/text%3E%3Ctext x='25' y='190' font-size='36' fill='%23f2ca50' opacity='0.06' font-family='serif'%3E♦%3C/text%3E%3Ctext x='140' y='55' font-size='38' fill='%23d4af37' opacity='0.06' font-family='serif'%3E♣%3C/text%3E%3C/svg%3E"), linear-gradient(rgba(29, 16, 9, 0.88), rgba(29, 16, 9, 0.88)), url('https://www.transparenttextures.com/patterns/dark-wood.png');
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   line-height: 1.5;
