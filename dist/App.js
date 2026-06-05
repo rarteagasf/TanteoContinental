@@ -199,6 +199,7 @@ function App() {
   });
   const [activeTab, setActiveTab] = useState(() => loadLS('continental-tab', 'puntos'));
   const [undoData, setUndoData] = useState(() => loadLS('continental-undo', null));
+  const [redoData, setRedoData] = useState(() => loadLS('continental-redo', null));
   const [darkMode, setDarkMode] = useState(() => loadLS('continental-theme', true));
   const speechRef = useRef(null);
   const [speechStatus, setSpeechStatus] = useState('idle');
@@ -227,6 +228,9 @@ function App() {
     saveLS('continental-undo', undoData);
   }, [undoData]);
   useEffect(() => {
+    saveLS('continental-redo', redoData);
+  }, [redoData]);
+  useEffect(() => {
     saveLS('continental-tab', activeTab);
   }, [activeTab]);
   useEffect(() => {
@@ -246,11 +250,12 @@ function App() {
       saveLS('continental-closer', roundCloser);
       saveLS('continental-round-scores', currentRoundScores);
       saveLS('continental-undo', undoData);
+      saveLS('continental-redo', redoData);
       saveLS('continental-global-stats', hallOfFameData);
     };
     window.addEventListener('beforeunload', save);
     return () => window.removeEventListener('beforeunload', save);
-  }, [players, gameStarted, currentRound, roundCloser, currentRoundScores, undoData, hallOfFameData]);
+  }, [players, gameStarted, currentRound, roundCloser, currentRoundScores, undoData, redoData, hallOfFameData]);
 
   /* ── Toast ── */
   const showToast = msg => {
@@ -415,6 +420,7 @@ function App() {
     setRoundCloser('');
     setShowResumePrompt(false);
     setUndoData(null);
+    setRedoData(null);
     showToast('¡Nueva partida lista!');
     setShowNewGameDialog(false);
   };
@@ -426,6 +432,7 @@ function App() {
     setRoundCloser('');
     setShowResumePrompt(false);
     setUndoData(null);
+    setRedoData(null);
     showToast('¡Empezando desde cero!');
     setShowNewGameDialog(false);
   };
@@ -434,6 +441,17 @@ function App() {
       setGameStarted(false);
       setShowResumePrompt(false);
     }
+  };
+  const handleCancelGame = () => {
+    setPlayers([]);
+    setCurrentRound(1);
+    setGameStarted(false);
+    setCurrentRoundScores({});
+    setRoundCloser('');
+    setShowResumePrompt(false);
+    setUndoData(null);
+    setRedoData(null);
+    showToast('Partida cancelada');
   };
   const finishRound = () => {
     if (!roundCloser) {
@@ -457,6 +475,7 @@ function App() {
       },
       roundCloser
     });
+    setRedoData(null);
     const updated = players.map(player => {
       const rs = currentRoundScores[player.name] || 0;
       const ns = [...player.scores];
@@ -496,12 +515,40 @@ function App() {
       showToast('Nada que deshacer');
       return;
     }
+    setRedoData({
+      players: JSON.parse(JSON.stringify(players)),
+      currentRound,
+      currentRoundScores: {
+        ...currentRoundScores
+      },
+      roundCloser
+    });
     setPlayers(undoData.players);
     setCurrentRound(undoData.currentRound);
     setCurrentRoundScores(undoData.currentRoundScores);
     setRoundCloser(undoData.roundCloser);
     setUndoData(null);
     showToast('Última ronda deshecha ↩');
+  };
+  const handleRedo = () => {
+    if (!redoData) {
+      showToast('Nada que rehacer');
+      return;
+    }
+    setUndoData({
+      players: JSON.parse(JSON.stringify(players)),
+      currentRound,
+      currentRoundScores: {
+        ...currentRoundScores
+      },
+      roundCloser
+    });
+    setPlayers(redoData.players);
+    setCurrentRound(redoData.currentRound);
+    setCurrentRoundScores(redoData.currentRoundScores);
+    setRoundCloser(redoData.roundCloser);
+    setRedoData(null);
+    showToast('Rehecho ↩');
   };
   const shareResults = async () => {
     if (players.length === 0) return;
@@ -631,6 +678,9 @@ function App() {
       },
       onTouchMove: e => {
         if (dragIndex.current === null || gameStarted) return;
+        try {
+          e.preventDefault();
+        } catch (_) {}
         const touch = e.touches[0];
         const el = document.elementFromPoint(touch.clientX, touch.clientY);
         if (!el) return;
@@ -736,20 +786,7 @@ function App() {
       className: "cc-page-title"
     }, "Partida Activa"), /*#__PURE__*/React.createElement("p", {
       className: "cc-page-subtitle"
-    }, "Jugando Ronda ", currentRound, " de 7 \xB7 ", currentRoundData.requirement, " \xB7 ", currentRoundData.cards, " cartas")), /*#__PURE__*/React.createElement("div", {
-      className: "cc-winner-rule-badge"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "cc-rule-icon-wrap"
-    }, /*#__PURE__*/React.createElement("span", {
-      className: "material-symbols-outlined",
-      style: {
-        fontSize: 24
-      }
-    }, "gavel")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-      className: "cc-rule-label"
-    }, "Regla del Ganador"), /*#__PURE__*/React.createElement("div", {
-      className: "cc-rule-value gold-glow"
-    }, "(-10 \xD7 N\xBA de Ronda)")))), /*#__PURE__*/React.createElement("div", {
+    }, "Jugando Ronda ", currentRound, " de 7 \xB7 ", currentRoundData.requirement, " \xB7 ", currentRoundData.cards, " cartas"))), /*#__PURE__*/React.createElement("div", {
       className: "leather-blotter rounded-xl p-1 wood-texture brass-edge relative overflow-hidden",
       style: {
         borderRadius: 'var(--radius)'
@@ -966,33 +1003,6 @@ function App() {
         opacity: 0.2
       }
     }, "\u2014"))))))))), /*#__PURE__*/React.createElement("div", {
-      className: "cc-info-bar",
-      style: {
-        marginBottom: 16,
-        border: '1px solid rgba(242,202,80,0.15)',
-        background: 'rgba(242,202,80,0.04)'
-      }
-    }, /*#__PURE__*/React.createElement("span", {
-      className: "material-symbols-outlined",
-      style: {
-        fontSize: 20,
-        color: 'var(--c-primary)'
-      }
-    }, "info"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: 12,
-        fontWeight: 600
-      }
-    }, "Regla del Ganador"), /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: 11,
-        color: 'var(--c-on-surface-variant)'
-      }
-    }, "El jugador que cierra la ronda recibe ", /*#__PURE__*/React.createElement("strong", {
-      style: {
-        color: 'var(--c-primary)'
-      }
-    }, "-", 10 * currentRound, " pts"), " (ronda \xD7 -10). Por cada punto ingresado se acumula."))), /*#__PURE__*/React.createElement("div", {
       className: "cc-scoring-panel",
       ref: scoringPanelRef
     }, /*#__PURE__*/React.createElement("div", {
@@ -1006,9 +1016,7 @@ function App() {
         verticalAlign: 'middle',
         marginRight: 4
       }
-    }, "edit_note"), "Puntos \xB7 Ronda ", currentRound), /*#__PURE__*/React.createElement("div", {
-      className: "cc-scoring-hint"
-    }, "ENTERO \xB7 NO CERO")), /*#__PURE__*/React.createElement("p", {
+    }, "edit_note"), "Puntos \xB7 Ronda ", currentRound)), /*#__PURE__*/React.createElement("p", {
       className: "cc-scoring-desc"
     }, "Selecciona qui\xE9n cierra (se asignan -", 10 * currentRound, " pts autom\xE1ticamente) e ingresa los puntos del resto."), /*#__PURE__*/React.createElement("div", {
       className: "cc-scoring-grid"
@@ -1288,7 +1296,8 @@ function App() {
       }
     }, "undo"), "Deshacer"), /*#__PURE__*/React.createElement("button", {
       className: "cc-action-btn",
-      onClick: () => showToast('Guardado automáticamente'),
+      onClick: handleRedo,
+      disabled: !redoData,
       style: {
         flex: 1,
         justifyContent: 'center',
@@ -1300,7 +1309,19 @@ function App() {
       style: {
         fontSize: 16
       }
-    }, "save"), "Guardar")));
+    }, "redo"), "Rehacer")), /*#__PURE__*/React.createElement("button", {
+      className: "cc-btn cc-btn-secondary cc-btn-full",
+      onClick: handleCancelGame,
+      style: {
+        fontSize: 12
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "material-symbols-outlined",
+      style: {
+        fontSize: 16,
+        marginRight: 4
+      }
+    }, "cancel"), "Cancelar Partida"));
   };
 
   /* ══════════════════════════════════════════

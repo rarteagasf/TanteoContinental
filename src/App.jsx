@@ -146,6 +146,7 @@ function App() {
   });
   const [activeTab, setActiveTab] = useState(() => loadLS('continental-tab', 'puntos'));
   const [undoData, setUndoData] = useState(() => loadLS('continental-undo', null));
+  const [redoData, setRedoData] = useState(() => loadLS('continental-redo', null));
   const [darkMode, setDarkMode] = useState(() => loadLS('continental-theme', true));
   const speechRef = useRef(null);
   const [speechStatus, setSpeechStatus] = useState('idle');
@@ -159,6 +160,7 @@ function App() {
   useEffect(() => { saveLS('continental-round', currentRound); }, [currentRound]);
   useEffect(() => { saveLS('continental-global-stats', hallOfFameData); }, [hallOfFameData]);
   useEffect(() => { saveLS('continental-undo', undoData); }, [undoData]);
+  useEffect(() => { saveLS('continental-redo', redoData); }, [redoData]);
   useEffect(() => { saveLS('continental-tab', activeTab); }, [activeTab]);
   useEffect(() => { saveLS('continental-theme', darkMode); }, [darkMode]);
   useEffect(() => {
@@ -175,11 +177,12 @@ function App() {
       saveLS('continental-closer', roundCloser);
       saveLS('continental-round-scores', currentRoundScores);
       saveLS('continental-undo', undoData);
+      saveLS('continental-redo', redoData);
       saveLS('continental-global-stats', hallOfFameData);
     };
     window.addEventListener('beforeunload', save);
     return () => window.removeEventListener('beforeunload', save);
-  }, [players, gameStarted, currentRound, roundCloser, currentRoundScores, undoData, hallOfFameData]);
+  }, [players, gameStarted, currentRound, roundCloser, currentRoundScores, undoData, redoData, hallOfFameData]);
 
   /* ── Toast ── */
   const showToast = (msg) => {
@@ -290,17 +293,28 @@ function App() {
   const confirmNewGameSame = () => {
     setPlayers(players.map(p => ({ ...p, scores: Array(7).fill(0), total: 0 })));
     setCurrentRound(1); setGameStarted(false); setCurrentRoundScores({}); setRoundCloser('');
-    setShowResumePrompt(false); setUndoData(null);
+    setShowResumePrompt(false); setUndoData(null); setRedoData(null);
     showToast('¡Nueva partida lista!'); setShowNewGameDialog(false);
   };
   const confirmNewGameNew = () => {
     setPlayers([]); setCurrentRound(1); setGameStarted(false); setCurrentRoundScores({}); setRoundCloser('');
-    setShowResumePrompt(false); setUndoData(null);
+    setShowResumePrompt(false); setUndoData(null); setRedoData(null);
     showToast('¡Empezando desde cero!'); setShowNewGameDialog(false);
   };
   const handleNewGame = () => {
     if (players.length > 0) setShowNewGameDialog(true);
     else { setGameStarted(false); setShowResumePrompt(false); }
+  };
+  const handleCancelGame = () => {
+    setPlayers([]);
+    setCurrentRound(1);
+    setGameStarted(false);
+    setCurrentRoundScores({});
+    setRoundCloser('');
+    setShowResumePrompt(false);
+    setUndoData(null);
+    setRedoData(null);
+    showToast('Partida cancelada');
   };
 
   const finishRound = () => {
@@ -312,6 +326,7 @@ function App() {
       }
     }
     setUndoData({ players: JSON.parse(JSON.stringify(players)), currentRound, currentRoundScores: { ...currentRoundScores }, roundCloser });
+    setRedoData(null);
     const updated = players.map(player => {
       const rs = currentRoundScores[player.name] || 0;
       const ns = [...player.scores];
@@ -335,12 +350,24 @@ function App() {
 
   const handleUndoLast = () => {
     if (!undoData) { showToast('Nada que deshacer'); return; }
+    setRedoData({ players: JSON.parse(JSON.stringify(players)), currentRound, currentRoundScores: { ...currentRoundScores }, roundCloser });
     setPlayers(undoData.players);
     setCurrentRound(undoData.currentRound);
     setCurrentRoundScores(undoData.currentRoundScores);
     setRoundCloser(undoData.roundCloser);
     setUndoData(null);
     showToast('Última ronda deshecha ↩');
+  };
+
+  const handleRedo = () => {
+    if (!redoData) { showToast('Nada que rehacer'); return; }
+    setUndoData({ players: JSON.parse(JSON.stringify(players)), currentRound, currentRoundScores: { ...currentRoundScores }, roundCloser });
+    setPlayers(redoData.players);
+    setCurrentRound(redoData.currentRound);
+    setCurrentRoundScores(redoData.currentRoundScores);
+    setRoundCloser(redoData.roundCloser);
+    setRedoData(null);
+    showToast('Rehecho ↩');
   };
 
   const shareResults = async () => {
@@ -448,6 +475,7 @@ function App() {
               }}
               onTouchMove={e => {
                 if (dragIndex.current === null || gameStarted) return;
+                try { e.preventDefault(); } catch (_) {}
                 const touch = e.touches[0];
                 const el = document.elementFromPoint(touch.clientX, touch.clientY);
                 if (!el) return;
@@ -538,15 +566,7 @@ function App() {
               Jugando Ronda {currentRound} de 7 · {currentRoundData.requirement} · {currentRoundData.cards} cartas
             </p>
           </div>
-          <div className="cc-winner-rule-badge">
-            <div className="cc-rule-icon-wrap">
-              <span className="material-symbols-outlined" style={{ fontSize: 24 }}>gavel</span>
-            </div>
-            <div>
-              <div className="cc-rule-label">Regla del Ganador</div>
-              <div className="cc-rule-value gold-glow">(-10 × Nº de Ronda)</div>
-            </div>
-          </div>
+
         </div>
 
         {/* Score Table - Wood Texture + Recessed Panels */}
@@ -684,17 +704,6 @@ function App() {
           </div>
         </div>
 
-        {/* Rules Reminder */}
-        <div className="cc-info-bar" style={{ marginBottom: 16, border: '1px solid rgba(242,202,80,0.15)', background: 'rgba(242,202,80,0.04)' }}>
-          <span className="material-symbols-outlined" style={{ fontSize: 20, color: 'var(--c-primary)' }}>info</span>
-          <div>
-            <div style={{ fontSize: 12, fontWeight: 600 }}>Regla del Ganador</div>
-            <div style={{ fontSize: 11, color: 'var(--c-on-surface-variant)' }}>
-              El jugador que cierra la ronda recibe <strong style={{ color: 'var(--c-primary)' }}>-{10 * currentRound} pts</strong> (ronda × -10). Por cada punto ingresado se acumula.
-            </div>
-          </div>
-        </div>
-
         {/* Scoring Panel */}
         <div className="cc-scoring-panel" ref={scoringPanelRef}>
           <div className="cc-scoring-header">
@@ -702,7 +711,6 @@ function App() {
               <span className="material-symbols-outlined" style={{ fontSize: 18, verticalAlign: 'middle', marginRight: 4 }}>edit_note</span>
               Puntos · Ronda {currentRound}
             </div>
-            <div className="cc-scoring-hint">ENTERO · NO CERO</div>
           </div>
           <p className="cc-scoring-desc">
             Selecciona quién cierra (se asignan -{10 * currentRound} pts automáticamente) e ingresa los puntos del resto.
@@ -816,11 +824,16 @@ function App() {
             <span className="material-symbols-outlined" style={{ fontSize: 16 }}>undo</span>
             Deshacer
           </button>
-          <button className="cc-action-btn" onClick={() => showToast('Guardado automáticamente')} style={{ flex: 1, justifyContent: 'center', padding: '8px 16px', fontSize: 12 }}>
-            <span className="material-symbols-outlined" style={{ fontSize: 16 }}>save</span>
-            Guardar
+          <button className="cc-action-btn" onClick={handleRedo} disabled={!redoData} style={{ flex: 1, justifyContent: 'center', padding: '8px 16px', fontSize: 12 }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 16 }}>redo</span>
+            Rehacer
           </button>
         </div>
+
+        <button className="cc-btn cc-btn-secondary cc-btn-full" onClick={handleCancelGame} style={{ fontSize: 12 }}>
+          <span className="material-symbols-outlined" style={{ fontSize: 16, marginRight: 4 }}>cancel</span>
+          Cancelar Partida
+        </button>
       </div>
     );
   };

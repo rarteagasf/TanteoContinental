@@ -289,8 +289,8 @@
 [data-theme="light"] .has-wood-bg { background-image: none; }
 [data-theme="light"] .recessed-panel:active { transform: scale(0.95); }
 
-html { font-size: 14px; -webkit-text-size-adjust: 100%; transition: background-color 300ms var(--cc-ease); }
-body { transition: background-color 300ms var(--cc-ease), background-image 300ms var(--cc-ease); }
+html { font-size: 14px; -webkit-text-size-adjust: 100%; transition: background-color 300ms var(--cc-ease); overscroll-behavior: none; }
+body { transition: background-color 300ms var(--cc-ease), background-image 300ms var(--cc-ease); overscroll-behavior: none; }
 .cc-app, .cc-sidebar, .cc-topbar, .cc-scoring-panel, .cc-table-container, .cc-modal { transition: background-color 200ms var(--cc-ease), border-color 200ms var(--cc-ease), box-shadow 200ms var(--cc-ease); }
 
 ::-webkit-scrollbar { width: 8px; height: 8px; }
@@ -742,7 +742,7 @@ a { color: var(--c-primary); text-decoration: none; }
   box-shadow: inset 0 2px 4px rgba(0,0,0,0.6), 0 0 0 1px rgba(212,175,55,0.2);
 }
 
-.cc-player-list { display: flex; flex-direction: column; gap: 1px; margin-bottom: 16px; }
+.cc-player-list { display: flex; flex-direction: column; gap: 1px; margin-bottom: 16px; touch-action: none; }
 .cc-player-item {
   display: flex;
   align-items: center;
