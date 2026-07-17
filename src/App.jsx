@@ -296,11 +296,14 @@ function App() {
 
   /* ── Game Flow ── */
   const startGame = () => {
-    setPlayers(players.map(p => ({ ...p, scores: Array(7).fill(0), total: 0 })));
+    setPlayers(prev => {
+      const reset = prev.map(p => ({ ...p, scores: Array(7).fill(0), total: 0 }));
+      setCurrentRoundScores(reset.reduce((acc, p) => { acc[p.name] = 0; return acc; }, {}));
+      return reset;
+    });
     setGameStarted(true);
     setShowFinalResults(false);
     setCurrentRound(1);
-    setCurrentRoundScores(players.reduce((acc, p) => { acc[p.name] = 0; return acc; }, {}));
     setRoundCloser('');
     setUndoData(null);
     setRedoData(null);
@@ -308,7 +311,7 @@ function App() {
   };
 
   const confirmNewGameSame = () => {
-    setPlayers(players.map(p => ({ ...p, scores: Array(7).fill(0), total: 0 })));
+    setPlayers(prev => prev.map(p => ({ ...p, scores: Array(7).fill(0), total: 0 })));
     setCurrentRound(1); setGameStarted(false); setCurrentRoundScores({}); setRoundCloser('');
     setShowResumePrompt(false); setUndoData(null); setRedoData(null);
     setShowFinalResults(false);

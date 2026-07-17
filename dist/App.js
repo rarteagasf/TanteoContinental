@@ -416,25 +416,28 @@ function App() {
 
   /* ── Game Flow ── */
   const startGame = () => {
-    setPlayers(players.map(p => ({
-      ...p,
-      scores: Array(7).fill(0),
-      total: 0
-    })));
+    setPlayers(prev => {
+      const reset = prev.map(p => ({
+        ...p,
+        scores: Array(7).fill(0),
+        total: 0
+      }));
+      setCurrentRoundScores(reset.reduce((acc, p) => {
+        acc[p.name] = 0;
+        return acc;
+      }, {}));
+      return reset;
+    });
     setGameStarted(true);
     setShowFinalResults(false);
     setCurrentRound(1);
-    setCurrentRoundScores(players.reduce((acc, p) => {
-      acc[p.name] = 0;
-      return acc;
-    }, {}));
     setRoundCloser('');
     setUndoData(null);
     setRedoData(null);
     showToast('¡Partida iniciada!');
   };
   const confirmNewGameSame = () => {
-    setPlayers(players.map(p => ({
+    setPlayers(prev => prev.map(p => ({
       ...p,
       scores: Array(7).fill(0),
       total: 0
