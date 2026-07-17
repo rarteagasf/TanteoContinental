@@ -189,6 +189,7 @@ function App() {
   const [toasts, setToasts] = useState([]);
   const [editingPlayer, setEditingPlayer] = useState(null);
   const [gameStarted, setGameStarted] = useState(() => loadLS('continental-started', false));
+  const [showFinalResults, setShowFinalResults] = useState(() => loadLS('continental-show-results', false));
   const [roundCloser, setRoundCloser] = useState(() => loadLS('continental-closer', ''));
   const [currentRoundScores, setCurrentRoundScores] = useState(() => loadLS('continental-round-scores', {}));
   const [showNewGameDialog, setShowNewGameDialog] = useState(false);
@@ -212,6 +213,9 @@ function App() {
   useEffect(() => {
     saveLS('continental-started', gameStarted);
   }, [gameStarted]);
+  useEffect(() => {
+    saveLS('continental-show-results', showFinalResults);
+  }, [showFinalResults]);
   useEffect(() => {
     saveLS('continental-closer', roundCloser);
   }, [roundCloser]);
@@ -246,6 +250,7 @@ function App() {
     const save = () => {
       saveLS('continental-players', players);
       saveLS('continental-started', gameStarted);
+      saveLS('continental-show-results', showFinalResults);
       saveLS('continental-round', currentRound);
       saveLS('continental-closer', roundCloser);
       saveLS('continental-round-scores', currentRoundScores);
@@ -255,7 +260,7 @@ function App() {
     };
     window.addEventListener('beforeunload', save);
     return () => window.removeEventListener('beforeunload', save);
-  }, [players, gameStarted, currentRound, roundCloser, currentRoundScores, undoData, redoData, hallOfFameData]);
+  }, [players, gameStarted, showFinalResults, currentRound, roundCloser, currentRoundScores, undoData, redoData, hallOfFameData]);
 
   /* ── Touch drag: non-passive listener ensures preventDefault works ── */
   useEffect(() => {
@@ -411,13 +416,21 @@ function App() {
 
   /* ── Game Flow ── */
   const startGame = () => {
+    setPlayers(players.map(p => ({
+      ...p,
+      scores: Array(7).fill(0),
+      total: 0
+    })));
     setGameStarted(true);
+    setShowFinalResults(false);
     setCurrentRound(1);
     setCurrentRoundScores(players.reduce((acc, p) => {
       acc[p.name] = 0;
       return acc;
     }, {}));
     setRoundCloser('');
+    setUndoData(null);
+    setRedoData(null);
     showToast('¡Partida iniciada!');
   };
   const confirmNewGameSame = () => {
@@ -433,6 +446,7 @@ function App() {
     setShowResumePrompt(false);
     setUndoData(null);
     setRedoData(null);
+    setShowFinalResults(false);
     showToast('¡Nueva partida lista!');
     setShowNewGameDialog(false);
   };
@@ -445,6 +459,7 @@ function App() {
     setShowResumePrompt(false);
     setUndoData(null);
     setRedoData(null);
+    setShowFinalResults(false);
     showToast('¡Empezando desde cero!');
     setShowNewGameDialog(false);
   };
@@ -463,7 +478,13 @@ function App() {
     setShowResumePrompt(false);
     setUndoData(null);
     setRedoData(null);
+    setShowFinalResults(false);
     showToast('Partida cancelada');
+  };
+  const startNewGameFromResults = () => {
+    setShowFinalResults(false);
+    setGameStarted(false);
+    setShowNewGameDialog(true);
   };
   const finishRound = () => {
     if (!roundCloser) {
@@ -520,6 +541,7 @@ function App() {
       }]);
       showToast(`¡Juego terminado! Ganador: ${winner.name} 🏆`);
       setGameStarted(false);
+      setShowFinalResults(true);
     }
   };
   const handleUndoLast = () => {
@@ -783,10 +805,201 @@ function App() {
       }
     }, "playing_cards"), "Iniciar Partida \u2014 ", players.length, " jugadores"));
   };
+  const renderFinalResultsView = () => {
+    const sorted = [...players].sort((a, b) => a.total - b.total);
+    const winner = sorted[0];
+    return /*#__PURE__*/React.createElement("div", {
+      className: "cc-game-view animate-fade-in",
+      style: {
+        paddingBottom: 40
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        textAlign: 'center',
+        padding: '32px 16px',
+        borderRadius: 'var(--radius-xl)',
+        background: 'var(--c-surface-container-low)',
+        border: '1px solid rgba(212,175,55,0.15)',
+        marginBottom: 24,
+        position: 'relative',
+        overflow: 'hidden'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none"
+    }), /*#__PURE__*/React.createElement("span", {
+      className: "material-symbols-outlined",
+      style: {
+        fontSize: 64,
+        color: '#d4af37',
+        marginBottom: 12,
+        display: 'inline-block',
+        textShadow: '0 0 20px rgba(212,175,55,0.4)'
+      }
+    }, "emoji_events"), /*#__PURE__*/React.createElement("h1", {
+      className: "cc-page-title",
+      style: {
+        fontSize: 28,
+        color: 'var(--c-primary)',
+        marginBottom: 4
+      }
+    }, "\xA1Juego Terminado!"), /*#__PURE__*/React.createElement("p", {
+      className: "cc-page-subtitle",
+      style: {
+        fontSize: 16,
+        color: 'var(--c-on-surface)'
+      }
+    }, "Ganador: ", /*#__PURE__*/React.createElement("strong", {
+      style: {
+        color: '#d4af37'
+      }
+    }, winner?.name), " con ", /*#__PURE__*/React.createElement("strong", null, winner?.total), " puntos \uD83C\uDFC6")), /*#__PURE__*/React.createElement("div", {
+      className: "leather-blotter rounded-xl p-1 wood-texture brass-edge relative overflow-hidden",
+      style: {
+        borderRadius: 'var(--radius)',
+        marginBottom: 24
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none"
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "cc-table-container",
+      style: {
+        background: 'transparent',
+        border: 'none',
+        boxShadow: 'none',
+        marginBottom: 0
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "custom-scrollbar"
+    }, /*#__PURE__*/React.createElement("table", {
+      className: "cc-score-table"
+    }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", {
+      className: "etched-border"
+    }, /*#__PURE__*/React.createElement("th", {
+      className: "cc-th-rounds",
+      style: {
+        position: 'sticky',
+        left: 0,
+        zIndex: 10
+      }
+    }, "Puesto"), /*#__PURE__*/React.createElement("th", {
+      className: "cc-th-player",
+      style: {
+        minWidth: 120
+      }
+    }, "Jugador"), Array.from({
+      length: 7
+    }).map((_, i) => /*#__PURE__*/React.createElement("th", {
+      key: i,
+      className: "cc-th-player",
+      style: {
+        minWidth: 60
+      }
+    }, "R", i + 1)), /*#__PURE__*/React.createElement("th", {
+      className: "cc-th-player",
+      style: {
+        minWidth: 80
+      }
+    }, "Total"))), /*#__PURE__*/React.createElement("tbody", null, sorted.map((player, idx) => {
+      const isLeader = idx === 0;
+      const origIdx = players.findIndex(p => p.name === player.name);
+      const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : '';
+      return /*#__PURE__*/React.createElement("tr", {
+        key: player.name,
+        className: `cc-tr ${isLeader ? 'cc-tr-current' : 'cc-tr-past'} relative`
+      }, isLeader && /*#__PURE__*/React.createElement("div", {
+        className: "active-row-rail"
+      }), /*#__PURE__*/React.createElement("td", {
+        className: "cc-td-round-info",
+        style: {
+          position: 'sticky',
+          left: 0,
+          zIndex: 5,
+          background: isLeader ? 'var(--c-surface-container)' : 'var(--c-surface)',
+          fontWeight: 'bold'
+        }
+      }, /*#__PURE__*/React.createElement("span", {
+        style: {
+          fontSize: 15
+        }
+      }, idx + 1, "\xBA ", medal)), /*#__PURE__*/React.createElement("td", {
+        className: "cc-td-round-info",
+        style: {
+          background: isLeader ? 'var(--c-surface-container)' : 'var(--c-surface)'
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "flex items-center gap-2"
+      }, /*#__PURE__*/React.createElement(PlayerAvatar, {
+        name: player.name,
+        index: origIdx,
+        size: 28
+      }), /*#__PURE__*/React.createElement("span", {
+        style: {
+          fontWeight: isLeader ? 'bold' : 'normal',
+          color: isLeader ? '#d4af37' : 'inherit'
+        }
+      }, player.name))), player.scores.map((score, rIdx) => /*#__PURE__*/React.createElement("td", {
+        key: rIdx,
+        className: "cc-td-score cc-td-past"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "recessed-panel rounded-sm py-1 font-bold text-lg"
+      }, /*#__PURE__*/React.createElement("span", {
+        style: {
+          color: score < 0 ? 'var(--c-primary)' : 'inherit'
+        }
+      }, score || 0)))), /*#__PURE__*/React.createElement("td", {
+        className: `cc-td-total${isLeader ? ' cc-total-leader gold-glow' : ''}`
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "font-score-display",
+        style: {
+          fontSize: 20,
+          fontWeight: 700
+        }
+      }, player.total)));
+    })))))), /*#__PURE__*/React.createElement("div", {
+      className: "grid grid-cols-2 gap-3",
+      style: {
+        marginBottom: 20
+      }
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "brass-button",
+      onClick: shareResults,
+      style: {
+        padding: '16px 24px',
+        justifyContent: 'center'
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "material-symbols-outlined",
+      style: {
+        fontSize: 22,
+        marginRight: 8
+      }
+    }, "share"), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 16
+      }
+    }, "Compartir")), /*#__PURE__*/React.createElement("button", {
+      className: "brass-button",
+      onClick: startNewGameFromResults,
+      style: {
+        padding: '16px 24px',
+        justifyContent: 'center'
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "material-symbols-outlined",
+      style: {
+        fontSize: 22,
+        marginRight: 8
+      }
+    }, "replay"), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 16
+      }
+    }, "Nueva Partida"))));
+  };
 
   /* ══════════════════════════════════════════
      RENDER: GAME VIEW (Puntos tab)
-  ══════════════════════════════════════════ */
+     ══════════════════════════════════════════ */
   const renderGameView = () => {
     const progress = Math.round((currentRound - 1) / 7 * 100);
     const remaining = 7 - currentRound + 1;
@@ -1553,7 +1766,7 @@ function App() {
     className: "cc-brand-name"
   }, "CONTINENTAL"), /*#__PURE__*/React.createElement("div", {
     className: "cc-brand-sub"
-  }, "El Libro de Cuentas", gameStarted && players.length > 0 ? ` · Suite ${players.length}` : '')), /*#__PURE__*/React.createElement("nav", {
+  }, "El Libro de Cuentas")), /*#__PURE__*/React.createElement("nav", {
     className: "cc-sidebar-nav"
   }, /*#__PURE__*/React.createElement("button", {
     className: `cc-nav-item${activeTab === 'puntos' ? ' active' : ''}`,
@@ -1602,7 +1815,7 @@ function App() {
     style: {
       fontSize: 10
     }
-  }, "Director de Partida"), /*#__PURE__*/React.createElement("div", {
+  }, "Repartidor"), /*#__PURE__*/React.createElement("div", {
     className: "cc-dealer-name",
     style: {
       fontSize: 11,
@@ -1659,7 +1872,7 @@ function App() {
     className: "material-symbols-outlined"
   }, "history")))), /*#__PURE__*/React.createElement("div", {
     className: "cc-content"
-  }, activeTab === 'puntos' && (gameStarted ? renderGameView() : renderSetupView()), activeTab === 'estadisticas' && renderEstadisticasTab(), activeTab === 'ajustes' && renderAjustesTab()), /*#__PURE__*/React.createElement("nav", {
+  }, activeTab === 'puntos' && (showFinalResults ? renderFinalResultsView() : gameStarted ? renderGameView() : renderSetupView()), activeTab === 'estadisticas' && renderEstadisticasTab(), activeTab === 'ajustes' && renderAjustesTab()), /*#__PURE__*/React.createElement("nav", {
     className: "cc-bottom-nav rounded-t-xl"
   }, /*#__PURE__*/React.createElement("button", {
     className: `cc-bottom-nav-item${activeTab === 'puntos' ? ' active' : ''}`,
