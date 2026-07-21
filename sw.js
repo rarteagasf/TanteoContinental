@@ -1,8 +1,7 @@
-const CACHE = 'continental-pro-v2';
+const CACHE = 'continental-pro-v3';
 const PRECACHE = [
-  '/',
+  './',
   'index.html',
-  'dist/App.js',
   'style.css',
   'manifest.json',
   'app-icon.png'
@@ -26,12 +25,12 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(request).then(cached => {
       const fetched = fetch(request).then(response => {
-        if (response.ok) {
+        if (response.ok && response.type === 'basic') {
           const copy = response.clone();
           caches.open(CACHE).then(cache => cache.put(request, copy));
         }
         return response;
-      });
+      }).catch(() => cached);
       return cached || fetched;
     })
   );
