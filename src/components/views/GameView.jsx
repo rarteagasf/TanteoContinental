@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { roundsData } from '../../constants/game';
 import { ScoreTable } from '../scoring/ScoreTable';
 import { ScoringPanel } from '../scoring/ScoringPanel';
@@ -18,15 +18,11 @@ export function GameView({
   undoData,
   redoData,
   cancelGame,
-  stats,
-  getMediaRonda
+  stats
 }) {
   const [calculatorPlayer, setCalculatorPlayer] = useState(null);
-  const scoringPanelRef = useRef(null);
 
   const currentRoundData = roundsData[currentRound - 1];
-  const progress = Math.round((currentRound - 1) / 7 * 100);
-  const remaining = 7 - currentRound + 1;
 
   const handleOpenCalculator = (playerName) => {
     setCalculatorPlayer(playerName);
@@ -68,7 +64,6 @@ export function GameView({
         currentRoundScores={currentRoundScores}
         updateCurrentRoundScore={updateCurrentRoundScore}
         onOpenCalculator={handleOpenCalculator}
-        scoringPanelRef={scoringPanelRef}
       />
 
       {/* Leader Stat Card */}
@@ -87,42 +82,37 @@ export function GameView({
         </div>
       )}
 
-      {/* Action Bar */}
-      <div className="grid grid-cols-2 gap-2" style={{ marginBottom: 20 }}>
-        <button
-          className="brass-button"
-          onClick={() => scoringPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })}
-          style={{ padding: '16px 24px', flexDirection: 'column', gap: 2 }}
-        >
-          <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined" style={{ fontSize: 22 }}>exposure_plus_1</span>
-            <span style={{ fontSize: 16 }}>Puntos</span>
-          </div>
-          <span className="sub-label" style={{ fontSize: 10 }}>Enteros / No Cero</span>
-        </button>
-
-        <button
-          className="brass-button"
-          onClick={finishRound}
-          style={{ padding: '16px 24px', flexDirection: 'column', gap: 2 }}
-        >
-          <div className="flex items-center gap-2">
-            <span style={{ fontSize: 16 }}>{currentRound < 7 ? 'Siguiente Ronda' : 'Finalizar Juego'}</span>
-            <span className="material-symbols-outlined" style={{ fontSize: 22 }}>arrow_forward</span>
-          </div>
-          <span className="sub-label" style={{ fontSize: 10 }}>Avanzar partida</span>
-        </button>
-      </div>
+      {/* Action Button: Siguiente Ronda */}
+      <button
+        className="brass-button"
+        onClick={finishRound}
+        style={{
+          width: '100%',
+          padding: '16px 24px',
+          justify: 'center',
+          marginBottom: 20,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8
+        }}
+      >
+        <span style={{ fontSize: 17, fontWeight: 700 }}>
+          {currentRound < 7 ? `Avanzar a Ronda ${currentRound + 1}` : 'Finalizar Juego y Ver Ganador'}
+        </span>
+        <span className="material-symbols-outlined" style={{ fontSize: 24 }}>
+          {currentRound < 7 ? 'arrow_forward' : 'emoji_events'}
+        </span>
+      </button>
 
       {/* Undo / Redo */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
         <button className="cc-action-btn" onClick={handleUndoLast} disabled={!undoData} style={{ flex: 1, justifyContent: 'center', padding: '8px 16px', fontSize: 12 }}>
           <span className="material-symbols-outlined" style={{ fontSize: 16 }}>undo</span>
-          Deshacer
+          Deshacer Ronda
         </button>
         <button className="cc-action-btn" onClick={handleRedo} disabled={!redoData} style={{ flex: 1, justifyContent: 'center', padding: '8px 16px', fontSize: 12 }}>
           <span className="material-symbols-outlined" style={{ fontSize: 16 }}>redo</span>
-          Rehacer
+          Rehacer Ronda
         </button>
       </div>
 

@@ -20,7 +20,7 @@ export function SetupView({
   useEffect(() => {
     const onMove = e => {
       if (dragIndex.current === null) return;
-      e.preventDefault();
+      try { e.preventDefault(); } catch (_) {}
     };
     document.addEventListener('touchmove', onMove, { passive: false });
     return () => document.removeEventListener('touchmove', onMove);
@@ -57,7 +57,7 @@ export function SetupView({
   return (
     <div className="cc-setup">
       <div className="cc-page-title">Nueva Partida</div>
-      <p className="cc-section-sub">Registra a los jugadores de 2 a 6. Arrastra para establecer el orden de turno.</p>
+      <p className="cc-section-sub">Registra de 2 a 6 jugadores. Usa las flechas ▲ ▼ o arrastra para cambiar el orden de turno.</p>
 
       <div className="cc-player-add-form">
         <input
@@ -88,9 +88,14 @@ export function SetupView({
             }}
             onDragOver={e => {
               e.preventDefault();
-              if (dragIndex.current !== index) e.currentTarget.classList.add('drag-over');
+              e.dataTransfer.dropEffect = 'move';
+              if (dragIndex.current !== null && dragIndex.current !== index) {
+                e.currentTarget.classList.add('drag-over');
+              }
             }}
-            onDragLeave={e => e.currentTarget.classList.remove('drag-over')}
+            onDragLeave={e => {
+              e.currentTarget.classList.remove('drag-over');
+            }}
             onDrop={e => {
               e.preventDefault();
               e.currentTarget.classList.remove('drag-over');
@@ -99,32 +104,87 @@ export function SetupView({
               }
               dragIndex.current = null;
             }}
-            onDragEnd={e => {
-              e.currentTarget.classList.remove('dragging', 'drag-over');
-              document.querySelectorAll('.cc-player-item.drag-over').forEach(el => el.classList.remove('drag-over'));
+            onDragEnd={() => {
+              document.querySelectorAll('.cc-player-item.drag-over, .cc-player-item.dragging').forEach(el => el.classList.remove('drag-over', 'dragging'));
               dragIndex.current = null;
             }}
             onTouchStart={() => {
               if (gameStarted) return;
               dragIndex.current = index;
             }}
-            onTouchEnd={e => {
+            onTouchMove={e => {
+              if (dragIndex.current === null || gameStarted) return;
+              const touch = e.touches[0];
+              const el = document.elementFromPoint(touch.clientX, touch.clientY);
+              if (!el) return;
+              const item = el.closest('.cc-player-item');
+              if (!item) return;
+              const items = Array.from(item.parentElement.querySelectorAll('.cc-player-item'));
+              const overIdx = items.indexOf(item);
+              if (overIdx !== -1 && overIdx !== dragIndex.current) {
+                items.forEach(x => x.classList.remove('drag-over'));
+                item.classList.add('drag-over');
+              }
+            }}
+            onTouchEnd={() => {
               if (dragIndex.current === null) return;
-              const from = dragIndex.current;
               const over = document.querySelector('.cc-player-item.drag-over');
-              if (over && from !== null && !gameStarted) {
+              if (over && dragIndex.current !== null && !gameStarted) {
                 const items = Array.from(over.parentElement.querySelectorAll('.cc-player-item'));
                 const to = items.indexOf(over);
-                if (to !== -1 && from !== to) {
-                  movePlayer(from, to);
+                if (to !== -1 && dragIndex.current !== to) {
+                  movePlayer(dragIndex.current, to);
                 }
               }
-              e.currentTarget.classList.remove('dragging', 'drag-over');
-              document.querySelectorAll('.cc-player-item.drag-over').forEach(x => x.classList.remove('drag-over'));
+              document.querySelectorAll('.cc-player-item.drag-over, .cc-player-item.dragging').forEach(x => x.classList.remove('drag-over', 'dragging'));
               dragIndex.current = null;
             }}
           >
-            <span className="cc-drag-handle">⠿</span>
+            {/* Reorder Arrows & Handle */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginRight: 4 }}>
+              <span className="cc-drag-handle" title="Arrastrar para reordenar" style={{ cursor: 'grab' }}>⠿</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+                <button
+                  type="button"
+                  onClick={(e) => { e.stopPropagation(); if (index > 0) movePlayer(index, index - 1); }}
+                  disabled={index === 0 || gameStarted}
+                  title="Subir posición"
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    padding: 0,
+                    cursor: index === 0 ? 'default' : 'pointer',
+                    opacity: index === 0 ? 0.2 : 0.7,
+                    color: 'var(--c-on-surface)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justify: 'center'
+                  }}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: 16 }}>expand_less</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => { e.stopPropagation(); if (index < players.length - 1) movePlayer(index, index + 1); }}
+                  disabled={index === players.length - 1 || gameStarted}
+                  title="Bajar posición"
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    padding: 0,
+                    cursor: index === players.length - 1 ? 'default' : 'pointer',
+                    opacity: index === players.length - 1 ? 0.2 : 0.7,
+                    color: 'var(--c-on-surface)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justify: 'center'
+                  }}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: 16 }}>expand_more</span>
+                </button>
+              </div>
+            </div>
+
             <PlayerAvatar name={player.name} index={index} size={34} />
             <div style={{ flex: 1, minWidth: 0 }}>
               {editingPlayer === player.name ? (
