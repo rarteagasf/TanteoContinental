@@ -174,7 +174,7 @@ export function useGameState(showToast) {
     showToast('¡Partida iniciada!');
   };
 
-  const finishRound = () => {
+  const finishRound = (isEarlyFinish = false) => {
     if (!roundCloser) { showToast('Selecciona quién cierra la ronda'); return; }
     for (const p of players) {
       if (p.name !== roundCloser) {
@@ -198,22 +198,51 @@ export function useGameState(showToast) {
     });
     setPlayers(updated);
 
-    if (currentRound < 7) {
+    if (currentRound < 7 && !isEarlyFinish) {
       setCurrentRound(prev => prev + 1);
       setCurrentRoundScores(players.reduce((acc, p) => { acc[p.name] = 0; return acc; }, {}));
       setRoundCloser('');
       showToast(`Ronda ${currentRound} completada ✓`);
     } else {
       const sorted = [...updated].sort((a, b) => a.total - b.total);
-      const winner = sorted[0];
-      setHallOfFameData(prev => [
-        ...prev,
-        { date: new Date().toISOString(), winner: winner.name, players: sorted.map(p => ({ name: p.name, total: p.total })) }
-      ]);
-      showToast(`¡Juego terminado! Ganador: ${winner.name} 🏆`);
+      const minTotal = sorted[0].total;
+      const winners = sorted.filter(p => p.total === minTotal);
+      const winnerNames = winners.map(w => w.name);
+
+      if (currentRound === 7 && !isEarlyFinish) {
+        setHallOfFameData(prev => [
+          ...prev,
+          {
+            date: new Date().toISOString(),
+            winner: winnerNames.length === 1 ? winnerNames[0] : winnerNames.join(' & '),
+            winners: winnerNames,
+            roundsPlayed: 7,
+            players: sorted.map(p => ({ name: p.name, total: p.total }))
+          }
+        ]);
+        showToast(winnerNames.length > 1
+          ? `¡Juego terminado! Empate: ${winnerNames.join(' y ')} 🏆`
+          : `¡Juego terminado! Ganador: ${winnerNames[0]} 🏆`
+        );
+      } else {
+        showToast(winnerNames.length > 1
+          ? `¡Partida finalizada en Ronda ${currentRound}! Empate: ${winnerNames.join(' y ')} 🏆`
+          : `¡Partida finalizada en Ronda ${currentRound}! Ganador: ${winnerNames[0]} 🏆`
+        );
+      }
       setGameStarted(false);
       setShowFinalResults(true);
     }
+  };
+
+  const deleteHallOfFameGame = (index) => {
+    setHallOfFameData(prev => prev.filter((_, i) => i !== index));
+    showToast('Partida eliminada del Salón de la Fama');
+  };
+
+  const clearHallOfFame = () => {
+    setHallOfFameData([]);
+    showToast('Salón de la Fama vaciado');
   };
 
   const handleUndoLast = () => {
@@ -317,6 +346,8 @@ export function useGameState(showToast) {
     handleRedo,
     confirmNewGameSame,
     confirmNewGameNew,
-    cancelGame
+    cancelGame,
+    deleteHallOfFameGame,
+    clearHallOfFame
   };
 }

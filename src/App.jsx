@@ -252,6 +252,8 @@ export default function App() {
       {showHallOfFame && (
         <HallOfFameModal
           hallOfFameData={state.hallOfFameData}
+          onDeleteGame={state.deleteHallOfFameGame}
+          onClearHallOfFame={state.clearHallOfFame}
           onClose={() => setShowHallOfFame(false)}
         />
       )}

@@ -85,12 +85,12 @@ export function GameView({
       {/* Action Button: Siguiente Ronda */}
       <button
         className="brass-button"
-        onClick={finishRound}
+        onClick={() => finishRound(false)}
         style={{
           width: '100%',
           padding: '16px 24px',
           justify: 'center',
-          marginBottom: 20,
+          marginBottom: currentRound < 7 ? 10 : 20,
           display: 'flex',
           alignItems: 'center',
           gap: 8
@@ -103,6 +103,27 @@ export function GameView({
           {currentRound < 7 ? 'arrow_forward' : 'emoji_events'}
         </span>
       </button>
+
+      {/* Action Button: Finalizar Partida Anticipadamente */}
+      {currentRound < 7 && (
+        <button
+          className="cc-btn cc-btn-secondary cc-btn-full"
+          onClick={() => finishRound(true)}
+          style={{
+            marginBottom: 20,
+            padding: '10px 16px',
+            fontSize: 13,
+            borderColor: 'rgba(212,175,55,0.4)',
+            color: 'var(--c-primary)',
+            justifyContent: 'center'
+          }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: 18, marginRight: 6 }}>
+            flag
+          </span>
+          Finalizar Partida en Ronda {currentRound}
+        </button>
+      )}
 
       {/* Undo / Redo */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
